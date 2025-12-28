@@ -135,7 +135,7 @@ public class nhanvien extends JFrame {
         nhanvienJScrollPane.setBounds(30, 350, 500, 250);
         add(nhanvienJScrollPane);
     }
-
+    //helo
     public void addThemListener(ActionListener listener){themButton.addActionListener(listener);};
 
 }
