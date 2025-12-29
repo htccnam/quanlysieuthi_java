@@ -11,14 +11,23 @@ package DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnection {
     public static Connection getConnection() throws Exception {
-        // Cập nhật tên DB
+       try{
+            // Cập nhật tên DB
         String url = "jdbc:mysql://localhost:3306/quanlysieuthi"; 
         String user = "root";
         String pass = ""; // Điền pass nếu có
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(url, user, pass);
+           
+       }catch (SQLException exception){
+           throw new RuntimeException("sai kết nối database");
+           
+       }catch (ClassNotFoundException exception){
+           throw new RuntimeException("không tìm thấy driver");
+       }
     }
 }
