@@ -32,12 +32,12 @@ public class nhanvienViews extends JFrame {
     private JButton resetButton = new JButton("reset");
     private JButton timkiemButton = new JButton("Tìm kiếm");
 
-    JTextField manhanvienField = new JTextField();
-    JTextField hotenField = new JTextField();
-    JDateChooser ngaysinhChooser = new JDateChooser();
-    String[] gioitinhStrings = new String[]{"Nam", "Nữ", "Khác"};
-    JComboBox<String> gioitinhComboBox = new JComboBox<>(gioitinhStrings);
-    JTextField sodienthoaiField = new JTextField();
+    public JTextField manhanvienField = new JTextField();
+    public JTextField hotenField = new JTextField();
+    public JDateChooser ngaysinhChooser = new JDateChooser();
+    public String[] gioitinhStrings = new String[]{"Nam", "Nữ", "Khác"};
+    public JComboBox<String> gioitinhComboBox = new JComboBox<>(gioitinhStrings);
+    public JTextField sodienthoaiField = new JTextField();
 
     private JTextField timkiemField = new JTextField();
 

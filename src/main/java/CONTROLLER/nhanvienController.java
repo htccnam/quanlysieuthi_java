@@ -21,7 +21,7 @@ public class nhanvienController {
     private int selectedRow=-1;
 
     public nhanvienController(nhanvienmodel m , nhanvienViews v) {
-        this.vi
+        
         nhanviendao=new nhanvien_dao();
         v.addThemListener(new themNhanVienlistener());
     }
@@ -30,7 +30,7 @@ public class nhanvienController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-             String textMaNhanVienString =views.manhanvien
+             String textMaNhanVienString =views.
         }
         
     }
