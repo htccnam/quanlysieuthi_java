@@ -35,6 +35,6 @@ public class MenuBAR extends JMenuBar {
             SanPhamModel m = new SanPhamModel();
             new SanPhamController(m, v);
             // parent.dispose(); // Tùy chọn: Có tắt màn hình chính đi hay không
-        });
+        });//
     }
 }
