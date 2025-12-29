@@ -2,6 +2,7 @@ DAO\DBConnection.class
 CONTROLLER\LoginController.class
 DAO\SanPhamDAO.class
 MODEL\SanPham.class
+CONTROLLER\SanPhamController$1.class
 VIEW\SanPhamView.class
 VIEW\MainFrame.class
 DAO\NhanVienDAO.class
