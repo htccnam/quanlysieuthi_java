@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -24,7 +25,7 @@ import javax.swing.table.TableModel;
  *
  * @author Admin
  */
-public class nhanvienViews extends JFrame {
+public class nhanvienViews extends JPanel {
 
     private JButton themButton = new JButton("Thêm");
     private JButton suaButton = new JButton("Sửa");
@@ -37,12 +38,15 @@ public class nhanvienViews extends JFrame {
     public JDateChooser ngaysinhChooser = new JDateChooser();
     public String[] gioitinhStrings = new String[]{"Nam", "Nữ", "Khác"};
     public JComboBox<String> gioitinhComboBox = new JComboBox<>(gioitinhStrings);
+    public JTextField diachiField = new JTextField();
     public JTextField sodienthoaiField = new JTextField();
 
-    private JTextField timkiemField = new JTextField();
+    public JTextField timkiemField = new JTextField();
+
+    public DefaultTableModel nhanvienDefaultTableModel;
+    public JTable nhanvienJTable;
 
     public nhanvienViews() {
-        setTitle("quản lý nhân viên");
         setSize(600, 700);
         setLayout(null);
 
@@ -80,7 +84,7 @@ public class nhanvienViews extends JFrame {
         JLabel diachiJLabel = new JLabel("Địa chỉ");
         diachiJLabel.setBounds(50, 150, 100, 25);
         add(diachiJLabel);
-        JTextField diachiField = new JTextField();
+
         diachiField.setBounds(200, 150, 300, 25);
         add(diachiField);
 
@@ -88,7 +92,7 @@ public class nhanvienViews extends JFrame {
         JLabel sodienthoaiJLabel = new JLabel("Số điện thoại:");
         sodienthoaiJLabel.setBounds(50, 180, 100, 25);
         add(sodienthoaiJLabel);
-        
+
         sodienthoaiField.setBounds(200, 180, 300, 25);
         add(sodienthoaiField);
 
@@ -112,10 +116,10 @@ public class nhanvienViews extends JFrame {
         add(timkiemButton);
 
         //table
-        String[] nhanvienStrings = {"Mã NV", "Họ tên NV", "Ngày sinh", "Giới tính", "Địa chỉ", "Số điện thoại", "Tài khoản", "Mật khẩu"};
-        DefaultTableModel nhanvienDefaultTableModel = new DefaultTableModel(nhanvienStrings, 0);
-        JTable nhanJTable = new JTable(nhanvienDefaultTableModel);
-        JScrollPane nhanvienJScrollPane = new JScrollPane(nhanJTable);
+        String[] nhanvienStrings = {"Mã NV", "Họ tên NV", "Ngày sinh", "Giới tính", "Địa chỉ", "Số điện thoại"};
+        nhanvienDefaultTableModel = new DefaultTableModel(nhanvienStrings, 0);
+        nhanvienJTable = new JTable(nhanvienDefaultTableModel);
+        JScrollPane nhanvienJScrollPane = new JScrollPane(nhanvienJTable);
         nhanvienJScrollPane.setBounds(30, 350, 500, 250);
         add(nhanvienJScrollPane);
     }

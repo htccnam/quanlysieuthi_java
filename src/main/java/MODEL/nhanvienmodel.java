@@ -5,6 +5,7 @@
 package MODEL;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -13,13 +14,13 @@ import java.sql.Date;
 public class nhanvienmodel {
     private String maNhanVienString;
     private String tenNhanVienString;
-    private Date ngaySinhDate;
+    private LocalDate ngaySinhDate;
     private String gioiTinhString,diaChiString,soDienThoaiString;
 
     public nhanvienmodel() {
     }
 
-    public nhanvienmodel(String maNhanVienString, String tenNhanVienString, Date ngaySinhDate, String gioiTinhString, String diaChiString, String soDienThoaiString) {
+    public nhanvienmodel(String maNhanVienString, String tenNhanVienString, LocalDate ngaySinhDate, String gioiTinhString, String diaChiString, String soDienThoaiString) {
         this.maNhanVienString = maNhanVienString;
         this.tenNhanVienString = tenNhanVienString;
         this.ngaySinhDate = ngaySinhDate;
@@ -44,11 +45,11 @@ public class nhanvienmodel {
         this.tenNhanVienString = tenNhanVienString;
     }
 
-    public Date getNgaySinhDate() {
+    public LocalDate getNgaySinhDate() {
         return ngaySinhDate;
     }
 
-    public void setNgaySinhDate(Date ngaySinhDate) {
+    public void setNgaySinhDate(LocalDate ngaySinhDate) {
         this.ngaySinhDate = ngaySinhDate;
     }
 
