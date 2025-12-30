@@ -50,7 +50,6 @@ public class nhanvienViews extends JPanel {
     public JTable nhanvienJTable;
     
     public nhanvienViews() {
-        setPreferredSize(new Dimension(650,450));
         setLayout(null);
 
         //manhanvien

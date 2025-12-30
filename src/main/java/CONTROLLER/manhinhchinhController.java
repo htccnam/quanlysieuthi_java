@@ -6,8 +6,10 @@ package CONTROLLER;
 
 import BAR.manhinhchinh;
 import MODEL.LoaiHangModel;
+import MODEL.tintuc;
 import VIEW.LoaiHangView;
 import VIEW.nhanvienViews;
+import VIEW.tintucView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,6 +23,7 @@ public class manhinhchinhController {
     public manhinhchinhController( ) {
         this.menu=new manhinhchinh();
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
+        menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.setVisible(true);
     }
@@ -32,6 +35,16 @@ public class manhinhchinhController {
             nhanvienViews nhanvien=new nhanvienViews();
             new nhanvienController(nhanvien);
             menu.showpanel(nhanvien);
+        }
+        
+    }
+    private class clickQuanLyTinTuc implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            tintucView tintuc=new tintucView();
+            tintucController ttController=new tintucController(tintuc);
+            menu.showpanel(tintuc);
         }
         
     }

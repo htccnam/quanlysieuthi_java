@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class tintucView extends JFrame {
+public class tintucView extends JPanel {
 
     public JTextField matintucField = new JTextField();
     public JTextField tieudeField = new JTextField();
@@ -46,8 +46,6 @@ public class tintucView extends JFrame {
     public JTable tintucJTable;
 
     public tintucView() {
-        setSize(700,900);
-        setPreferredSize(new Dimension(700, 900));
         setLayout(null);
 
         //matintuc
@@ -136,11 +134,5 @@ public class tintucView extends JFrame {
         JScrollPane tintucPane=new JScrollPane(tintucJTable);
         tintucPane.setBounds(50, 450, 400, 400);
         add(tintucPane);
-    }
-
-    public static void main(String[] args) {
-        tintucView v = new tintucView();
-        tintucController tinController= new tintucController(v);
-        v.setVisible(true);
     }
 }
