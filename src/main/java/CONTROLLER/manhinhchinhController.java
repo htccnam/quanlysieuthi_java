@@ -12,6 +12,7 @@ import VIEW.LoaiHangView;
 import VIEW.NhaCungCapView;
 import VIEW.SanPhamView;
 import VIEW.nhanvienViews;
+import VIEW.tintucView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -26,6 +27,7 @@ public class manhinhchinhController {
     public manhinhchinhController( ) {
         this.menu=new manhinhchinh();
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
+        menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.addClickNhaCungCap(new clickNhaCungCapListener());
         menu.addClickDanhSachSanPham(new clickSanPhamListener());
@@ -39,6 +41,16 @@ public class manhinhchinhController {
             nhanvienViews nhanvien=new nhanvienViews();
             new nhanvienController(nhanvien);
             menu.showpanel(nhanvien);
+        }
+        
+    }
+    private class clickQuanLyTinTuc implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            tintucView tintuc=new tintucView();
+            tintucController ttController=new tintucController(tintuc);
+            menu.showpanel(tintuc);
         }
         
     }
