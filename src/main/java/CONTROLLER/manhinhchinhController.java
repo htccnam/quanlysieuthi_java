@@ -6,12 +6,16 @@ package CONTROLLER;
 
 import BAR.manhinhchinh;
 import MODEL.LoaiHangModel;
-import MODEL.tintuc;
+import MODEL.NhaCungCapModel;
+import MODEL.SanPhamModel;
 import VIEW.LoaiHangView;
+import VIEW.NhaCungCapView;
+import VIEW.SanPhamView;
 import VIEW.nhanvienViews;
 import VIEW.tintucView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +29,8 @@ public class manhinhchinhController {
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
+        menu.addClickNhaCungCap(new clickNhaCungCapListener());
+        menu.addClickDanhSachSanPham(new clickSanPhamListener());
         menu.setVisible(true);
     }
     
@@ -55,6 +61,38 @@ public class manhinhchinhController {
             LoaiHangModel lhModel = new LoaiHangModel();
             new LoaiHangController(lhModel, lhView);
             menu.showpanel(lhView);
+        }
+    }
+    private class clickNhaCungCapListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                // Tạo View - Model - Controller cho Nhà Cung Cấp
+                NhaCungCapView nccView = new NhaCungCapView();
+                NhaCungCapModel nccModel = new NhaCungCapModel();
+                new NhaCungCapController(nccModel, nccView);
+                
+                // Hiển thị
+                menu.showpanel(nccView);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(menu, "Lỗi: " + ex.getMessage());
+            }
+        }
+    }
+    private class clickSanPhamListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                SanPhamView spView = new SanPhamView();
+                SanPhamModel spModel = new SanPhamModel();
+                new SanPhamController(spModel, spView);
+                
+                menu.showpanel(spView);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(menu, "Lỗi: " + ex.getMessage());
+            }
         }
     }
     public static void main(String[] args) {
