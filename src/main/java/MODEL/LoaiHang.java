@@ -27,5 +27,5 @@ public class LoaiHang {
     public void setTenLoai(String tenLoai) { this.tenLoai = tenLoai; }
 
     @Override
-    public String toString() { return tenLoai; }
+    public String toString() { return maLoai + " - " + tenLoai; }
 }
