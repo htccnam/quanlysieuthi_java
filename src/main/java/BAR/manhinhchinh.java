@@ -34,7 +34,8 @@ public class manhinhchinh extends JFrame {
     JPanel containerJPanel;
 
     public manhinhchinh() {
-
+        setTitle("HỆ THỐNG QUẢN LÝ SIÊU THỊ");
+        setSize(1200, 800);
         setLayout(new BorderLayout());
         setSize(1200, 1000);
 
@@ -73,7 +74,7 @@ public class manhinhchinh extends JFrame {
         bar.add(nhanSuJMenu);
         setJMenuBar(bar);
 
-        containerJPanel = new JPanel();
+        containerJPanel = new JPanel(new BorderLayout());
         add(containerJPanel, BorderLayout.CENTER);
 
     }
