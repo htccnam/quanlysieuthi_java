@@ -7,6 +7,7 @@ package VIEW;
 import CONTROLLER.tintucController;
 import com.mysql.cj.xdevapi.Table;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
@@ -102,29 +103,36 @@ public class tintucView extends JFrame {
         //button
         themButton.setText("Thêm");
         themButton.setBounds(50, 350, 100, 30);
+        themButton.setBackground(Color.GREEN);
         add(themButton);
         
         suaButton.setText("Sửa");
         suaButton.setBounds(170, 350, 100, 30);
+        suaButton.setBackground(Color.BLUE);
+        suaButton.setForeground(Color.white);
         add(suaButton);
         
         xoaButton.setText("Xóa");
         xoaButton.setBounds(290, 350, 100, 30);
+        xoaButton.setBackground(Color.red);
         add(xoaButton);
         
         resetButton.setText("reset");
         resetButton.setBounds(410, 350, 100, 30);
+        resetButton.setBackground(Color.yellow);
         add(resetButton);
         
         timkiemField.setBounds(50, 400, 100, 35);
         add(timkiemField);
         timkiemButton.setText("Tìm kiếm");
         timkiemButton.setBounds(200, 400, 100, 30);
+        timkiemButton.setBackground(Color.gray);
         add(timkiemButton);
         
         String[] colStrings={"Mã tin tức","Tiêu đề","Mã nhân viên","Nội dung","Loại tin","Ngày đăng","Thao tác"};
         tintucDefaultTableModel =new DefaultTableModel(colStrings, 0);
         tintucJTable=new JTable(tintucDefaultTableModel);
+        tintucJTable.setBackground(Color.pink);
         JScrollPane tintucPane=new JScrollPane(tintucJTable);
         tintucPane.setBounds(50, 450, 400, 400);
         add(tintucPane);
