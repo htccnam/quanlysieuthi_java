@@ -5,7 +5,7 @@
 package CONTROLLER;
 
 import DAO.nhanvien_dao;
-import MODEL.nhanvienmodel;
+import MODEL.nhanvien;
 import VIEW.nhanvienViews;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,8 +45,8 @@ public class nhanvienController {
 
     private void load_table() {
         views.nhanvienDefaultTableModel.setRowCount(0);
-        List<nhanvienmodel> list = nhanviendao.getAllNhanVien();
-        for (nhanvienmodel nv : list) {
+        List<nhanvien> list = nhanviendao.getAllNhanVien();
+        for (nhanvien nv : list) {
             views.nhanvienDefaultTableModel.addRow(new Object[]{
                 nv.getMaNhanVienString(),
                 nv.getTenNhanVienString(),
@@ -70,7 +70,7 @@ public class nhanvienController {
             String diachiString = views.diachiField.getText().toString().trim();
             String soDienThoaiString = views.sodienthoaiField.getText().toString().trim();
 
-            nhanvienmodel nv = new nhanvienmodel(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, diachiString, soDienThoaiString);
+            nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, diachiString, soDienThoaiString);
 
             try {
                 if (nhanviendao.themNhanVien(nv)) {
@@ -98,7 +98,7 @@ public class nhanvienController {
             String textSoDienThoaiString = views.sodienthoaiField.getText().toString().trim();
             String textMaNhanVienString = views.manhanvienField.getText();
 
-            nhanvienmodel nv = new nhanvienmodel(textMaNhanVienString, textTenNhanVienString, ngaysinhDate, textGioiTinhString, textDiaChiString, textSoDienThoaiString);
+            nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaysinhDate, textGioiTinhString, textDiaChiString, textSoDienThoaiString);
 
             try {
                 if (nhanviendao.suaNhanVien(nv)) {
@@ -157,9 +157,9 @@ public class nhanvienController {
         public void actionPerformed(ActionEvent e) {
             String timkiemString = views.timkiemField.getText().toString().trim();
 
-            List<nhanvienmodel> list = nhanviendao.timKiemNhanVien(timkiemString);
+            List<nhanvien> list = nhanviendao.timKiemNhanVien(timkiemString);
             views.nhanvienDefaultTableModel.setRowCount(0);
-            for (nhanvienmodel nv : list) {
+            for (nhanvien nv : list) {
                 views.nhanvienDefaultTableModel.addRow(new Object[]{
                     nv.getMaNhanVienString(),
                     nv.getTenNhanVienString(),
