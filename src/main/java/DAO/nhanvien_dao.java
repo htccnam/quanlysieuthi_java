@@ -47,27 +47,101 @@ public class nhanvien_dao {
         }
     }
 
-    public List<nhanvienmodel> getAllNhanVien() {
+    public boolean suaNhanVien(nhanvienmodel nhanvien) {
+        if (nhanvien == null) {
+            return false;
+        }
+        String sqlString = "update nhanvien set tennhanvien=?,ngaysinh=?,gioitinh=?,diachi=?,sodienthoai=? where manhanvien=?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString);) {
+            pr.setString(1, nhanvien.getTenNhanVienString());
+            pr.setDate(2, Date.valueOf(nhanvien.getNgaySinhDate()));
+            pr.setString(3, nhanvien.getGioiTinhString());
+            pr.setString(4, nhanvien.getDiaChiString());
+            pr.setString(5, nhanvien.getSoDienThoaiString());
+            pr.setString(6, nhanvien.getMaNhanVienString());
+            if (pr.executeUpdate() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("lỗi sửa nhân viên:" + exception.getMessage());
+        } catch (Exception exception) {
+            throw new RuntimeException("lỗi database:" + exception.getMessage());
+        }
+    }
+
+    public boolean xoaNhanVien(String manhanvienString) {
+        String sqlString = "delete from nhanvien where manhanvien=?";
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString)) {
+            pr.setString(1, manhanvienString);
+
+            if (pr.executeUpdate() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("lỗi xóa:" + exception.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("lỗi xóa:" + e.getMessage());
+        }
+    }
+
+    public List<nhanvienmodel> timKiemNhanVien(String manhanvienString) {
         List<nhanvienmodel> list=new ArrayList<>();
+        String tukhoaString="%"+manhanvienString+"%";
+        String SqlString = "select * from nhanvien where manhanvien like ? or tennhanvien like ?";
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(SqlString); ) {
+            pr.setString(1, tukhoaString);
+            pr.setString(2, tukhoaString);
+            
+            try(ResultSet result=pr.executeQuery()){
+                while(result.next()){
+                    String manhanvienString1=result.getString("manhanvien");
+                    String tennhanvienString=result.getString("tennhanvien");
+                    Date ngaysinhDate=result.getDate("ngaysinh");
+                    String gioitinhString=result.getString("gioitinh");
+                    String diachiString=result.getString("diachi");
+                    String sodienthoaiString=result.getString("sodienthoai");
+                    
+                    nhanvienmodel nv=new nhanvienmodel(manhanvienString1, tennhanvienString, ngaysinhDate.toLocalDate() , gioitinhString, diachiString, sodienthoaiString);
+                    list.add(nv);
+                }
+                
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("Lỗi tìm kiếm"+exception.getMessage());
+
+        }catch (Exception exception){
+            throw new RuntimeException("lỗi tìm kiếm"+exception.getMessage());
+        }
+        return list;
+    }
+
+    public List<nhanvienmodel> getAllNhanVien() {
+        List<nhanvienmodel> list = new ArrayList<>();
         String sqlString = "select * from nhanvien";
 
-        try (Connection con=DBConnection.getConnection(); PreparedStatement pr=con.prepareStatement(sqlString);ResultSet rs=pr.executeQuery();) {
-            while(rs.next()){
-                String manhanvienString=rs.getString("manhanvien");
-                String tennhanvienString=rs.getString("tennhanvien");
-                Date ngaysinhDate=rs.getDate("ngaysinh");
-                String gioitinhString=rs.getString("gioitinh");
-                String diachiString=rs.getString("diachi");
-                String sodienthoaiString=rs.getString("sodienthoai");
-                
-                nhanvienmodel nv=new nhanvienmodel(manhanvienString, tennhanvienString, ngaysinhDate.toLocalDate(), gioitinhString, diachiString, sodienthoaiString);
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString); ResultSet rs = pr.executeQuery();) {
+            while (rs.next()) {
+                String manhanvienString = rs.getString("manhanvien");
+                String tennhanvienString = rs.getString("tennhanvien");
+                Date ngaysinhDate = rs.getDate("ngaysinh");
+                String gioitinhString = rs.getString("gioitinh");
+                String diachiString = rs.getString("diachi");
+                String sodienthoaiString = rs.getString("sodienthoai");
+
+                nhanvienmodel nv = new nhanvienmodel(manhanvienString, tennhanvienString, ngaysinhDate.toLocalDate(), gioitinhString, diachiString, sodienthoaiString);
                 list.add(nv);
             }
 
         } catch (SQLException exception) {
             throw new RuntimeException("lỗi select all nhân viên");
-        }catch(Exception exception){
-            throw new RuntimeException("lỗi : " +exception.getMessage());
+        } catch (Exception exception) {
+            throw new RuntimeException("lỗi : " + exception.getMessage());
         }
         return list;
     }
