@@ -5,6 +5,7 @@
 package VIEW;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -48,7 +49,7 @@ public class nhanvienViews extends JPanel {
     public JTable nhanvienJTable;
     
     public nhanvienViews() {
-        setSize(600, 700);
+        setPreferredSize(new Dimension(650,450));
         setLayout(null);
 
         //manhanvien
