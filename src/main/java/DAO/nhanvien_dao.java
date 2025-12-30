@@ -4,7 +4,7 @@
  */
 package DAO;
 
-import MODEL.nhanvienmodel;
+import MODEL.nhanvien;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.Date;
@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  */
 public class nhanvien_dao {
 
-    public boolean themNhanVien(nhanvienmodel nhanvien) throws Exception {
+    public boolean themNhanVien(nhanvien nhanvien) throws Exception {
         if (nhanvien == null) {
             return false;
         }
@@ -47,7 +47,7 @@ public class nhanvien_dao {
         }
     }
 
-    public boolean suaNhanVien(nhanvienmodel nhanvien) {
+    public boolean suaNhanVien(nhanvien nhanvien) {
         if (nhanvien == null) {
             return false;
         }
@@ -89,8 +89,8 @@ public class nhanvien_dao {
         }
     }
 
-    public List<nhanvienmodel> timKiemNhanVien(String manhanvienString) {
-        List<nhanvienmodel> list=new ArrayList<>();
+    public List<nhanvien> timKiemNhanVien(String manhanvienString) {
+        List<nhanvien> list=new ArrayList<>();
         String tukhoaString="%"+manhanvienString+"%";
         String SqlString = "select * from nhanvien where manhanvien like ? or tennhanvien like ?";
 
@@ -107,7 +107,7 @@ public class nhanvien_dao {
                     String diachiString=result.getString("diachi");
                     String sodienthoaiString=result.getString("sodienthoai");
                     
-                    nhanvienmodel nv=new nhanvienmodel(manhanvienString1, tennhanvienString, ngaysinhDate.toLocalDate() , gioitinhString, diachiString, sodienthoaiString);
+                    nhanvien nv=new nhanvien(manhanvienString1, tennhanvienString, ngaysinhDate.toLocalDate() , gioitinhString, diachiString, sodienthoaiString);
                     list.add(nv);
                 }
                 
@@ -121,8 +121,8 @@ public class nhanvien_dao {
         return list;
     }
 
-    public List<nhanvienmodel> getAllNhanVien() {
-        List<nhanvienmodel> list = new ArrayList<>();
+    public List<nhanvien> getAllNhanVien() {
+        List<nhanvien> list = new ArrayList<>();
         String sqlString = "select * from nhanvien";
 
         try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString); ResultSet rs = pr.executeQuery();) {
@@ -134,7 +134,7 @@ public class nhanvien_dao {
                 String diachiString = rs.getString("diachi");
                 String sodienthoaiString = rs.getString("sodienthoai");
 
-                nhanvienmodel nv = new nhanvienmodel(manhanvienString, tennhanvienString, ngaysinhDate.toLocalDate(), gioitinhString, diachiString, sodienthoaiString);
+                nhanvien nv = new nhanvien(manhanvienString, tennhanvienString, ngaysinhDate.toLocalDate(), gioitinhString, diachiString, sodienthoaiString);
                 list.add(nv);
             }
 
