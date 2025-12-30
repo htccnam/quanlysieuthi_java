@@ -11,16 +11,16 @@ import java.time.LocalDate;
  *
  * @author Admin
  */
-public class nhanvienmodel {
+public class nhanvien {
     private String maNhanVienString;
     private String tenNhanVienString;
     private LocalDate ngaySinhDate;
     private String gioiTinhString,diaChiString,soDienThoaiString;
 
-    public nhanvienmodel() {
+    public nhanvien() {
     }
 
-    public nhanvienmodel(String maNhanVienString, String tenNhanVienString, LocalDate ngaySinhDate, String gioiTinhString, String diaChiString, String soDienThoaiString) {
+    public nhanvien(String maNhanVienString, String tenNhanVienString, LocalDate ngaySinhDate, String gioiTinhString, String diaChiString, String soDienThoaiString) {
         this.maNhanVienString = maNhanVienString;
         this.tenNhanVienString = tenNhanVienString;
         this.ngaySinhDate = ngaySinhDate;
