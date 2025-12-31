@@ -30,8 +30,8 @@ import javax.swing.JOptionPane;
 public class manhinhchinhController {
     final manhinhchinh menu;
 
-    public manhinhchinhController( ) {
-        this.menu=new manhinhchinh();
+    public manhinhchinhController(manhinhchinh view) {
+        this.menu= view;
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
@@ -132,7 +132,7 @@ public class manhinhchinhController {
             }
         }
     }
-    public static void main(String[] args) {
-        new manhinhchinhController();
-    }
+//    public static void main(String[] args) {
+//        new manhinhchinhController();
+//    }
 }
