@@ -5,6 +5,7 @@
 package CONTROLLER;
 
 import BAR.manhinhchinh;
+import VIEW.KhachHangView;
 import MODEL.DonHang;
 import MODEL.LoaiHangModel;
 import VIEW.BanHangView;
@@ -33,6 +34,7 @@ public class manhinhchinhController {
     public manhinhchinhController(manhinhchinh view) {
         this.menu= view;
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
+        menu.addClickQuanLyKhachHang(new clickKhachHangListener());
         menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.addClickTaoDonMoi(new clickTaoDonListener());
@@ -47,12 +49,22 @@ public class manhinhchinhController {
         @Override
         public void actionPerformed(ActionEvent e) {
             nhanvienViews nhanvien=new nhanvienViews();
-            new nhanvienController(nhanvien);
+            new nhanvienController(nhanvien); 
             menu.showpanel(nhanvien);
         }
         
     }
-    private class clickQuanLyTinTuc implements ActionListener{
+    
+    private class clickKhachHangListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            KhachHangView khachhang = new KhachHangView();
+            new KhachHangController(khachhang);
+            menu.showpanel(khachhang);
+        }
+        
+    }
+       private class clickQuanLyTinTuc implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
