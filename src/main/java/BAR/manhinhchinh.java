@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 public class manhinhchinh extends JFrame {
 
     JMenu hangHoaVaKhoJMenu;
-    JMenuItem danhSachSanPham, phanLoaiHang, thuongHieu;
+    JMenuItem danhSachSanPham, phanLoaiHang, nhaCungCap;
     JMenu banHangJMenu;
     JMenuItem taoDonMoi, chiTietDonHang;
     JMenu khachHangJMenu;
@@ -43,10 +43,10 @@ public class manhinhchinh extends JFrame {
         hangHoaVaKhoJMenu = new JMenu("Hàng Hóa và kho");
         danhSachSanPham = new JMenuItem("danh sách sản phẩm");
         phanLoaiHang = new JMenuItem("phân loại hàng");
-        thuongHieu = new JMenuItem("thương hiện");
+        nhaCungCap = new JMenuItem("Nhà cung cấp");
         hangHoaVaKhoJMenu.add(danhSachSanPham);
         hangHoaVaKhoJMenu.add(phanLoaiHang);
-        hangHoaVaKhoJMenu.add(thuongHieu);
+        hangHoaVaKhoJMenu.add(nhaCungCap);
 
         banHangJMenu = new JMenu("Bán hàng");
         taoDonMoi = new JMenuItem("tạo đơn mới");
@@ -96,9 +96,9 @@ public class manhinhchinh extends JFrame {
         phanLoaiHang.addActionListener(listener);
     }
 
-    public void addClickThuongHieu(ActionListener listener) {
-        thuongHieu.addActionListener(listener);
-    }
+    public void addClickNhaCungCap(ActionListener listener) { 
+            nhaCungCap.addActionListener(listener); 
+        }
 
     public void addClickTaoDonMoi(ActionListener listener) {
         taoDonMoi.addActionListener(listener);

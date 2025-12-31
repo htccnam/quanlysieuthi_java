@@ -8,10 +8,16 @@ import BAR.manhinhchinh;
 import MODEL.DonHang;
 import MODEL.LoaiHangModel;
 import VIEW.DonHangView;
+import MODEL.NhaCungCapModel;
+import MODEL.SanPhamModel;
 import VIEW.LoaiHangView;
+import VIEW.NhaCungCapView;
+import VIEW.SanPhamView;
 import VIEW.nhanvienViews;
+import VIEW.tintucView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,8 +29,11 @@ public class manhinhchinhController {
     public manhinhchinhController( ) {
         this.menu=new manhinhchinh();
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
+        menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.addClickTaoDonMoi(new clickTaoDonListener());
+        menu.addClickNhaCungCap(new clickNhaCungCapListener());
+        menu.addClickDanhSachSanPham(new clickSanPhamListener());
         menu.setVisible(true);
     }
     
@@ -35,6 +44,16 @@ public class manhinhchinhController {
             nhanvienViews nhanvien=new nhanvienViews();
             new nhanvienController(nhanvien);
             menu.showpanel(nhanvien);
+        }
+        
+    }
+    private class clickQuanLyTinTuc implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            tintucView tintuc=new tintucView();
+            tintucController ttController=new tintucController(tintuc);
+            menu.showpanel(tintuc);
         }
         
     }
@@ -58,6 +77,38 @@ public class manhinhchinhController {
         }
     }
     
+    private class clickNhaCungCapListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                // Tạo View - Model - Controller cho Nhà Cung Cấp
+                NhaCungCapView nccView = new NhaCungCapView();
+                NhaCungCapModel nccModel = new NhaCungCapModel();
+                new NhaCungCapController(nccModel, nccView);
+                
+                // Hiển thị
+                menu.showpanel(nccView);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(menu, "Lỗi: " + ex.getMessage());
+            }
+        }
+    }
+    private class clickSanPhamListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                SanPhamView spView = new SanPhamView();
+                SanPhamModel spModel = new SanPhamModel();
+                new SanPhamController(spModel, spView);
+                
+                menu.showpanel(spView);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(menu, "Lỗi: " + ex.getMessage());
+            }
+        }
+    }
     public static void main(String[] args) {
         new manhinhchinhController();
     }

@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author Admin
  */
-public class nhanvien_dao {
+public class nhanvienDAO {
 
     public boolean themNhanVien(nhanvien nhanvien) throws Exception {
         if (nhanvien == null) {

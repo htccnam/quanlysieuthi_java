@@ -4,7 +4,7 @@
  */
 package CONTROLLER;
 
-import DAO.nhanvien_dao;
+import DAO.nhanvienDAO;
 import MODEL.nhanvien;
 import VIEW.nhanvienViews;
 import java.awt.event.ActionEvent;
@@ -27,12 +27,12 @@ import javax.swing.JOptionPane;
 public class nhanvienController {
 
     private final nhanvienViews views;
-    private final nhanvien_dao nhanviendao;
+    private final nhanvienDAO nhanviendao;
     private int selectedRow = -1;
 
     public nhanvienController(nhanvienViews v) {
         this.views = v;
-        nhanviendao = new nhanvien_dao();
+        nhanviendao = new nhanvienDAO();
         views.addThemListener(new themNhanVienlistener());
         views.addSuaListener(new capNhapNhanVienListener());
         views.addXoaListener(new xoaNhanVienListetenr());
