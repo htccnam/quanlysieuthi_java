@@ -28,6 +28,10 @@ public class SanPham {
         this.donViTinh = donViTinh;
     }
 
+    public SanPham(String toString, String toString0, Integer integer, Double aDouble) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
     // Getters
     public String getMaSP() { return maSP; }
     public String getTenSP() { return tenSP; }
