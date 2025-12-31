@@ -35,6 +35,7 @@ public class LoginView extends JFrame {
         
         add(btnLogin); 
         add(btnRegister);
+        btnRegister.setVisible(false);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);

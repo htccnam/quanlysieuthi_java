@@ -57,6 +57,7 @@ public class manhinhchinh extends JFrame {
         khachHangJMenu = new JMenu("Khách hàng");
         quanLyKhachHang= new JMenuItem("quản lý khách hàng");
         khachHangJMenu.add(quanLyKhachHang);
+        khachHangJMenu.setVisible(false);
         
         tinTucJMenu = new JMenu("Tin tức");
         quanLyTinTuc= new JMenuItem("Quản lý tin tức");

@@ -147,6 +147,7 @@ public class nhanvienController {
             views.gioitinhComboBox.setSelectedIndex(0);
             views.diachiField.setText("");
             views.sodienthoaiField.setText("");
+            load_table();
         }
 
     }
