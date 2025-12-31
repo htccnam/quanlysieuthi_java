@@ -24,9 +24,9 @@ import javax.swing.JPanel;
 public class manhinhchinh extends JFrame {
 
     JMenu hangHoaVaKhoJMenu;
-    JMenuItem danhSachSanPham, phanLoaiHang, thuongHieu;
+    JMenuItem danhSachSanPham, phanLoaiHang, nhaCungCap;
     JMenu banHangJMenu;
-    JMenuItem taoDonMoi, chiTietDonHang;
+    JMenuItem taoDonMoi, ChiTietDonHang;
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
     JMenu tinTucJMenu;
@@ -37,23 +37,25 @@ public class manhinhchinh extends JFrame {
     JPanel containerJPanel;
 
     public manhinhchinh() {
-
+        setTitle("HỆ THỐNG QUẢN LÝ SIÊU THỊ");
+        setSize(1200, 800);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(1200, 1000);
 
         hangHoaVaKhoJMenu = new JMenu("Hàng Hóa và kho");
         danhSachSanPham = new JMenuItem("danh sách sản phẩm");
         phanLoaiHang = new JMenuItem("phân loại hàng");
-        thuongHieu = new JMenuItem("thương hiện");
+        nhaCungCap = new JMenuItem("Nhà cung cấp");
         hangHoaVaKhoJMenu.add(danhSachSanPham);
         hangHoaVaKhoJMenu.add(phanLoaiHang);
-        hangHoaVaKhoJMenu.add(thuongHieu);
+        hangHoaVaKhoJMenu.add(nhaCungCap);
 
         banHangJMenu = new JMenu("Bán hàng");
         taoDonMoi = new JMenuItem("tạo đơn mới");
-        chiTietDonHang = new JMenuItem("chi tiết đơn hàng");
+        ChiTietDonHang = new JMenuItem("chi tiết đơn hàng");
         banHangJMenu.add(taoDonMoi);
-        banHangJMenu.add(chiTietDonHang);
+        banHangJMenu.add(ChiTietDonHang);
 
         khachHangJMenu = new JMenu("Khách hàng");
         quanLyKhachHang= new JMenuItem("quản lý khách hàng");
@@ -100,12 +102,16 @@ public class manhinhchinh extends JFrame {
         phanLoaiHang.addActionListener(listener);
     }
 
-    public void addClickThuongHieu(ActionListener listener) {
-        thuongHieu.addActionListener(listener);
-    }
+    public void addClickNhaCungCap(ActionListener listener) { 
+            nhaCungCap.addActionListener(listener); 
+        }
 
     public void addClickTaoDonMoi(ActionListener listener) {
         taoDonMoi.addActionListener(listener);
+    }
+    
+    public void addClickChiTiet(ActionListener listener) {
+        ChiTietDonHang.addActionListener(listener);
     }
 
     public void addClickQuanLyKhachHang(ActionListener listener) {

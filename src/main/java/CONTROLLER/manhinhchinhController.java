@@ -6,9 +6,23 @@ package CONTROLLER;
 
 import BAR.manhinhchinh;
 import VIEW.KhachHangView;
+import MODEL.DonHang;
+import MODEL.LoaiHangModel;
+import VIEW.BanHangView;
+import MODEL.NhaCungCapModel;
+import MODEL.SanPhamModel;
+import VIEW.BanHangView;
+import VIEW.LoaiHangView;
+import VIEW.NhaCungCapView;
+import VIEW.SanPhamView;
+import VIEW.TaoDonView;
 import VIEW.nhanvienViews;
+import VIEW.tintucView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,6 +35,12 @@ public class manhinhchinhController {
         this.menu=new manhinhchinh();
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickQuanLyKhachHang(new clickKhachHangListener());
+        menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
+        menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
+        menu.addClickTaoDonMoi(new clickTaoDonListener());
+        menu.addClickChiTiet(new clickChiTietListener());
+        menu.addClickNhaCungCap(new clickNhaCungCapListener());
+        menu.addClickDanhSachSanPham(new clickSanPhamListener());
         menu.setVisible(true);
     }
     
@@ -34,13 +54,91 @@ public class manhinhchinhController {
         }
         
     }
-    // --- LISTENER 2: XỬ LÝ KHI BẤM NÚT KHÁCH HÀNG ---
+    
     private class clickKhachHangListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             KhachHangView khachhang = new KhachHangView();
             new KhachHangController(khachhang);
             menu.showpanel(khachhang);
+    private class clickQuanLyTinTuc implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            tintucView tintuc=new tintucView();
+            tintucController ttController=new tintucController(tintuc);
+            menu.showpanel(tintuc);
+        }
+        
+    }
+    private class clickPhanLoaiHangListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LoaiHangView lhView = new LoaiHangView();
+            LoaiHangModel lhModel = new LoaiHangModel();
+            new LoaiHangController(lhModel, lhView);
+            menu.showpanel(lhView);
+        }
+    }
+    
+    private class clickChiTietListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            BanHangView bhView = null;
+            try {
+                bhView = new BanHangView();
+            } catch (Exception ex) {
+                Logger.getLogger(manhinhchinhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            DonHang dhModel = new DonHang();
+            try {
+                new BanHangController(bhView);
+            } catch (Exception ex) {
+                Logger.getLogger(manhinhchinhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            menu.showpanel(bhView);
+        }
+    }
+    
+    private class clickTaoDonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TaoDonView tdView = new TaoDonView();
+            new TaoDonController(tdView);
+            menu.showpanel(tdView);
+        }
+    }
+    
+    private class clickNhaCungCapListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                // Tạo View - Model - Controller cho Nhà Cung Cấp
+                NhaCungCapView nccView = new NhaCungCapView();
+                NhaCungCapModel nccModel = new NhaCungCapModel();
+                new NhaCungCapController(nccModel, nccView);
+                
+                // Hiển thị
+                menu.showpanel(nccView);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(menu, "Lỗi: " + ex.getMessage());
+            }
+        }
+    }
+    private class clickSanPhamListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                SanPhamView spView = new SanPhamView();
+                SanPhamModel spModel = new SanPhamModel();
+                new SanPhamController(spModel, spView);
+                
+                menu.showpanel(spView);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(menu, "Lỗi: " + ex.getMessage());
+            }
         }
     }
     public static void main(String[] args) {

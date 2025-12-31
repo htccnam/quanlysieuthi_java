@@ -7,6 +7,7 @@ package VIEW;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -49,7 +50,6 @@ public class nhanvienViews extends JPanel {
     public JTable nhanvienJTable;
     
     public nhanvienViews() {
-        setPreferredSize(new Dimension(650,450));
         setLayout(null);
 
         //manhanvien
@@ -100,27 +100,35 @@ public class nhanvienViews extends JPanel {
 
         //button
         themButton.setBounds(50, 270, 100, 30);
+        themButton.setBackground(Color.GREEN);
         add(themButton);
         
         suaButton.setBounds(170, 270, 100, 30);
+        suaButton.setForeground(Color.white);
+        suaButton.setBackground(Color.BLUE);
         add(suaButton);
         
         xoaButton.setBounds(290, 270, 100, 30);
+        xoaButton.setBackground(Color.red);
         add(xoaButton);
         
         resetButton.setBounds(410, 270, 100, 30);
+        resetButton.setBackground(Color.yellow);
+        
         add(resetButton);
         
         timkiemField.setBounds(50, 310, 300, 25);
         add(timkiemField);
         
         timkiemButton.setBounds(400, 310, 100, 30);
+        timkiemButton.setBackground(Color.gray);
         add(timkiemButton);
 
         //table
         String[] nhanvienStrings = {"Mã NV", "Họ tên NV", "Ngày sinh", "Giới tính", "Địa chỉ", "Số điện thoại"};
         nhanvienDefaultTableModel = new DefaultTableModel(nhanvienStrings, 0);
         nhanvienJTable = new JTable(nhanvienDefaultTableModel);
+        nhanvienJTable.setBackground(Color.pink);
         JScrollPane nhanvienJScrollPane = new JScrollPane(nhanvienJTable);
         nhanvienJScrollPane.setBounds(30, 350, 500, 250);
         add(nhanvienJScrollPane);
