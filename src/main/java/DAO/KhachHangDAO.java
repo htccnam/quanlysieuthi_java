@@ -7,9 +7,12 @@ import java.util.List;
 
 public class KhachHangDAO {
     
-    // 1. Thêm (Đã có)
+    // 1. Thêm Khách Hàng (Cập nhật SQL mới)
     public boolean addKhachHang(KhachHang kh) throws Exception {
-        String sql = "INSERT INTO khachhang(makhachhang, tenkhachhang, sodienthoai, gioitinh, email, ngaysinh) VALUES(?,?,?,?,?,?)";
+        // Lưu ý: Tôi vẫn để cột 'gioitinh' vào vì trong Model bạn có. 
+        // Nếu DB không có cột này thì bạn xóa đi nhé.
+        String sql = "INSERT INTO khachhang(makhachhang, tenkhachhang, sodienthoai, gioitinh, email, ngaysinh, diemtichluy, taikhoan, matkhau) VALUES(?,?,?,?,?,?,?,?,?)";
+        
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             
@@ -24,13 +27,19 @@ public class KhachHangDAO {
             } else {
                 ps.setDate(6, null);
             }
+            
+            ps.setInt(7, kh.getDiemtichluy());
+            ps.setString(8, kh.getTaikhoan());
+            ps.setString(9, kh.getMatkhau());
+            
             return ps.executeUpdate() > 0;
         }
     }
 
-    // 2. Sửa (Mới)
+    // 2. Sửa Khách Hàng (Update theo makhachhang)
     public boolean updateKhachHang(KhachHang kh) throws Exception {
-        String sql = "UPDATE khachhang SET tenkhachhang=?, sodienthoai=?, gioitinh=?, email=?, ngaysinh=? WHERE makhachhang=?";
+        String sql = "UPDATE khachhang SET tenkhachhang=?, sodienthoai=?, gioitinh=?, email=?, ngaysinh=?, diemtichluy=?, taikhoan=?, matkhau=? WHERE makhachhang=?";
+        
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             
@@ -45,13 +54,17 @@ public class KhachHangDAO {
                 ps.setDate(5, null);
             }
             
-            ps.setString(6, kh.getMaKH()); // Điều kiện WHERE
+            ps.setInt(6, kh.getDiemtichluy());
+            ps.setString(7, kh.getTaikhoan());
+            ps.setString(8, kh.getMatkhau());
+            
+            ps.setString(9, kh.getMaKH()); // Điều kiện WHERE
             
             return ps.executeUpdate() > 0;
         }
     }
 
-    // 3. Xóa (Mới)
+    // 3. Xóa Khách Hàng
     public boolean deleteKhachHang(String maKH) throws Exception {
         String sql = "DELETE FROM khachhang WHERE makhachhang=?";
         try (Connection con = DBConnection.getConnection();
@@ -61,10 +74,9 @@ public class KhachHangDAO {
         }
     }
 
-    // 4. Tìm kiếm (Mới)
+    // 4. Tìm kiếm & Lấy danh sách (Mapping cột mới)
     public List<KhachHang> searchKhachHang(String keyword) throws Exception {
         List<KhachHang> list = new ArrayList<>();
-        // Tìm theo Mã hoặc Tên
         String sql = "SELECT * FROM khachhang WHERE makhachhang LIKE ? OR tenkhachhang LIKE ?";
         
         try (Connection con = DBConnection.getConnection();
@@ -77,24 +89,31 @@ public class KhachHangDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 KhachHang kh = new KhachHang();
-                kh.setMaKH(rs.getString("makhachhang")); // Lưu ý: Kiểm tra lại tên cột trong DB của bạn
+                
+                // --- MAP ĐÚNG TÊN CỘT TRONG DATABASE CỦA BẠN ---
+                kh.setMaKH(rs.getString("makhachhang"));
                 kh.setHoTen(rs.getString("tenkhachhang"));
                 kh.setSdt(rs.getString("sodienthoai"));
-                kh.setGioiTinh(rs.getString("gioitinh"));
+                kh.setGioiTinh(rs.getString("gioitinh")); // Kiểm tra xem DB có cột này không
                 kh.setEmail(rs.getString("email"));
                 
                 java.sql.Date sqlDate = rs.getDate("ngaysinh");
                 if (sqlDate != null) {
                     kh.setNgaySinh(sqlDate.toLocalDate());
                 }
+                
+                // Lấy 3 trường mới
+                kh.setDiemtichluy(rs.getInt("diemtichluy"));
+                kh.setTaikhoan(rs.getString("taikhoan"));
+                kh.setMatkhau(rs.getString("matkhau"));
+                
                 list.add(kh);
             }
         }
         return list;
     }
 
-    // 5. Lấy tất cả (Đã có)
     public List<KhachHang> getAllKhachHang() throws Exception {
-        return searchKhachHang(""); // Gọi hàm tìm kiếm rỗng để lấy tất cả (Tái sử dụng code)
+        return searchKhachHang(""); 
     }
 }

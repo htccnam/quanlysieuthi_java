@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener; // Import thêm MouseListener
+import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,9 +14,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class KhachHangView extends JPanel {
-    private JTextField txtMaKH, txtHoTen, txtSDT, txtEmail, txtNgaySinh, txtTimKiem; // Thêm txtTimKiem
+    // Thêm các TextField mới
+    private JTextField txtMaKH, txtHoTen, txtSDT, txtEmail, txtNgaySinh, txtTimKiem;
+    private JTextField txtDiemTichLuy, txtTaiKhoan, txtMatKhau; 
+    
     private JComboBox<String> cbGioiTinh;
-    private JButton btnThem, btnSua, btnXoa, btnLamMoi, btnTimKiem; // Thêm nút
+    private JButton btnThem, btnSua, btnXoa, btnLamMoi, btnTimKiem;
     private JTable tblKhachHang;
     private DefaultTableModel tableModel;
 
@@ -28,8 +31,8 @@ public class KhachHangView extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- PANEL NHẬP LIỆU ---
-        JPanel pnlInput = new JPanel(new GridLayout(6, 2, 10, 10)); 
+        // --- PANEL NHẬP LIỆU (Tăng số dòng lên 9) ---
+        JPanel pnlInput = new JPanel(new GridLayout(9, 2, 10, 10)); 
         
         txtMaKH = new JTextField();
         txtHoTen = new JTextField();
@@ -38,29 +41,34 @@ public class KhachHangView extends JPanel {
         txtNgaySinh = new JTextField();
         cbGioiTinh = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
         
+        // Khởi tạo các ô mới
+        txtDiemTichLuy = new JTextField("0"); // Mặc định 0
+        txtTaiKhoan = new JTextField();
+        txtMatKhau = new JTextField(); // Có thể dùng JPasswordField nếu muốn ẩn
+
         pnlInput.add(new JLabel("Mã Khách Hàng:")); pnlInput.add(txtMaKH);
         pnlInput.add(new JLabel("Họ và Tên:")); pnlInput.add(txtHoTen);
         pnlInput.add(new JLabel("Số Điện Thoại:")); pnlInput.add(txtSDT);
         pnlInput.add(new JLabel("Giới Tính:")); pnlInput.add(cbGioiTinh);
         pnlInput.add(new JLabel("Email:")); pnlInput.add(txtEmail);
         pnlInput.add(new JLabel("Ngày Sinh (yyyy-MM-dd):")); pnlInput.add(txtNgaySinh);
-
-        // --- PANEL CHỨC NĂNG (Nút bấm + Tìm kiếm) ---
-        JPanel pnlFunc = new JPanel(new BorderLayout(10, 10));
         
-        // Panel chứa nút
+        // Thêm vào giao diện
+        pnlInput.add(new JLabel("Điểm Tích Lũy:")); pnlInput.add(txtDiemTichLuy);
+        pnlInput.add(new JLabel("Tài Khoản:")); pnlInput.add(txtTaiKhoan);
+        pnlInput.add(new JLabel("Mật Khẩu:")); pnlInput.add(txtMatKhau);
+
+        // --- PANEL CHỨC NĂNG ---
+        JPanel pnlFunc = new JPanel(new BorderLayout(10, 10));
         JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         btnThem = new JButton("Thêm");
-        btnSua = new JButton("Sửa");     // Mới
-        btnXoa = new JButton("Xóa");     // Mới
+        btnSua = new JButton("Sửa");
+        btnXoa = new JButton("Xóa");
         btnLamMoi = new JButton("Làm mới");
         
-        pnlButtons.add(btnThem);
-        pnlButtons.add(btnSua);
-        pnlButtons.add(btnXoa);
-        pnlButtons.add(btnLamMoi);
+        pnlButtons.add(btnThem); pnlButtons.add(btnSua);
+        pnlButtons.add(btnXoa); pnlButtons.add(btnLamMoi);
         
-        // Panel Tìm kiếm
         JPanel pnlSearch = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         txtTimKiem = new JTextField(15);
         btnTimKiem = new JButton("Tìm kiếm");
@@ -71,28 +79,32 @@ public class KhachHangView extends JPanel {
         pnlFunc.add(pnlButtons, BorderLayout.CENTER);
         pnlFunc.add(pnlSearch, BorderLayout.SOUTH);
 
-        // Gom Input và Chức năng lên đầu
         JPanel pnlTop = new JPanel(new BorderLayout());
         pnlTop.add(pnlInput, BorderLayout.CENTER);
         pnlTop.add(pnlFunc, BorderLayout.SOUTH);
         
         this.add(pnlTop, BorderLayout.NORTH);
 
-        // --- BẢNG DỮ LIỆU ---
-        String[] columnNames = {"Mã KH", "Họ Tên", "SĐT", "Giới Tính", "Email", "Ngày Sinh"};
+        // --- BẢNG DỮ LIỆU (Thêm cột mới) ---
+        String[] columnNames = {"Mã KH", "Họ Tên", "SĐT", "Giới Tính", "Email", "Ngày Sinh", "Điểm", "Tài Khoản", "Mật Khẩu"};
         tableModel = new DefaultTableModel(columnNames, 0);
         tblKhachHang = new JTable(tableModel);
         this.add(new JScrollPane(tblKhachHang), BorderLayout.CENTER);
     }
 
-    // --- CÁC HÀM GET DỮ LIỆU ---
+    // --- GET DỮ LIỆU TỪ FORM ---
     public KhachHang getKhachHangFromForm() throws Exception {
         String ma = txtMaKH.getText().trim();
         String ten = txtHoTen.getText().trim();
         String sdt = txtSDT.getText().trim();
         String gioitinh = cbGioiTinh.getSelectedItem().toString();
         String email = txtEmail.getText().trim();
-        String strNgaySinh = txtNgaySinh.getText().trim(); 
+        String strNgaySinh = txtNgaySinh.getText().trim();
+        
+        // Lấy dữ liệu mới
+        String strDiem = txtDiemTichLuy.getText().trim();
+        String taikhoan = txtTaiKhoan.getText().trim();
+        String matkhau = txtMatKhau.getText().trim();
         
         if (ma.isEmpty() || ten.isEmpty()) throw new Exception("Vui lòng nhập Mã và Tên!");
 
@@ -104,39 +116,40 @@ public class KhachHangView extends JPanel {
                 throw new Exception("Ngày sinh sai định dạng (yyyy-MM-dd)!");
             }
         }
-        return new KhachHang(ma, ten, sdt, gioitinh, email, ngaySinh);
-    }
-    
-    public String getTuKhoaTimKiem() {
-        return txtTimKiem.getText().trim();
-    }
-    
-    public String getMaKHDangChon() {
-        return txtMaKH.getText().trim();
-    }
+        
+        int diem = 0;
+        try {
+            if(!strDiem.isEmpty()) diem = Integer.parseInt(strDiem);
+        } catch (NumberFormatException e) {
+            throw new Exception("Điểm tích lũy phải là số nguyên!");
+        }
 
-    // --- CÁC HÀM GẮN SỰ KIỆN (LISTENER) ---
+        return new KhachHang(ma, ten, sdt, gioitinh, email, ngaySinh, diem, taikhoan, matkhau);
+    }
+    
+    public String getTuKhoaTimKiem() { return txtTimKiem.getText().trim(); }
+    public String getMaKHDangChon() { return txtMaKH.getText().trim(); }
+
+    // --- LISTENER ---
     public void addThemListener(ActionListener al) { btnThem.addActionListener(al); }
     public void addSuaListener(ActionListener al) { btnSua.addActionListener(al); }
     public void addXoaListener(ActionListener al) { btnXoa.addActionListener(al); }
     public void addLamMoiListener(ActionListener al) { btnLamMoi.addActionListener(al); }
     public void addTimKiemListener(ActionListener al) { btnTimKiem.addActionListener(al); }
-    
-    // Sự kiện Click bảng
     public void addTableMouseListener(MouseListener ml) { tblKhachHang.addMouseListener(ml); }
 
-    // --- HÀM HIỂN THỊ ---
+    // --- HIỂN THỊ ---
     public void hienThiBang(List<KhachHang> list) {
         tableModel.setRowCount(0);
         for (KhachHang k : list) {
             tableModel.addRow(new Object[]{
                 k.getMaKH(), k.getHoTen(), k.getSdt(), 
-                k.getGioiTinh(), k.getEmail(), k.getNgaySinh()
+                k.getGioiTinh(), k.getEmail(), k.getNgaySinh(),
+                k.getDiemtichluy(), k.getTaikhoan(), k.getMatkhau()
             });
         }
     }
     
-    // Hàm điền ngược dữ liệu từ bảng lên Form (Khi click row)
     public void fillFormFromSelectedRow() {
         int row = tblKhachHang.getSelectedRow();
         if (row >= 0) {
@@ -149,7 +162,11 @@ public class KhachHangView extends JPanel {
             Object dob = tblKhachHang.getValueAt(row, 5);
             txtNgaySinh.setText(dob != null ? dob.toString() : "");
             
-            // Khóa mã khách hàng khi sửa (để tránh sửa Primary Key)
+            // Đổ dữ liệu mới
+            txtDiemTichLuy.setText(tblKhachHang.getValueAt(row, 6).toString());
+            txtTaiKhoan.setText(tblKhachHang.getValueAt(row, 7).toString());
+            txtMatKhau.setText(tblKhachHang.getValueAt(row, 8).toString());
+            
             txtMaKH.setEnabled(false);
         }
     }
@@ -161,7 +178,12 @@ public class KhachHangView extends JPanel {
         txtEmail.setText("");
         txtNgaySinh.setText("");
         cbGioiTinh.setSelectedIndex(0);
-        txtMaKH.setEnabled(true); // Mở lại khóa mã
+        
+        txtDiemTichLuy.setText("0");
+        txtTaiKhoan.setText("");
+        txtMatKhau.setText("");
+        
+        txtMaKH.setEnabled(true);
         tblKhachHang.clearSelection();
     }
     

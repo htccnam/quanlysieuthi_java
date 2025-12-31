@@ -1,32 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package MODEL;
 
-/**
- *
- * @author PC
- */
 import java.time.LocalDate;
-import java.sql.Date;
-import java.time.LocalDate;
+
 public class KhachHang {
     private String maKH;
     private String hoTen;
     private String sdt;
-    private String gioiTinh;
-    private String email ;
+    private String gioiTinh; // Vẫn giữ giới tính vì trong constructor bạn có
+    private String email;
     private LocalDate ngaySinh; 
-    private int diemtichluy;
-    private String taikhoan;
-    private String matkhau;
+    private int diemtichluy; // Mới
+    private String taikhoan; // Mới
+    private String matkhau;  // Mới
     
-    
-    public KhachHang(){
-    };
+    public KhachHang() {
+    }
 
-    public KhachHang(String maKH, String hoTen, String sdt, String gioiTinh, String email, LocalDate ngaySinh,int diemtichluy, String taikhoan, String matkhau) {
+    public KhachHang(String maKH, String hoTen, String sdt, String gioiTinh, String email, LocalDate ngaySinh, int diemtichluy, String taikhoan, String matkhau) {
         this.maKH = maKH;
         this.hoTen = hoTen;
         this.sdt = sdt;
@@ -38,53 +28,25 @@ public class KhachHang {
         this.matkhau = matkhau;
     }
 
-    public String getMaKH() {
-        return maKH;
-    }
+    // Getters và Setters
+    public String getMaKH() { return maKH; }
+    public void setMaKH(String maKH) { this.maKH = maKH; }
 
-    public void setMaKH(String maKH) {
-        this.maKH = maKH;
-    }
+    public String getHoTen() { return hoTen; }
+    public void setHoTen(String hoTen) { this.hoTen = hoTen; }
 
-    public String getHoTen() {
-        return hoTen;
-    }
+    public String getSdt() { return sdt; }
+    public void setSdt(String sdt) { this.sdt = sdt; }
 
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen;
-    }
+    public String getGioiTinh() { return gioiTinh; }
+    public void setGioiTinh(String gioiTinh) { this.gioiTinh = gioiTinh; }
 
-    public String getSdt() {
-        return sdt;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
-    }
+    public LocalDate getNgaySinh() { return ngaySinh; }
+    public void setNgaySinh(LocalDate ngaySinh) { this.ngaySinh = ngaySinh; }
 
-    public String getGioiTinh() {
-        return gioiTinh;
-    }
-
-    public void setGioiTinh(String gioiTinh) {
-        this.gioiTinh = gioiTinh;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getNgaySinh() {
-        return ngaySinh;
-    }
-
-    public void setNgaySinh(LocalDate ngaySinh) {
-        this.ngaySinh = ngaySinh;
-    }
     public int getDiemtichluy() { return diemtichluy; }
     public void setDiemtichluy(int diemtichluy) { this.diemtichluy = diemtichluy; }
 
@@ -94,12 +56,9 @@ public class KhachHang {
     public String getMatkhau() { return matkhau; }
     public void setMatkhau(String matkhau) { this.matkhau = matkhau; }
 
-    // toString(): hiển thị [makhachhang] - [tenkhachhang]
     @Override
     public String toString() {
-        return "[" + makhachhang + "] - [" + tenkhachhang + "]";
+        // Đã sửa makhachhang -> maKH để không bị lỗi
+        return "[" + maKH + "] - [" + hoTen + "]";
     }
-    
-    
- 
 }

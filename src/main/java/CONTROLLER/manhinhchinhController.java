@@ -61,7 +61,10 @@ public class manhinhchinhController {
             KhachHangView khachhang = new KhachHangView();
             new KhachHangController(khachhang);
             menu.showpanel(khachhang);
-    private class clickQuanLyTinTuc implements ActionListener{
+        }
+        
+    }
+       private class clickQuanLyTinTuc implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
