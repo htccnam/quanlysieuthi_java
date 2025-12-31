@@ -5,7 +5,9 @@
 package CONTROLLER;
 
 import BAR.manhinhchinh;
+import MODEL.DonHang;
 import MODEL.LoaiHangModel;
+import VIEW.DonHangView;
 import VIEW.LoaiHangView;
 import VIEW.nhanvienViews;
 import java.awt.event.ActionEvent;
@@ -22,6 +24,7 @@ public class manhinhchinhController {
         this.menu=new manhinhchinh();
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
+        menu.addClickTaoDonMoi(new clickTaoDonListener());
         menu.setVisible(true);
     }
     
@@ -44,6 +47,17 @@ public class manhinhchinhController {
             menu.showpanel(lhView);
         }
     }
+    
+    private class clickTaoDonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DonHangView dhView = new DonHangView();
+            DonHang dhModel = new DonHang();
+            new BanHangController(dhView);
+            menu.showpanel(dhView);
+        }
+    }
+    
     public static void main(String[] args) {
         new manhinhchinhController();
     }
