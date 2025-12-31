@@ -23,7 +23,7 @@ public class manhinhchinh extends JFrame {
     JMenu hangHoaVaKhoJMenu;
     JMenuItem danhSachSanPham, phanLoaiHang, nhaCungCap;
     JMenu banHangJMenu;
-    JMenuItem taoDonMoi, chiTietDonHang;
+    JMenuItem taoDonMoi, ChiTietDonHang;
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
     JMenu tinTucJMenu;
@@ -50,9 +50,9 @@ public class manhinhchinh extends JFrame {
 
         banHangJMenu = new JMenu("Bán hàng");
         taoDonMoi = new JMenuItem("tạo đơn mới");
-        chiTietDonHang = new JMenuItem("chi tiết đơn hàng");
+        ChiTietDonHang = new JMenuItem("chi tiết đơn hàng");
         banHangJMenu.add(taoDonMoi);
-        banHangJMenu.add(chiTietDonHang);
+        banHangJMenu.add(ChiTietDonHang);
 
         khachHangJMenu = new JMenu("Khách hàng");
         quanLyKhachHang= new JMenuItem("quản lý khách hàng");
@@ -102,6 +102,10 @@ public class manhinhchinh extends JFrame {
 
     public void addClickTaoDonMoi(ActionListener listener) {
         taoDonMoi.addActionListener(listener);
+    }
+    
+    public void addClickChiTiet(ActionListener listener) {
+        ChiTietDonHang.addActionListener(listener);
     }
 
     public void addClickQuanLyKhachHang(ActionListener listener) {

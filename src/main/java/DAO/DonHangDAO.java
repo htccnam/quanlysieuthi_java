@@ -1,119 +1,94 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
-
-
-
-import MODEL.ChiTietDonHang;
-import MODEL.DonHang;
-import MODEL.SanPham;
-
+import MODEL.*;
 import java.sql.*;
-import java.util.List;
-
+import java.util.ArrayList;
 
 public class DonHangDAO {
 
-   
-    public void saveWithDetails(DonHang dh, List<ChiTietDonHang> items) throws SQLException, Exception {
-        String insertDon = "INSERT INTO donhang(madonhang, makhachhang, manhanvien, ngaylap, noinhanhang, trangthai) VALUES (?, ?, ?, ?, ?, ?)";
-        String insertCt = "INSERT INTO chitietdonhang(madonhang, masanpham, soluong, dongia, thanhtien) VALUES (?, ?, ?, ?, ?)";
-        String selectStock = "SELECT tonkho FROM sanpham WHERE masanpham = ? FOR UPDATE";
-        String updateStock = "UPDATE sanpham SET tonkho = ? WHERE masanpham = ?";
+    private Connection conn;
 
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
-            conn.setAutoCommit(false);
-
-            // 1. Kiểm tra mã đơn đã tồn tại
-            if (existsOrder(conn, dh.getMaDonHang())) {
-                throw new SQLException("Mã đơn hàng đã tồn tại: " + dh.getMaDonHang());
-            }
-
-            // 2. Insert donhang
-            try (PreparedStatement psDon = conn.prepareStatement(insertDon)) {
-                psDon.setString(1, dh.getMaDonHang());
-                psDon.setString(2, dh.getMaKhachHang());
-                psDon.setString(3, dh.getMaNhanVien());
-                psDon.setTimestamp(4, new Timestamp(dh.getNgayLap().getTime()));
-                psDon.setString(5, dh.getNoiNhan());
-                psDon.setString(6, dh.getTrangThai());
-                psDon.executeUpdate();
-            }
-
-            // 3. Với mỗi chi tiết: kiểm tra tồn kho (khóa dòng), chèn chi tiết, cập nhật tồn kho
-            try (PreparedStatement psSelectStock = conn.prepareStatement(selectStock);
-                 PreparedStatement psInsertCt = conn.prepareStatement(insertCt);
-                 PreparedStatement psUpdateStock = conn.prepareStatement(updateStock)) {
-
-                for (ChiTietDonHang ct : items) {
-                    String maSp = ct.getMaSanPham();
-                    int qty = ct.getSoLuong();
-
-                    // lấy tồn kho hiện tại (FOR UPDATE để khóa hàng)
-                    psSelectStock.setString(1, maSp);
-                    try (ResultSet rs = psSelectStock.executeQuery()) {
-                        if (!rs.next()) {
-                            throw new SQLException("Không tìm thấy sản phẩm: " + maSp);
-                        }
-                        int tonKho = rs.getInt(1);
-                        if (tonKho < qty) {
-                            throw new SQLException("Sản phẩm " + maSp + " không đủ tồn kho (còn " + tonKho + ", yêu cầu " + qty + ")");
-                        }
-
-                        // chèn chi tiết
-                        psInsertCt.setString(1, ct.getMaDonHang());
-                        psInsertCt.setString(2, maSp);
-                        psInsertCt.setInt(3, qty);
-                        psInsertCt.setDouble(4, ct.getDonGia());
-                        psInsertCt.setDouble(5, ct.getThanhTien());
-                        psInsertCt.executeUpdate();
-
-                        // cập nhật tồn kho
-                        int newStock = tonKho - qty;
-                        psUpdateStock.setInt(1, newStock);
-                        psUpdateStock.setString(2, maSp);
-                        psUpdateStock.executeUpdate();
-                    }
-                }
-            }
-
-            // 4. Commit nếu mọi thứ OK
-            conn.commit();
-        } catch (SQLException ex) {
-            if (conn != null) {
-                try { conn.rollback(); } catch (SQLException e) { /* ignore */ }
-            }
-            throw ex;
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                } catch (SQLException e) { /* ignore */ }
-            }
-        }
+    public DonHangDAO(Connection conn) {
+        this.conn = conn;
     }
 
-    /**
-     * Kiểm tra tồn tại đơn hàng theo madonhang.
-     * @param conn connection đang mở (sử dụng trong transaction)
-     * @param maDon mã đơn
-     * @return true nếu tồn tại
-     * @throws SQLException
-     */
-    private boolean existsOrder(Connection conn, String maDon) throws SQLException {
-        String sql = "SELECT 1 FROM donhang WHERE madonhang = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maDon);
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
-            }
+    // 1️⃣ Thêm đơn hàng + trả về mã đơn
+    public int insertDonHang(DonHang dh) throws SQLException {
+        String sql = """
+            INSERT INTO DonHang (NgayLap, MaKH, MaNV, TongTien)
+            VALUES (?, ?, ?, ?)
+        """;
+
+        PreparedStatement ps = conn.prepareStatement(
+                sql, Statement.RETURN_GENERATED_KEYS
+        );
+
+        ps.setDate(1, dh.getNgayLap());
+        ps.setString(2, dh.getMaKH());
+        ps.setString(3, dh.getMaNV());
+        ps.setDouble(4, dh.getTongTien());
+
+        ps.executeUpdate();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getInt(1);
         }
+        return -1;
+    }
+
+    // 2️⃣ Thêm chi tiết đơn hàng
+    public void insertChiTiet(ChiTietDonHang ct) throws SQLException {
+        String sql = """
+            INSERT INTO ChiTietDonHang
+            (MaDonHang, MaSP, SoLuong, DonGia)
+            VALUES (?, ?, ?, ?)
+        """;
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, ct.getMaDonHang());
+        ps.setString(2, ct.getMaSP());
+        ps.setInt(3, ct.getSoLuong());
+        ps.setDouble(4, ct.getDonGia());
+        ps.executeUpdate();
+    }
+
+    // 3️⃣ Lấy danh sách đơn hàng (cho DonHangView)
+    public ArrayList<DonHang> getAllDonHang() throws SQLException {
+        ArrayList<DonHang> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM DonHang ORDER BY MaDonHang DESC";
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+
+        while (rs.next()) {
+            DonHang dh = new DonHang(
+                rs.getInt("MaDonHang"),
+                rs.getDate("NgayLap"),
+                rs.getString("MaKH"),
+                rs.getString("MaNV"),
+                rs.getDouble("TongTien")
+            );
+            list.add(dh);
+        }
+        return list;
+    }
+
+    // 4️⃣ Tính tổng tiền từ chi tiết
+    public double tinhTongTien(int maDonHang) throws SQLException {
+        String sql = """
+            SELECT SUM(SoLuong * DonGia) AS Tong
+            FROM ChiTietDonHang
+            WHERE MaDonHang = ?
+        """;
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, maDonHang);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return rs.getDouble("Tong");
+        }
+        return 0;
     }
 }
-

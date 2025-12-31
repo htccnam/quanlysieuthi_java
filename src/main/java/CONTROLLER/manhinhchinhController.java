@@ -7,16 +7,20 @@ package CONTROLLER;
 import BAR.manhinhchinh;
 import MODEL.DonHang;
 import MODEL.LoaiHangModel;
-import VIEW.DonHangView;
+import VIEW.BanHangView;
 import MODEL.NhaCungCapModel;
 import MODEL.SanPhamModel;
+import VIEW.BanHangView;
 import VIEW.LoaiHangView;
 import VIEW.NhaCungCapView;
 import VIEW.SanPhamView;
+import VIEW.TaoDonView;
 import VIEW.nhanvienViews;
 import VIEW.tintucView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,6 +36,7 @@ public class manhinhchinhController {
         menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.addClickTaoDonMoi(new clickTaoDonListener());
+        menu.addClickChiTiet(new clickChiTietListener());
         menu.addClickNhaCungCap(new clickNhaCungCapListener());
         menu.addClickDanhSachSanPham(new clickSanPhamListener());
         menu.setVisible(true);
@@ -67,13 +72,31 @@ public class manhinhchinhController {
         }
     }
     
+    private class clickChiTietListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            BanHangView bhView = null;
+            try {
+                bhView = new BanHangView();
+            } catch (Exception ex) {
+                Logger.getLogger(manhinhchinhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            DonHang dhModel = new DonHang();
+            try {
+                new BanHangController(bhView);
+            } catch (Exception ex) {
+                Logger.getLogger(manhinhchinhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            menu.showpanel(bhView);
+        }
+    }
+    
     private class clickTaoDonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            DonHangView dhView = new DonHangView();
-            DonHang dhModel = new DonHang();
-            new BanHangController(dhView);
-            menu.showpanel(dhView);
+            TaoDonView tdView = new TaoDonView();
+            new TaoDonController(tdView);
+            menu.showpanel(tdView);
         }
     }
     
