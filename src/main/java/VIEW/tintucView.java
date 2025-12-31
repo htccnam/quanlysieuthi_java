@@ -134,7 +134,7 @@ public class tintucView extends JPanel {
         tintucJTable = new JTable(tintucDefaultTableModel);
         tintucJTable.setBackground(Color.pink);
         JScrollPane tintucPane = new JScrollPane(tintucJTable);
-        tintucPane.setBounds(50, 450, 400, 400);
+        tintucPane.setBounds(50, 450, 500, 400);
         add(tintucPane);
     }
 

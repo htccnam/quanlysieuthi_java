@@ -36,6 +36,13 @@ public class SanPham {
         this.giaBan = giaBan;
         this.donViTinh = donViTinh;
     }
+    public SanPham(String maSP, String tenSP, int soLuong, double giaBan) {
+    this.maSP = maSP;
+    this.tenSP = tenSP;
+    this.soLuong = soLuong;
+    this.giaBan = giaBan;
+}
+
 
     // Getter & Setter (Bạn có thể tự sinh bằng Alt+Insert trong Netbeans, nhưng tôi viết gọn ở đây)
     public String getMaSP() { return maSP; } public void setMaSP(String maSP) { this.maSP = maSP; }
