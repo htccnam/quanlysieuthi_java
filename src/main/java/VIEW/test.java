@@ -7,6 +7,9 @@ package VIEW;
 import BAR.manhinhchinh;
 import CONTROLLER.nhanvienController;
 import javax.swing.JFrame;
+import CONTROLLER.KhachHangController; // Import Controller Khách hàng
+import VIEW.KhachHangView;             // Import View Khách hàng
+
 
 /**
  *
@@ -25,8 +28,18 @@ public class test {
 
             manhinhchinh m= new manhinhchinh();
             nhanvienViews v=new nhanvienViews();
-            nhanvienController c=new nhanvienController(v);
-            m.showpanel(v);
+            //Tạo giao diện khách hàng : 
+            KhachHangView kh = new KhachHangView();
+            
+            // 3. Kích hoạt Controller Khách hàng (Kết nối View và Logic)
+            // Controller sẽ tự động load dữ liệu lên bảng
+            KhachHangController k = new KhachHangController(kh);
+            
+            // 4. Nhúng giao diện Khách hàng vào Màn hình chính
+               
+            nhanvienController c = new nhanvienController(v);
+            m.showpanel(kh);
+           
             m.setVisible(true);
     }
 }

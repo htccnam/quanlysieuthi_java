@@ -4,8 +4,11 @@
  */
 package BAR;
 
+import VIEW.KhachHangView;
+import VIEW.nhanvienViews;
 import java.awt.BorderLayout;
 import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -73,18 +76,21 @@ public class manhinhchinh extends JFrame {
         bar.add(nhanSuJMenu);
         setJMenuBar(bar);
 
-        containerJPanel = new JPanel();
+        containerJPanel = new JPanel(new java.awt.BorderLayout());
         add(containerJPanel, BorderLayout.CENTER);
 
     }
 
     //hàm hiển thị panel đổ xuông màn hình chính;
-    public void showpanel(JPanel jP) {
-        containerJPanel.removeAll();
-        containerJPanel.add(jP);
-        containerJPanel.revalidate();
-        containerJPanel.repaint();
+   // Để hàm này chấp nhận được cả KhachHangView, SanPhamView, NhanVienView...
+    public void showpanel(javax.swing.JPanel jp) { 
+        
+        containerJPanel.removeAll(); // Xóa nội dung cũ đang hiển thị
+        containerJPanel.add(jp, java.awt.BorderLayout.CENTER); 
+        containerJPanel.revalidate(); // Tính toán lại bố cục
+        containerJPanel.repaint();    // Vẽ lại màn hình
     }
+    
 
     public void addClickDanhSachSanPham(ActionListener listener) {
         danhSachSanPham.addActionListener(listener);
@@ -113,5 +119,6 @@ public class manhinhchinh extends JFrame {
     public void addClickQuanLyNhanVien(ActionListener listener) {
         quanLyNhanVien.addActionListener(listener);
     }
+    
 
 }

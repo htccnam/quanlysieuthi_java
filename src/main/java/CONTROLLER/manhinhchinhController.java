@@ -5,6 +5,7 @@
 package CONTROLLER;
 
 import BAR.manhinhchinh;
+import VIEW.KhachHangView;
 import VIEW.nhanvienViews;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ public class manhinhchinhController {
     public manhinhchinhController( ) {
         this.menu=new manhinhchinh();
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
+        menu.addClickQuanLyKhachHang(new clickKhachHangListener());
         menu.setVisible(true);
     }
     
@@ -27,10 +29,19 @@ public class manhinhchinhController {
         @Override
         public void actionPerformed(ActionEvent e) {
             nhanvienViews nhanvien=new nhanvienViews();
-            new nhanvienController(nhanvien);
+            new nhanvienController(nhanvien); 
             menu.showpanel(nhanvien);
         }
         
+    }
+    // --- LISTENER 2: XỬ LÝ KHI BẤM NÚT KHÁCH HÀNG ---
+    private class clickKhachHangListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            KhachHangView khachhang = new KhachHangView();
+            new KhachHangController(khachhang);
+            menu.showpanel(khachhang);
+        }
     }
     public static void main(String[] args) {
         new manhinhchinhController();
