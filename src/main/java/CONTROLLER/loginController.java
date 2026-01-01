@@ -8,6 +8,7 @@ import BAR.manhinhchinh;
 import VIEW.LoginView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,6 +29,8 @@ public class loginController {
             if( view.txtUser.getText().equalsIgnoreCase("admin")){
                 new manhinhchinhController(new manhinhchinh());
                 view.dispose();
+            }else{
+                JOptionPane.showMessageDialog(view, "tài khoản hoặc mật khảu không chính xác");
             }
         }
         
