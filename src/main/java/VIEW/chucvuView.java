@@ -99,11 +99,11 @@ public class chucvuView extends JPanel{
         String[] tieudeStrings={"mã chức vụ","tên chức vụ"};
         chucvuDefaultTableModel=new DefaultTableModel(tieudeStrings,0);
         chucvuJTable=new JTable(chucvuDefaultTableModel);
-        chucvuJTable.setFont(new Font("Arial",Font.BOLD,14));
+        chucvuJTable.setFont(new Font("Arial",Font.BOLD,18));
         chucvuJTable.setBackground(Color.pink);
 
         JTableHeader chucvuHeader=chucvuJTable.getTableHeader();
-        chucvuHeader.setFont(new Font("Arial",Font.BOLD,15));
+        chucvuHeader.setFont(new Font("Arial",Font.BOLD,20));
         chucvuHeader.setForeground(Color.red);
         chucvuHeader.setBackground(Color.yellow);
                 

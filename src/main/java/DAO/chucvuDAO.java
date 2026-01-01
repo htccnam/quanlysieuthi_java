@@ -60,6 +60,26 @@ public class chucvuDAO {
             throw e;
         }
     }
+    public List<chucvu> timKiemChucVu(String timkiemString) throws Exception{
+        List<chucvu> list=new ArrayList<>();
+        String noichuoiString="%"+timkiemString+"%";
+        String sqlString="select * from chucvu where machucvu like ? or tenchucvu like ?";
+        try (Connection con=DBConnection.getConnection(); PreparedStatement pr=con.prepareStatement(sqlString);){
+            pr.setString(1, noichuoiString);
+            pr.setString(2, noichuoiString);
+            ResultSet resultSet=pr.executeQuery();
+            while(resultSet.next()){
+                String machucvuString=resultSet.getString("machucvu");
+                String tenchucvuString=resultSet.getString("tenchucvu");
+                
+                chucvu cv=new chucvu(machucvuString, tenchucvuString);
+                list.add(cv);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return list;
+    }
     public List<chucvu> getAllChucVu() throws Exception{
         List<chucvu> list = new ArrayList<>();
         String sqlString="select * from chucvu";
