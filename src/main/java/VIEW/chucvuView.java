@@ -7,6 +7,8 @@ package VIEW;
 import com.sun.net.httpserver.Headers;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,7 +39,7 @@ public class chucvuView extends JPanel{
 
     public chucvuView() {
         setLayout(null);
-        JLabel machucvuJLabel=new JLabel("Chức vụ:");
+        JLabel machucvuJLabel=new JLabel("Mã chức vụ:");
         machucvuJLabel.setBounds(300, 50, 200, 40);
         machucvuJLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(machucvuJLabel);
@@ -107,7 +109,24 @@ public class chucvuView extends JPanel{
                 
         JScrollPane chucvuJScrollPane=new JScrollPane(chucvuJTable);
         chucvuJScrollPane.setBounds(200, 250, 800, 600);
-        add(chucvuJScrollPane);
+        add(chucvuJScrollPane);       
     }
-    
+    public void addThemClickListener(ActionListener listener){
+        themButton.addActionListener(listener);
+    }
+    public void addSuaClickListener(ActionListener listener){
+        suaButton.addActionListener(listener);
+    }
+    public void addXoaClickListener(ActionListener listener){
+        xoaButton.addActionListener(listener);
+    }
+    public void addResetClickListener(ActionListener listener){
+        resetButton.addActionListener(listener);
+    }
+    public void addTimKiemClickListener(ActionListener listener){
+        timkiemButton.addActionListener(listener);
+    }
+    public void addClickTableListener(MouseListener listener){
+        chucvuJTable.addMouseListener(listener);
+    }
 }
