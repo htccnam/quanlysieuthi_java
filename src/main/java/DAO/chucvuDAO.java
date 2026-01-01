@@ -8,6 +8,8 @@ import MODEL.chucvu;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,6 +30,39 @@ public class chucvuDAO {
         } catch (Exception e) {
             throw e;
         }
+    }
+    public boolean suaChucVu(chucvu cv) throws Exception{
+        String sqlString="update chucvu set tenchucvu=? where machucvu=?";
+        try(Connection con=DBConnection.getConnection(); PreparedStatement pr=con.prepareStatement(sqlString)){
+            pr.setString(1, cv.getTenchucvuString());
+            pr.setString(2, cv.getTenchucvuString());
+            
+            if(pr.executeUpdate()>0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    public List<chucvu> getAllChucVu() throws Exception{
+        List<chucvu> list = new ArrayList<>();
+        String sqlString="select * from chucvu";
+        try (Connection con=DBConnection.getConnection(); PreparedStatement pr=con.prepareStatement(sqlString)){
+            ResultSet resultSet=pr.executeQuery();
+            while(resultSet.next()){
+                String machucvuString=resultSet.getString("machucvu");
+                String tenchucvuString=resultSet.getString("tenchucvu");
+                
+                chucvu cv=new chucvu(machucvuString, tenchucvuString);
+                list.add(cv);
+            }
+ 
+        } catch (Exception e) {
+            throw e;
+        }
+        return list;
     }
     public boolean checkTrungMaChucVu(String machucvuString){
         String sqlString="select machucvu from chucvu where machucvu=?";

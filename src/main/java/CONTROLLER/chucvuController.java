@@ -9,6 +9,9 @@ import MODEL.chucvu;
 import VIEW.chucvuView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,10 +22,14 @@ public class chucvuController {
 
     chucvuView view;
     chucvuDAO cvDAO = new chucvuDAO();
+    private int selectRow=-1;
 
     public chucvuController(chucvuView v) {
         this.view = v;
         v.addThemClickListener(new them());
+        v.addSuaClickListener(new sua());
+        v.addClickTableListener(new clickTable());
+        loadTable();
     }
 
     public class them implements ActionListener {
@@ -50,11 +57,76 @@ public class chucvuController {
             try {
                 chucvu cv = new chucvu(machucvuString, tenchucvuString);
                 cvDAO.themChucVu(cv);
+                loadTable();
                 JOptionPane.showMessageDialog(view, "thêm chức vụ thành công");
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(view, "Lỗi thêm chức vụ:" + exception.getMessage());
             }
         }
 
+    }
+    public class sua implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String machucvuString=view.machucvuField.getText().toString().trim();
+            String tenchucvuString=view.tenchucvuField.getText().toString().trim();
+            
+            if(tenchucvuString.isEmpty()){
+                JOptionPane.showMessageDialog(view, "tên chức vụ không được để trống");
+                return;
+            }
+            try {
+                chucvu cv=new chucvu(machucvuString, tenchucvuString);
+                cvDAO.suaChucVu(cv);
+                view.machucvuField.setEnabled(true);
+                JOptionPane.showMessageDialog(view, "sửa thành công");
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(view, "lỗi sửa chức vụ:"+exception.getMessage());
+            }
+            
+        }
+        
+    }
+    public class clickTable implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            selectRow=view.chucvuJTable.getSelectedRow();
+            view.machucvuField.setEnabled(false);
+            view.machucvuField.setText(view.chucvuJTable.getValueAt(selectRow, 0).toString());
+            view.tenchucvuField.setText(view.chucvuJTable.getValueAt(selectRow, 1).toString());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+        
+    }
+    public void loadTable(){
+        try {
+           List<chucvu> list=cvDAO.getAllChucVu();
+           view.chucvuDefaultTableModel.setRowCount(0);
+           for(chucvu cv: list){
+               view.chucvuDefaultTableModel.addRow(new Object[]{
+                   cv.getMachucvuString(),
+                   cv.getTenchucvuString()    
+               });
+           }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "lỗi load bảng chức vụ"+e.getMessage());
+        }
     }
 }

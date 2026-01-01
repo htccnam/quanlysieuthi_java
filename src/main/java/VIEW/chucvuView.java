@@ -100,7 +100,7 @@ public class chucvuView extends JPanel{
         chucvuDefaultTableModel=new DefaultTableModel(tieudeStrings,0);
         chucvuJTable=new JTable(chucvuDefaultTableModel);
         chucvuJTable.setFont(new Font("Arial",Font.BOLD,14));
-        chucvuJTable.setForeground(Color.pink);
+        chucvuJTable.setBackground(Color.pink);
 
         JTableHeader chucvuHeader=chucvuJTable.getTableHeader();
         chucvuHeader.setFont(new Font("Arial",Font.BOLD,15));
