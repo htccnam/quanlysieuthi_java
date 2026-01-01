@@ -46,6 +46,20 @@ public class chucvuDAO {
             throw e;
         }
     }
+    public boolean xoaChucVu(String machucvuString) throws Exception{
+        String sqlString="delete from chucvu where machucvu=?";
+        
+        try (Connection con=DBConnection.getConnection(); PreparedStatement pr=con.prepareStatement(sqlString);){
+            pr.setString(1, machucvuString);
+            if(pr.executeUpdate()>0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     public List<chucvu> getAllChucVu() throws Exception{
         List<chucvu> list = new ArrayList<>();
         String sqlString="select * from chucvu";
@@ -70,6 +84,22 @@ public class chucvuDAO {
             pr.setString(1, machucvuString);
             ResultSet result=pr.executeQuery();
             if(result.next()){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean checkXoaChucVu(String machucvuString){
+        String sqlString="select machucvu from nhanvien where machucvu=?";
+        
+        try (Connection con=DBConnection.getConnection(); PreparedStatement pr=con.prepareStatement(sqlString);){
+            pr.setString(1, machucvuString);
+            ResultSet resultSet=pr.executeQuery();
+            if(resultSet.next()){
                 return true;
             }else{
                 return false;
