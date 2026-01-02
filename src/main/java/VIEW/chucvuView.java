@@ -104,8 +104,8 @@ public class chucvuView extends JPanel{
 
         JTableHeader chucvuHeader=chucvuJTable.getTableHeader();
         chucvuHeader.setFont(new Font("Arial",Font.BOLD,20));
-        chucvuHeader.setForeground(Color.red);
-        chucvuHeader.setBackground(Color.yellow);
+        chucvuHeader.setForeground(Color.BLACK);
+        chucvuHeader.setBackground(Color.GREEN);
                 
         JScrollPane chucvuJScrollPane=new JScrollPane(chucvuJTable);
         chucvuJScrollPane.setBounds(200, 250, 800, 600);
