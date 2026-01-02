@@ -6,84 +6,167 @@ import java.awt.*;
 
 public class TaoDonView extends JPanel {
 
-    private JTextField txtMaDon, txtMaNV, txtNoiNhan;
-    private JTable tblSanPham, tblGioHang;
-    private JButton btnThem, btnXoa, btnLuu;
-    private JLabel lblTongTien;
+    // ===== Components cần controller dùng =====
+    private JTextField txtMaDon, txtNgayGD, txtTimKiem, txtTenSP;
+    private JComboBox<String> cboBanHang, cboThanhToan, cboMaNV, cboMaKM;
+    private JTable table;
+    private JLabel lblTongTien, lblTamTinh, lblKM;
+    private JSpinner spinner;
 
     public TaoDonView() {
-        initUI();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        setBackground(Color.WHITE);
+
+        add(panelThongTinChung());
+        add(Box.createVerticalStrut(15));
+        add(panelChiTiet());
+        add(Box.createVerticalStrut(15));
+        add(panelTongTien());
     }
 
-    private void initUI() {
-        setLayout(new BorderLayout(10, 10));
+    // ================= THÔNG TIN CHUNG =================
+    private JPanel panelThongTinChung() {
+        JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder("Thông tin chung (Đơn hàng)"));
+        p.setBackground(Color.WHITE);
 
-        /* ===== THÔNG TIN ĐƠN HÀNG ===== */
-        JPanel pnlTop = new JPanel(new GridLayout(2, 4, 10, 5));
+        GridBagConstraints g = new GridBagConstraints();
+        g.insets = new Insets(6, 6, 6, 6);
+        g.fill = GridBagConstraints.HORIZONTAL;
 
-        txtMaDon = new JTextField();
-        txtMaNV = new JTextField();
-        txtNoiNhan = new JTextField();
+        txtMaDon = new JTextField("DH-2023-001");
+        txtNgayGD = new JTextField();
+        cboMaNV = new JComboBox<>(new String[]{"--Chọn nhân viên--"});
+        cboMaKM = new JComboBox<>(new String[]{"Không áp dụng", "Áp dụng"});
+        cboBanHang = new JComboBox<>(new String[]{"Online", "Offline"});
+        cboThanhToan = new JComboBox<>(new String[]{"Tiền mặt", "Chuyển khoản"});
 
-        pnlTop.add(new JLabel("Mã đơn hàng:"));
-        pnlTop.add(txtMaDon);
-        pnlTop.add(new JLabel("Mã nhân viên:"));
-        pnlTop.add(txtMaNV);
+        g.gridx = 0; g.gridy = 0;
+        p.add(new JLabel("Mã đơn hàng"), g);
+        
+        g.gridx = 1;
+        p.add(txtMaDon, g);
 
-        pnlTop.add(new JLabel("Nơi nhận hàng:"));
-        pnlTop.add(txtNoiNhan);
-        pnlTop.add(new JLabel()); // filler
-        pnlTop.add(new JLabel());
+        g.gridx = 2;
+        p.add(new JLabel("Ngày giao dịch"), g);
+        
+        g.gridx = 3;
+        p.add(txtNgayGD, g);
 
-        add(pnlTop, BorderLayout.NORTH);
+        g.gridx = 4;
+        p.add(new JLabel("Nhân viên"), g);
 
-        /* ===== BẢNG SẢN PHẨM & GIỎ ===== */
-        tblSanPham = new JTable(new DefaultTableModel(
-                new Object[]{"Mã SP", "Tên SP", "Giá bán", "Tồn kho"}, 0
-        ));
+        g.gridx = 5;
+        p.add(cboMaNV, g);
+        
+        g.gridx = 0; g.gridy = 1;
+        p.add(new JLabel("Phương thức bán"), g);
+        
+        g.gridx = 1;
+        p.add(cboBanHang, g);
 
-        tblGioHang = new JTable(new DefaultTableModel(
-                new Object[]{"Mã SP", "Tên SP", "Số lượng", "Đơn giá", "Thành tiền"}, 0
-        ));
+        g.gridx = 2;
+        p.add(new JLabel("Thanh toán"), g);
+        
+        g.gridx = 3;
+        p.add(cboThanhToan, g);
+        
+        g.gridx = 4;
+        p.add(new JLabel("Mã khuyến mại"), g);
 
-        btnThem = new JButton("➕ Thêm >>");
-        btnXoa = new JButton("❌ Xoá");
+        g.gridx = 5;
+        p.add(cboMaKM, g);
 
-        JPanel pnlCenter = new JPanel(new GridLayout(1, 3, 10, 10));
-        pnlCenter.add(new JScrollPane(tblSanPham));
-
-        JPanel pnlBtn = new JPanel(new GridLayout(2, 1, 5, 5));
-        pnlBtn.add(btnThem);
-        pnlBtn.add(btnXoa);
-        pnlCenter.add(pnlBtn);
-
-        pnlCenter.add(new JScrollPane(tblGioHang));
-        add(pnlCenter, BorderLayout.CENTER);
-
-        /* ===== FOOTER ===== */
-        JPanel pnlBottom = new JPanel(new BorderLayout());
-        lblTongTien = new JLabel("Tổng tiền: 0");
-        lblTongTien.setFont(new Font("Arial", Font.BOLD, 14));
-
-        btnLuu = new JButton("💾 Lưu đơn hàng");
-
-        pnlBottom.add(lblTongTien, BorderLayout.WEST);
-        pnlBottom.add(btnLuu, BorderLayout.EAST);
-
-        add(pnlBottom, BorderLayout.SOUTH);
+        return p;
     }
 
-    /* ===== GETTER ===== */
-    public JTextField getTxtMaDon() { return txtMaDon; }
-    public JTextField getTxtMaNV() { return txtMaNV; }
-    public JTextField getTxtNoiNhan() { return txtNoiNhan; }
+    // ================= CHI TIẾT ĐƠN =================
+    private JPanel panelChiTiet() {
+        JPanel p = new JPanel(new BorderLayout(10, 10));
+        p.setBorder(BorderFactory.createTitledBorder("Chi tiết đơn hàng"));
+        p.setBackground(Color.WHITE);
 
-    public JTable getTblSanPham() { return tblSanPham; }
-    public JTable getTblGioHang() { return tblGioHang; }
+        // ---- Thanh tìm + thêm ----
+        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        top.setBackground(Color.WHITE);
+        top.add(new JLabel("Tìm sản phẩm:"));
+        txtTimKiem = new JTextField(20);
+        top.add(txtTimKiem);
+        top.add(new JLabel("Tên sản phẩm:"));
+        txtTenSP = new JTextField(20);
+        txtTenSP.setEditable(false);
+        top.add(txtTenSP);
+        top.add(new JLabel("Số lượng:"));
+        spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1)); //(value, min, max, stepSize)
+        spinner.setPreferredSize(new Dimension(40, 25));
+        top.add(spinner);
+        JButton btnThem = new JButton("+ Thêm");
+        top.add(btnThem);
 
-    public JButton getBtnThem() { return btnThem; }
-    public JButton getBtnXoa() { return btnXoa; }
-    public JButton getBtnLuu() { return btnLuu; }
+        // ---- Table ----
+        String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
+        DefaultTableModel model = new DefaultTableModel(cols, 0);
+        table = new JTable(model);
+        table.setRowHeight(32);
 
-    public JLabel getLblTongTien() { return lblTongTien; }
+        // dữ liệu mẫu
+        model.addRow(new Object[]{"SP001", "Laptop Dell XPS 13", 25000000, 1, 25000000});
+        model.addRow(new Object[]{"SP045", "Chuột Logitech", 500000, 2, 1000000});
+
+        JScrollPane scroll = new JScrollPane(table);
+
+        p.add(top, BorderLayout.NORTH);
+        p.add(scroll, BorderLayout.CENTER);
+
+        return p;
+    }
+
+    // ================= TỔNG TIỀN =================
+    private JPanel panelTongTien() {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBackground(Color.WHITE);
+
+        JPanel left = new JPanel();
+        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+        left.setBackground(Color.WHITE);
+        
+        lblTongTien = new JLabel("Tổng tiền: 23,400,000 đ");
+        lblTamTinh = new JLabel("Tạm tính: 24,500,000 đ");
+        lblKM = new JLabel("Giảm giá: 100,000 đ");
+        JButton btnLuu = new JButton("Lưu đơn hàng");
+        
+        lblTongTien.setFont(lblTongTien.getFont().deriveFont(Font.BOLD, 16f));
+        lblTamTinh.setFont(lblTongTien.getFont().deriveFont(Font.BOLD, 16f));
+        lblKM.setFont(lblTongTien.getFont().deriveFont(Font.BOLD, 16f));
+        lblTongTien.setForeground(new Color(33, 150, 243));
+
+        left.add(lblTamTinh);
+        left.add(Box.createVerticalStrut(10));
+        left.add(lblKM);
+        left.add(Box.createVerticalStrut(10));
+        left.add(new JSeparator(JSeparator.HORIZONTAL));
+        left.add(Box.createVerticalStrut(10));
+        left.add(lblTongTien);     
+        left.add(Box.createVerticalStrut(10));
+        left.add(btnLuu);
+             
+        p.add(left, BorderLayout.EAST);
+        return p;
+    }
+
+    // ================= GETTER cho Controller =================
+    public JTable getTable() {
+        return table;
+    }
+
+    public JLabel getLblTongTien() {
+        return lblTongTien;
+    }
+
+    public JTextField getTxtMaDon() {
+        return txtMaDon;
+    }
 }
+
+
