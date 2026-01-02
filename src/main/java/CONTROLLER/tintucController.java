@@ -52,7 +52,7 @@ public class tintucController {
         try {
             List<nhanvien> list = nvDAO.getAllNhanVien();
             for (nhanvien nv : list) {
-                view.manhanvienBox.addItem(nv.getMaNhanVienString().trim());
+//                view.manhanvienBox.addItem(nv.getMaNhanVienString().trim());
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view,

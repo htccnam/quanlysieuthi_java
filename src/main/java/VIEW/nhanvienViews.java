@@ -47,8 +47,7 @@ public class nhanvienViews extends JPanel {
     public JTextField sodienthoaiField;
     public JTextField emailField;
     public JTextField diachiField;
-//    public String[] chucvuStrings;
-    public JOptionPane chucvuJOptionPane;
+    public JComboBox<String> chucvuBox;
     
     public JTextField timkiemField;
     
@@ -140,10 +139,10 @@ public class nhanvienViews extends JPanel {
         machucvuJLabel.setFont(new Font("Arial",Font.BOLD,23));
         add(machucvuJLabel);
         
-        chucvuJOptionPane=new JOptionPane();
-        chucvuJOptionPane.setBounds(300, 400, 300, 40);
-        chucvuJOptionPane.setFont(new Font("Arial",Font.ITALIC,23));
-        add(chucvuJOptionPane);
+        chucvuBox=new JComboBox<>();
+        chucvuBox.setBounds(300, 400, 300, 40);
+        chucvuBox.setFont(new Font("Arial",Font.ITALIC,23));
+        add(chucvuBox);
 
         //button
         themButton=new JButton("Thêm");
@@ -174,6 +173,7 @@ public class nhanvienViews extends JPanel {
         timkiemField=new JTextField();
         timkiemField=new JTextField();
         timkiemField.setBounds(50, 500, 300, 40);
+        timkiemField.setFont(new Font("Arial",Font.ITALIC,23));
         add(timkiemField);
         
         timkiemButton=new JButton("Tìm kiếm");
@@ -183,7 +183,7 @@ public class nhanvienViews extends JPanel {
         add(timkiemButton);
 
         //table
-        String[] nhanvienStrings = {"Mã NV", "Tên NV", "Ngày sinh", "Giới tính","Số điện thoại","Email", "Địa chỉ", "Chức vụ"};
+        String[] nhanvienStrings = {"Mã NV", "Tên NV", "Ngày sinh", "Giới tính","Số điện thoại","Email", "Địa chỉ", "Mã chức vụ"};
         nhanvienDefaultTableModel = new DefaultTableModel(nhanvienStrings, 0);
         nhanvienJTable = new JTable(nhanvienDefaultTableModel);
         nhanvienJTable.setBackground(Color.pink);
@@ -191,11 +191,11 @@ public class nhanvienViews extends JPanel {
         
         JTableHeader tieudeHeaders=nhanvienJTable.getTableHeader();
         tieudeHeaders.setFont(new Font("Arial",Font.BOLD,20));
-        tieudeHeaders.setBackground(Color.yellow);
-        tieudeHeaders.setForeground(Color.red);
+        tieudeHeaders.setBackground(Color.GREEN);
+        tieudeHeaders.setForeground(Color.black);
         
         JScrollPane nhanvienJScrollPane = new JScrollPane(nhanvienJTable);
-        nhanvienJScrollPane.setBounds(30, 550, 800, 600);
+        nhanvienJScrollPane.setBounds(30, 550, 1000, 600);
         add(nhanvienJScrollPane);
     }
 
