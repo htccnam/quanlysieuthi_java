@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class LoaiHangDAO {
     public ArrayList<LoaiHang> getAll(){
-        ArrayList<LoaiHang> list = new ArrayList();
+        ArrayList<LoaiHang> list = new ArrayList<>();
         try {
             Connection c =DBConnection.getConnection();
             String sql = "SELECT * FROM loaihang";
