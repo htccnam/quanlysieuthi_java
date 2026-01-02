@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  */
 public class nhanvienDAO {
 
-    public boolean themNhanVien(nhanvien nhanvien) throws Exception {
+    public boolean themNhanVien(nhanvien nhanvien) throws Exception{
         if (nhanvien == null) {
             return false;
         }
@@ -42,12 +42,12 @@ public class nhanvienDAO {
                 return false;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("lỗi thêm nhân viên :" + e.getMessage());
+            throw e;
 
         }
     }
 
-    public boolean suaNhanVien(nhanvien nhanvien) {
+    public boolean suaNhanVien(nhanvien nhanvien) throws Exception {
         if (nhanvien == null) {
             return false;
         }
@@ -64,14 +64,12 @@ public class nhanvienDAO {
             } else {
                 return false;
             }
-        } catch (SQLException exception) {
-            throw new RuntimeException("lỗi sửa nhân viên:" + exception.getMessage());
-        } catch (Exception exception) {
-            throw new RuntimeException("lỗi database:" + exception.getMessage());
+        } catch(SQLException exception){
+            throw exception;
         }
     }
 
-    public boolean xoaNhanVien(String manhanvienString) {
+    public boolean xoaNhanVien(String manhanvienString) throws Exception {
         String sqlString = "delete from nhanvien where manhanvien=?";
 
         try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString)) {
@@ -82,10 +80,8 @@ public class nhanvienDAO {
             } else {
                 return false;
             }
-        } catch (SQLException exception) {
-            throw new RuntimeException("lỗi xóa:" + exception.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException("lỗi xóa:" + e.getMessage());
+        } catch(SQLException exception){
+            throw exception;
         }
     }
 

@@ -16,6 +16,7 @@ import VIEW.LoaiHangView;
 import VIEW.NhaCungCapView;
 import VIEW.SanPhamView;
 import VIEW.TaoDonView;
+import VIEW.chucvuView;
 import VIEW.nhanvienViews;
 import VIEW.tintucView;
 import java.awt.event.ActionEvent;
@@ -35,6 +36,7 @@ public class manhinhchinhController {
         this.menu= view;
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickQuanLyKhachHang(new clickKhachHangListener());
+        menu.addClickQuanLyChucVu(new clickChucVu());
         menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.addClickTaoDonMoi(new clickTaoDonListener());
@@ -65,6 +67,17 @@ public class manhinhchinhController {
         
     }
        private class clickQuanLyTinTuc implements ActionListener{
+    private class clickChucVu implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            chucvuView chucvu=new chucvuView();
+            chucvuController controller=new chucvuController(chucvu);
+            menu.showpanel(chucvu);
+        }
+        
+    }
+    private class clickQuanLyTinTuc implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -144,7 +157,10 @@ public class manhinhchinhController {
             }
         }
     }
-//    public static void main(String[] args) {
-//        new manhinhchinhController();
-//    }
+    public static void main(String[] args) {
+        manhinhchinh manhinh=new manhinhchinh();
+        manhinhchinhController controller=new manhinhchinhController(manhinh);
+        manhinh.setVisible(true);
+        
+    }
 }
