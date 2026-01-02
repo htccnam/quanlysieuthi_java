@@ -1,0 +1,110 @@
+-- 1. TẠO DATABASE
+CREATE DATABASE IF NOT EXISTS quanlysieuthi;
+
+-- 3. TẠO BẢNG NHÂN VIÊN (Theo code của bạn)
+CREATE TABLE nhanvien (
+    manhanvien VARCHAR(50) PRIMARY KEY,
+    tennhanvien VARCHAR(50),
+    ngaysinh DATE,
+    gioitinh VARCHAR(10),
+    diachi VARCHAR(255),
+    sodienthoai VARCHAR(50)
+    
+);
+
+-- 4. TẠO BẢNG KHÁCH HÀNG
+CREATE TABLE khachhang (
+    makhachhang VARCHAR(50) PRIMARY KEY,
+    tenkhachhang VARCHAR(50),
+    sodienthoai VARCHAR(50),
+     gioitinh varchar(10),
+    email VARCHAR(50),
+    ngaysinh DATE,
+    diemtichluy INT DEFAULT 0,
+
+
+    taikhoan VARCHAR(30) ,
+    matkhau VARCHAR(30) 
+);
+
+-- 5. TẠO BẢNG LOẠI HÀNG (Danh mục)
+CREATE TABLE loaihang (
+    maloai VARCHAR(50) PRIMARY KEY,
+    tenloai VARCHAR(100)
+);
+
+-- 6. TẠO BẢNG nhacungcap 
+CREATE TABLE nhacungcap (
+    manhacungcap VARCHAR(50) PRIMARY KEY,
+    tennhacungcap VARCHAR(100),
+   loaihinh VARCHAR(50), 
+email VARCHAR(100),
+ sodienthoai VARCHAR(20),
+ diachi VARCHAR(255)
+);
+
+-- 7. TẠO BẢNG SẢN PHẨM
+CREATE TABLE sanpham (
+    masanpham VARCHAR(50) PRIMARY KEY,
+    tensanpham VARCHAR(100),
+    maloai VARCHAR(50),
+    manhacungcap VARCHAR(50),
+    xuatxu VARCHAR(100),
+    soluong INT DEFAULT 0,
+    ngaysanxuat DATE,
+    hansudung DATE,
+    tinhtrang VARCHAR(50),
+    gianhap DECIMAL(10,0) DEFAULT 0,
+    giaban DECIMAL(10,0) DEFAULT 0,
+    donvitinh VARCHAR(20),
+    FOREIGN KEY (maloai) REFERENCES loaihang(maloai),
+    FOREIGN KEY (manhacungcap) REFERENCES nhacungcap(manhacungcap)
+);
+
+
+
+-- 8. TẠO BẢNG TIN TỨC (Theo code của bạn)
+CREATE TABLE tintuc (
+    matintuc VARCHAR(50) PRIMARY KEY,
+    tieude VARCHAR(255),
+    manhanvien VARCHAR(50),
+    noidung TEXT,
+    loaitin VARCHAR(50),
+    ngaydang DATE,
+
+    FOREIGN KEY (manhanvien) REFERENCES nhanvien(manhanvien)
+);
+
+-- bảng tintuc chưa đọc hay đã đọc
+CREATE TABLE tintuc_dadoc (
+    makhachhang VARCHAR(50),
+    matintuc VARCHAR(50),
+    ngaydoc DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (makhachhang, matintuc)
+);
+
+
+-- 9. TẠO BẢNG ĐƠN HÀNG
+CREATE TABLE donhang (
+    madonhang VARCHAR(50) PRIMARY KEY,
+    makhachhang VARCHAR(50), -- Khách mua (có thể null nếu khách vãng lai)
+    manhanvien VARCHAR(50),  -- Nhân viên bán đơn này
+    ngaylap DATETIME DEFAULT CURRENT_TIMESTAMP,
+    noinhanhang VARCHAR(50),
+    trangthai VARCHAR(20) DEFAULT 'Chờ xử lý', -- Chờ xử lý / Hoàn thành
+
+    FOREIGN KEY (makhachhang) REFERENCES khachhang(makhachhang),
+    FOREIGN KEY (manhanvien) REFERENCES nhanvien(manhanvien)
+);
+
+-- 10. TẠO BẢNG CHI TIẾT ĐƠN HÀNG
+CREATE TABLE chitietdonhang (
+    madonhang VARCHAR(50),
+    masanpham VARCHAR(50),
+    soluong INT,
+    dongia DECIMAL(10,0), -- Giá tại thời điểm bán
+    thanhtien DECIMAL(10,0),
+
+    FOREIGN KEY (madonhang) REFERENCES donhang(madonhang),
+    FOREIGN KEY (masanpham) REFERENCES sanpham(masanpham)
+);
