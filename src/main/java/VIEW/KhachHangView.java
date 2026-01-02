@@ -16,7 +16,7 @@ import java.time.format.DateTimeParseException;
 public class KhachHangView extends JPanel {
     // Thêm các TextField mới
     private JTextField txtMaKH, txtHoTen, txtSDT, txtEmail, txtNgaySinh, txtTimKiem;
-    private JTextField txtDiemTichLuy, txtTaiKhoan, txtMatKhau; 
+    private JTextField txtDiemTichLuy; 
     
     private JComboBox<String> cbGioiTinh;
     private JButton btnThem, btnSua, btnXoa, btnLamMoi, btnTimKiem;
@@ -43,8 +43,7 @@ public class KhachHangView extends JPanel {
         
         // Khởi tạo các ô mới
         txtDiemTichLuy = new JTextField("0"); // Mặc định 0
-        txtTaiKhoan = new JTextField();
-        txtMatKhau = new JTextField(); // Có thể dùng JPasswordField nếu muốn ẩn
+        
 
         pnlInput.add(new JLabel("Mã Khách Hàng:")); pnlInput.add(txtMaKH);
         pnlInput.add(new JLabel("Họ và Tên:")); pnlInput.add(txtHoTen);
@@ -55,8 +54,7 @@ public class KhachHangView extends JPanel {
         
         // Thêm vào giao diện
         pnlInput.add(new JLabel("Điểm Tích Lũy:")); pnlInput.add(txtDiemTichLuy);
-        pnlInput.add(new JLabel("Tài Khoản:")); pnlInput.add(txtTaiKhoan);
-        pnlInput.add(new JLabel("Mật Khẩu:")); pnlInput.add(txtMatKhau);
+       
 
         // --- PANEL CHỨC NĂNG ---
         JPanel pnlFunc = new JPanel(new BorderLayout(10, 10));
@@ -86,7 +84,7 @@ public class KhachHangView extends JPanel {
         this.add(pnlTop, BorderLayout.NORTH);
 
         // --- BẢNG DỮ LIỆU (Thêm cột mới) ---
-        String[] columnNames = {"Mã KH", "Họ Tên", "SĐT", "Giới Tính", "Email", "Ngày Sinh", "Điểm", "Tài Khoản", "Mật Khẩu"};
+        String[] columnNames = {"Mã KH", "Họ Tên", "SĐT", "Giới Tính", "Email", "Ngày Sinh", "Điểm"};
         tableModel = new DefaultTableModel(columnNames, 0);
         tblKhachHang = new JTable(tableModel);
         this.add(new JScrollPane(tblKhachHang), BorderLayout.CENTER);
@@ -103,8 +101,7 @@ public class KhachHangView extends JPanel {
         
         // Lấy dữ liệu mới
         String strDiem = txtDiemTichLuy.getText().trim();
-        String taikhoan = txtTaiKhoan.getText().trim();
-        String matkhau = txtMatKhau.getText().trim();
+        
         
         if (ma.isEmpty() || ten.isEmpty()) throw new Exception("Vui lòng nhập Mã và Tên!");
 
@@ -124,7 +121,7 @@ public class KhachHangView extends JPanel {
             throw new Exception("Điểm tích lũy phải là số nguyên!");
         }
 
-        return new KhachHang(ma, ten, sdt, gioitinh, email, ngaySinh, diem, taikhoan, matkhau);
+        return new KhachHang(ma, ten, sdt, gioitinh, email, ngaySinh, diem);
     }
     
     public String getTuKhoaTimKiem() { return txtTimKiem.getText().trim(); }
@@ -145,7 +142,7 @@ public class KhachHangView extends JPanel {
             tableModel.addRow(new Object[]{
                 k.getMaKH(), k.getHoTen(), k.getSdt(), 
                 k.getGioiTinh(), k.getEmail(), k.getNgaySinh(),
-                k.getDiemtichluy(), k.getTaikhoan(), k.getMatkhau()
+                k.getDiemtichluy()
             });
         }
     }
@@ -164,10 +161,8 @@ public class KhachHangView extends JPanel {
             
             // Đổ dữ liệu mới
             txtDiemTichLuy.setText(tblKhachHang.getValueAt(row, 6).toString());
-            txtTaiKhoan.setText(tblKhachHang.getValueAt(row, 7).toString());
-            txtMatKhau.setText(tblKhachHang.getValueAt(row, 8).toString());
             
-            txtMaKH.setEnabled(false);
+           
         }
     }
 
@@ -180,8 +175,7 @@ public class KhachHangView extends JPanel {
         cbGioiTinh.setSelectedIndex(0);
         
         txtDiemTichLuy.setText("0");
-        txtTaiKhoan.setText("");
-        txtMatKhau.setText("");
+        
         
         txtMaKH.setEnabled(true);
         tblKhachHang.clearSelection();

@@ -10,13 +10,11 @@ public class KhachHang {
     private String email;
     private LocalDate ngaySinh; 
     private int diemtichluy; // Mới
-    private String taikhoan; // Mới
-    private String matkhau;  // Mới
     
     public KhachHang() {
     }
 
-    public KhachHang(String maKH, String hoTen, String sdt, String gioiTinh, String email, LocalDate ngaySinh, int diemtichluy, String taikhoan, String matkhau) {
+    public KhachHang(String maKH, String hoTen, String sdt, String gioiTinh, String email, LocalDate ngaySinh, int diemtichluy) {
         this.maKH = maKH;
         this.hoTen = hoTen;
         this.sdt = sdt;
@@ -24,8 +22,7 @@ public class KhachHang {
         this.email = email;
         this.ngaySinh = ngaySinh;
         this.diemtichluy = diemtichluy;
-        this.taikhoan = taikhoan;
-        this.matkhau = matkhau;
+
     }
 
     // Getters và Setters
@@ -50,15 +47,4 @@ public class KhachHang {
     public int getDiemtichluy() { return diemtichluy; }
     public void setDiemtichluy(int diemtichluy) { this.diemtichluy = diemtichluy; }
 
-    public String getTaikhoan() { return taikhoan; }
-    public void setTaikhoan(String taikhoan) { this.taikhoan = taikhoan; }
-
-    public String getMatkhau() { return matkhau; }
-    public void setMatkhau(String matkhau) { this.matkhau = matkhau; }
-
-    @Override
-    public String toString() {
-        // Đã sửa makhachhang -> maKH để không bị lỗi
-        return "[" + maKH + "] - [" + hoTen + "]";
-    }
 }

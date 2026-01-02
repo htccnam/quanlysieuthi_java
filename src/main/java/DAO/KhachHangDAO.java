@@ -9,9 +9,9 @@ public class KhachHangDAO {
     
     // 1. Thêm Khách Hàng (Cập nhật SQL mới)
     public boolean addKhachHang(KhachHang kh) throws Exception {
-        // Lưu ý: Tôi vẫn để cột 'gioitinh' vào vì trong Model bạn có. 
+        
         // Nếu DB không có cột này thì bạn xóa đi nhé.
-        String sql = "INSERT INTO khachhang(makhachhang, tenkhachhang, sodienthoai, gioitinh, email, ngaysinh, diemtichluy, taikhoan, matkhau) VALUES(?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO khachhang(makhachhang, tenkhachhang, sodienthoai, gioitinh, email, ngaysinh, diemtichluy) VALUES(?,?,?,?,?,?,?)";
         
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -29,8 +29,6 @@ public class KhachHangDAO {
             }
             
             ps.setInt(7, kh.getDiemtichluy());
-            ps.setString(8, kh.getTaikhoan());
-            ps.setString(9, kh.getMatkhau());
             
             return ps.executeUpdate() > 0;
         }
@@ -38,7 +36,7 @@ public class KhachHangDAO {
 
     // 2. Sửa Khách Hàng (Update theo makhachhang)
     public boolean updateKhachHang(KhachHang kh) throws Exception {
-        String sql = "UPDATE khachhang SET tenkhachhang=?, sodienthoai=?, gioitinh=?, email=?, ngaysinh=?, diemtichluy=?, taikhoan=?, matkhau=? WHERE makhachhang=?";
+        String sql = "UPDATE khachhang SET tenkhachhang=?, sodienthoai=?, gioitinh=?, email=?, ngaysinh=?, diemtichluy=? WHERE makhachhang=?";
         
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -55,10 +53,8 @@ public class KhachHangDAO {
             }
             
             ps.setInt(6, kh.getDiemtichluy());
-            ps.setString(7, kh.getTaikhoan());
-            ps.setString(8, kh.getMatkhau());
             
-            ps.setString(9, kh.getMaKH()); // Điều kiện WHERE
+            ps.setString(7, kh.getMaKH()); // Điều kiện WHERE
             
             return ps.executeUpdate() > 0;
         }
@@ -102,10 +98,8 @@ public class KhachHangDAO {
                     kh.setNgaySinh(sqlDate.toLocalDate());
                 }
                 
-                // Lấy 3 trường mới
+                // Lấy 1 trường mới
                 kh.setDiemtichluy(rs.getInt("diemtichluy"));
-                kh.setTaikhoan(rs.getString("taikhoan"));
-                kh.setMatkhau(rs.getString("matkhau"));
                 
                 list.add(kh);
             }
