@@ -63,7 +63,7 @@ public class DonHangDAO {
 
         while (rs.next()) {
             DonHang dh = new DonHang(
-                rs.getInt("MaDonHang"),
+                rs.getString("MaDonHang"),
                 rs.getDate("NgayLap"),
                 rs.getString("MaKH"),
                 rs.getString("MaNV"),
