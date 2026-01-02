@@ -117,8 +117,7 @@ public class manhinhchinhController {
             try {
                 // Tạo View - Model - Controller cho Nhà Cung Cấp
                 NhaCungCapView nccView = new NhaCungCapView();
-                NhaCungCapModel nccModel = new NhaCungCapModel();
-                new NhaCungCapController(nccModel, nccView);
+                new NhaCungCapController(nccView);
                 
                 // Hiển thị
                 menu.showpanel(nccView);
