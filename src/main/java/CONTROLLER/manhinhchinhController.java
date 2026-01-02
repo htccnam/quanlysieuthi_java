@@ -66,7 +66,7 @@ public class manhinhchinhController {
         }
         
     }
-       private class clickQuanLyTinTuc implements ActionListener{
+      
     private class clickChucVu implements ActionListener{
 
         @Override
