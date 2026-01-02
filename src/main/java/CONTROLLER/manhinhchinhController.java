@@ -7,10 +7,10 @@ package CONTROLLER;
 import BAR.manhinhchinh;
 import MODEL.DonHang;
 import MODEL.LoaiHangModel;
-import VIEW.BanHangView;
 import MODEL.NhaCungCapModel;
 import MODEL.SanPhamModel;
-import VIEW.BanHangView;
+import VIEW.ChiTietView;
+import MODEL.DonHang;
 import VIEW.LoaiHangView;
 import VIEW.NhaCungCapView;
 import VIEW.SanPhamView;
@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
  */
 public class manhinhchinhController {
     final manhinhchinh menu;
+    final DonHang dh = new DonHang();
 
     public manhinhchinhController(manhinhchinh view) {
         this.menu= view;
@@ -78,8 +79,7 @@ public class manhinhchinhController {
         @Override
         public void actionPerformed(ActionEvent e) {
             LoaiHangView lhView = new LoaiHangView();
-            LoaiHangModel lhModel = new LoaiHangModel();
-            new LoaiHangController(lhModel, lhView);
+            new LoaiHangController(lhView);
             menu.showpanel(lhView);
         }
     }
@@ -87,27 +87,16 @@ public class manhinhchinhController {
     private class clickChiTietListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            BanHangView bhView = null;
-            try {
-                bhView = new BanHangView();
-            } catch (Exception ex) {
-                Logger.getLogger(manhinhchinhController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            DonHang dhModel = new DonHang();
-            try {
-                new BanHangController(bhView);
-            } catch (Exception ex) {
-                Logger.getLogger(manhinhchinhController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            menu.showpanel(bhView);
+            ChiTietView ctView = new ChiTietView();
+            new ChiTietController(ctView, dh.getMaDonHang());
+            menu.showpanel(ctView);
         }
     }
     
     private class clickTaoDonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            TaoDonView tdView = new TaoDonView();
-            new TaoDonController(tdView);
+            TaoDonView tdView = new TaoDonView();           
             menu.showpanel(tdView);
         }
     }

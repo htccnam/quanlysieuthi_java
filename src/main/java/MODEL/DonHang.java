@@ -3,7 +3,7 @@ package MODEL;
 import java.sql.Date;
 
 public class DonHang {
-    private int maDonHang;
+    private String maDonHang;
     private Date ngayLap;
     private String maKH;
     private String maNV;
@@ -11,7 +11,7 @@ public class DonHang {
 
     public DonHang() {}
 
-    public DonHang(int maDonHang, Date ngayLap, String maKH, String maNV, double tongTien) {
+    public DonHang(String maDonHang, Date ngayLap, String maKH, String maNV, double tongTien) {
         this.maDonHang = maDonHang;
         this.ngayLap = ngayLap;
         this.maKH = maKH;
@@ -20,8 +20,8 @@ public class DonHang {
     }
 
     // Getter / Setter
-    public int getMaDonHang() { return maDonHang; }
-    public void setMaDonHang(int maDonHang) { this.maDonHang = maDonHang; }
+    public String getMaDonHang() { return maDonHang; }
+    public void setMaDonHang(String maDonHang) { this.maDonHang = maDonHang; }
 
     public Date getNgayLap() { return ngayLap; }
     public void setNgayLap(Date ngayLap) { this.ngayLap = ngayLap; }
