@@ -78,8 +78,7 @@ public class manhinhchinhController {
         @Override
         public void actionPerformed(ActionEvent e) {
             LoaiHangView lhView = new LoaiHangView();
-            LoaiHangModel lhModel = new LoaiHangModel();
-            new LoaiHangController(lhModel, lhView);
+            new LoaiHangController(lhView);
             menu.showpanel(lhView);
         }
     }
