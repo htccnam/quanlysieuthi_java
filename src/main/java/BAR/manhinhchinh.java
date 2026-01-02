@@ -36,7 +36,6 @@ public class manhinhchinh extends JFrame {
 
     public manhinhchinh() {
         setTitle("HỆ THỐNG QUẢN LÝ SIÊU THỊ");
-        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(1200, 1000);
