@@ -87,8 +87,7 @@ public class manhinhchinhController {
     private class clickChiTietListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            ChiTietView ctView = new ChiTietView();
-            new ChiTietController(ctView, dh.getMaDonHang());
+            ChiTietView ctView = new ChiTietView();           
             menu.showpanel(ctView);
         }
     }
