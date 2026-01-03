@@ -100,6 +100,9 @@ public class nhanvienController {
                 JOptionPane.showMessageDialog(views, "mã nhân viên không được để trống");
                 return;
             }
+            if(textTenNhanVienString.isEmpty()){
+                JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
+            }
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, soDienThoaiString, textemailString, textdiachiString, tachchuoiString);
 
             try {
@@ -128,6 +131,9 @@ public class nhanvienController {
             String textMaChucVuString = views.chucvuBox.getSelectedItem().toString().trim();
             String tachchuoiString = textMaChucVuString.split("-")[0].trim();
 
+             if(textTenNhanVienString.isEmpty()){
+                JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
+            }
             String textMaNhanVienString = views.manhanvienField.getText();
             
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaysinhDate, textGioiTinhString, textSoDienThoaiString, textEmailString, textDiaChiString, tachchuoiString);
@@ -205,9 +211,6 @@ public class nhanvienController {
                         nv.getMachucvuString()
                     });
                 }
-                
-
-
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(views, "lỗi tìm kiếm:"+exception.getMessage());
             }
