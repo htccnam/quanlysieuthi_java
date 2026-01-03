@@ -23,12 +23,12 @@ public class KhachHangView extends JPanel {
     private JTable tblKhachHang;
     private DefaultTableModel tableModel;
 
-    // Font chữ chuẩn
+
     private final Font fontLabel = new Font("Segoe UI", Font.BOLD, 14);
     private final Font fontInput = new Font("Segoe UI", Font.PLAIN, 14);
     private final Font fontButton = new Font("Segoe UI", Font.BOLD, 13);
     
-    // Màu sắc chủ đạo
+
     private final Color colorPrimary = new Color(0, 102, 204); // Xanh dương đậm
     private final Color colorSuccess = new Color(40, 167, 69); // Xanh lá
     private final Color colorDanger = new Color(220, 53, 69);  // Đỏ
@@ -43,11 +43,10 @@ public class KhachHangView extends JPanel {
         this.setBackground(new Color(245, 248, 250)); // Màu nền xám nhạt dịu mắt
         this.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // --- 1. PANEL NHẬP LIỆU (NORTH) ---
         JPanel pnlTop = new JPanel(new BorderLayout(15, 15));
         pnlTop.setOpaque(false);
 
-        // Tiêu đề Panel
+
         TitledBorder borderTitle = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200)), 
                 " Thông Tin Khách Hàng ", 
@@ -80,7 +79,7 @@ public class KhachHangView extends JPanel {
         JPanel pnlFunc = new JPanel(new BorderLayout(10, 10));
         pnlFunc.setOpaque(false);
         
-        // Panel Nút bấm
+
         JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         pnlButtons.setOpaque(false);
         
@@ -96,7 +95,7 @@ public class KhachHangView extends JPanel {
         pnlButtons.add(btnLamMoi);
         pnlButtons.add(btnLichSu);
         
-        // Panel Tìm kiếm
+
         JPanel pnlSearch = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         pnlSearch.setOpaque(false);
         JLabel lblTim = new JLabel("Tìm kiếm:");
@@ -112,7 +111,7 @@ public class KhachHangView extends JPanel {
         pnlFunc.add(pnlButtons, BorderLayout.CENTER);
         pnlFunc.add(pnlSearch, BorderLayout.SOUTH);
 
-        // Gom Input và Chức năng lại
+
         pnlTop.add(pnlInput, BorderLayout.CENTER);
         pnlTop.add(pnlFunc, BorderLayout.SOUTH);
         
@@ -150,9 +149,9 @@ public class KhachHangView extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    // --- CÁC HÀM HỖ TRỢ TẠO UI ---
+
     
-    // Hàm tạo TextField đẹp
+
     private JTextField createTextField() {
         JTextField txt = new JTextField(18); // Độ rộng
         txt.setFont(fontInput);
@@ -160,7 +159,6 @@ public class KhachHangView extends JPanel {
         return txt;
     }
 
-    // Hàm tạo Button đẹp
     private JButton createButton(String text, String iconName, Color bgColor) {
         JButton btn = new JButton(text);
         btn.setFont(fontButton);
@@ -206,7 +204,7 @@ public class KhachHangView extends JPanel {
         p.add(input, gbc);
     }
 
-    // --- CÁC HÀM GET DỮ LIỆU TỪ FORM (LOGIC GIỮ NGUYÊN) ---
+    // --- CÁC HÀM GET DỮ LIỆU TỪ FORM (LOGIC GIỮ NGUYÊN) ---> Hàm đóng gói dữ liệu đầu vào
     public KhachHang getKhachHangFromForm() throws Exception {
         String ma = txtMaKH.getText().trim();
         String ten = txtHoTen.getText().trim();

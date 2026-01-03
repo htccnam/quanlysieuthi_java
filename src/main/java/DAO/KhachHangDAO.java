@@ -10,7 +10,7 @@ public class KhachHangDAO {
     // 1. Thêm Khách Hàng (Cập nhật SQL mới)
     public boolean addKhachHang(KhachHang kh) throws Exception {
         
-        // Nếu DB không có cột này thì bạn xóa đi nhé.
+        
         String sql = "INSERT INTO khachhang(makhachhang, tenkhachhang, sodienthoai, gioitinh, email, ngaysinh, diemtichluy) VALUES(?,?,?,?,?,?,?)";
         
         try (Connection con = DBConnection.getConnection();
