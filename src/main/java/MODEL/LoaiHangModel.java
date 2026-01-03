@@ -4,19 +4,33 @@
  */
 package MODEL;
 
+import DAO.LoaiHangDAO;
+import java.util.ArrayList;
+
 /**
  *
  * @author VŨ HÙNG HẢI
  */
 
-import DAO.LoaiHangDAO;
-import java.util.ArrayList;
-
 public class LoaiHangModel {
     private LoaiHangDAO dao = new LoaiHangDAO();
-
-    public ArrayList<LoaiHang> getList() { return dao.getAll(); }
-    public void add(LoaiHang lh) { dao.insert(lh); }
-    public void update(LoaiHang lh) { dao.update(lh); }
-    public void delete(String maLoai) { dao.delete(maLoai); }
+    public ArrayList<LoaiHang> getList(){
+        return dao.getAll();
+}
+    public void add(LoaiHang lh){
+        dao.insert(lh);
+    }
+    public void update(LoaiHang lh){
+        dao.update(lh);
+    }
+    public void delete(String ma){
+        dao.delete(ma);
+    }
+    public boolean checkExist(String ma){
+        LoaiHang lh = dao.checktrung(ma);
+        return lh!=null;
+    }
+    public ArrayList<LoaiHang> search(String keyword){
+        return dao.timkiem(keyword);
+    }
 }
