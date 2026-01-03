@@ -96,12 +96,21 @@ public class nhanvienController {
             String machucvuString = views.chucvuBox.getSelectedItem().toString().trim();
             String tachchuoiString = machucvuString.split("-")[0].trim();
 
+            if(textMaNhanVienString.matches(".+@gmail\\.com")){
+                JOptionPane.showMessageDialog(views, "email phải có đuôi @gmail.com");
+                return;
+            }
+            if(!soDienThoaiString.startsWith("0") || soDienThoaiString.length()!=10){
+                JOptionPane.showMessageDialog(views, "số điện thoại phải bắt đầu bằng số 0 và có 10 số");
+                return;
+            }
             if(textMaNhanVienString.isEmpty()){
                 JOptionPane.showMessageDialog(views, "mã nhân viên không được để trống");
                 return;
             }
             if(textTenNhanVienString.isEmpty()){
                 JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
+                return;
             }
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, soDienThoaiString, textemailString, textdiachiString, tachchuoiString);
 
