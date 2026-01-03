@@ -96,8 +96,20 @@ public class nhanvienController {
             String machucvuString = views.chucvuBox.getSelectedItem().toString().trim();
             String tachchuoiString = machucvuString.split("-")[0].trim();
 
+            if(textMaNhanVienString.matches(".+@gmail\\.com")){
+                JOptionPane.showMessageDialog(views, "email phải có đuôi @gmail.com");
+                return;
+            }
+            if(!soDienThoaiString.startsWith("0") || soDienThoaiString.length()!=10){
+                JOptionPane.showMessageDialog(views, "số điện thoại phải bắt đầu bằng số 0 và có 10 số");
+                return;
+            }
             if(textMaNhanVienString.isEmpty()){
                 JOptionPane.showMessageDialog(views, "mã nhân viên không được để trống");
+                return;
+            }
+            if(textTenNhanVienString.isEmpty()){
+                JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
                 return;
             }
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, soDienThoaiString, textemailString, textdiachiString, tachchuoiString);
@@ -128,6 +140,9 @@ public class nhanvienController {
             String textMaChucVuString = views.chucvuBox.getSelectedItem().toString().trim();
             String tachchuoiString = textMaChucVuString.split("-")[0].trim();
 
+             if(textTenNhanVienString.isEmpty()){
+                JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
+            }
             String textMaNhanVienString = views.manhanvienField.getText();
             
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaysinhDate, textGioiTinhString, textSoDienThoaiString, textEmailString, textDiaChiString, tachchuoiString);
@@ -205,9 +220,6 @@ public class nhanvienController {
                         nv.getMachucvuString()
                     });
                 }
-                
-
-
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(views, "lỗi tìm kiếm:"+exception.getMessage());
             }

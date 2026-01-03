@@ -38,7 +38,7 @@ public class nhanvienDAO {
             pr.setString(6, nhanvien.getEmailString());
             pr.setString(7, nhanvien.getDiachiString());
             pr.setString(8, nhanvien.getMachucvuString());
-
+            
             if (pr.executeUpdate() > 0) {
                 return true;
             } else {

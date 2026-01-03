@@ -7,6 +7,7 @@ package VIEW;
 import com.mysql.cj.xdevapi.Table;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.demo.DateChooserPanel;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -49,6 +50,7 @@ public class khuyenmaiView extends JPanel {
 
     public khuyenmaiView() {
         setLayout(null);
+        setPreferredSize(new Dimension(1200,900));
 
         //makhuyenmai
         JLabel matintucJLabel = new JLabel("Mã khuyến mại:");
@@ -150,9 +152,9 @@ public class khuyenmaiView extends JPanel {
         khuyenmaiHeader.setFont(new Font("Arial",Font.BOLD,18));
         khuyenmaiHeader.setBackground(Color.green);
         
-        JScrollPane tintucPane = new JScrollPane(khuyenmaiJTable);
-        tintucPane.setBounds(50, 350, 900, 500);
-        add(tintucPane);
+        JScrollPane khuyenmaiJScrollPane = new JScrollPane(khuyenmaiJTable);
+        khuyenmaiJScrollPane.setBounds(50, 350, 800, 500);
+        add(khuyenmaiJScrollPane);
     }
 
     public void addcellClickListener(MouseListener listener) {

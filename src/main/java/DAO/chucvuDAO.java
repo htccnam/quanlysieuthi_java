@@ -98,7 +98,7 @@ public class chucvuDAO {
         }
         return list;
     }
-    public boolean checkTrungMaChucVu(String machucvuString){
+    public boolean checkTrungMaChucVu(String machucvuString) throws Exception{
         String sqlString="select machucvu from chucvu where machucvu=?";
         try (Connection con=DBConnection.getConnection(); PreparedStatement pr =con.prepareStatement(sqlString); ){
             pr.setString(1, machucvuString);
@@ -109,8 +109,7 @@ public class chucvuDAO {
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+           throw e;
         }
     }
     public boolean checkXoaChucVu(String machucvuString){

@@ -15,6 +15,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -63,6 +65,23 @@ public class khuyenmaiController {
             String tenkhuyenmaiString = kmView.tenkhuyenmaiField.getText().toString().trim();
             String motaString = kmView.motaField.getText().toString().trim();
             LocalDate ngaytaoDate = kmView.ngaytaoChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            if(makhuyenmaiString.isEmpty()){
+                JOptionPane.showMessageDialog(kmView, "mã khuyến mại không được để trống");
+                return;
+            }
+            if(tenkhuyenmaiString.isEmpty()){
+                JOptionPane.showMessageDialog(kmView, "tên khuyến mại không được để trống");
+                return;
+            }
+            try {
+                if (kmDAO.checkTrungMaKhuyenMai(makhuyenmaiString)) {
+                    JOptionPane.showMessageDialog(kmView, "mã khuyến mại đã tồn tại");
+                    return;
+                }
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(kmView, "lỗi check trùng mã khuyến mại" + exception.getMessage());
+            }
 
             khuyenmai km = new khuyenmai(makhuyenmaiString, tenkhuyenmaiString, motaString, ngaytaoDate);
             try {
@@ -130,7 +149,7 @@ public class khuyenmaiController {
             kmView.ngaytaoChooser.setDate(Date.valueOf(LocalDate.now()));
 
             kmView.timkiemField.setText("");
-            
+
             load_table();
         }
 

@@ -23,17 +23,19 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Admin
  */
 public class manhinhchinhController {
+
     final manhinhchinh menu;
     final DonHang dh = new DonHang();
 
     public manhinhchinhController(manhinhchinh view) {
-        this.menu= view;
+        this.menu = view;
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickQuanLyChucVu(new clickChucVu());
         menu.addClickQuanLyKhuyenMai(new clickQuanLyKhuyenMai());
@@ -44,38 +46,45 @@ public class manhinhchinhController {
         menu.addClickDanhSachSanPham(new clickSanPhamListener());
         menu.setVisible(true);
     }
-    
-    private class clickNhanSuListener implements ActionListener{
+
+    private class clickNhanSuListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            nhanvienViews nhanvien=new nhanvienViews();
-            new nhanvienController(nhanvien);
+            nhanvienViews nhanvien = new nhanvienViews();
+//            new nhanvienController(nhanvien);
             menu.showpanel(nhanvien);
+            SwingUtilities.invokeLater(() -> {
+            new nhanvienController(nhanvien);
+        });
         }
-        
+
     }
-    private class clickChucVu implements ActionListener{
+
+    private class clickChucVu implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            chucvuView chucvu=new chucvuView();
-            chucvuController controller=new chucvuController(chucvu);
+            chucvuView chucvu = new chucvuView();
+            chucvuController controller = new chucvuController(chucvu);
             menu.showpanel(chucvu);
         }
-        
+
     }
-    private class clickQuanLyKhuyenMai implements ActionListener{
+
+    private class clickQuanLyKhuyenMai implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            khuyenmaiView km=new khuyenmaiView();
-            khuyenmaiController kmController=new khuyenmaiController(km);
+            khuyenmaiView km = new khuyenmaiView();
+            khuyenmaiController kmController = new khuyenmaiController(km);
             menu.showpanel(km);
         }
-        
+
     }
-    private class clickPhanLoaiHangListener implements ActionListener{
+
+    private class clickPhanLoaiHangListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             LoaiHangView lhView = new LoaiHangView();
@@ -83,24 +92,27 @@ public class manhinhchinhController {
             menu.showpanel(lhView);
         }
     }
-    
-    private class clickChiTietListener implements ActionListener{
+
+    private class clickChiTietListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             ChiTietView ctView = new ChiTietView();           
             menu.showpanel(ctView);
         }
     }
-    
-    private class clickTaoDonListener implements ActionListener{
+
+    private class clickTaoDonListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            TaoDonView tdView = new TaoDonView();           
+            TaoDonView tdView = new TaoDonView();
             menu.showpanel(tdView);
         }
     }
-    
+
     private class clickNhaCungCapListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -108,7 +120,7 @@ public class manhinhchinhController {
                 NhaCungCapView nccView = new NhaCungCapView();
                 NhaCungCapModel nccModel = new NhaCungCapModel();
                 new NhaCungCapController(nccView);
-                
+
                 // Hiển thị
                 menu.showpanel(nccView);
             } catch (Exception ex) {
@@ -117,7 +129,9 @@ public class manhinhchinhController {
             }
         }
     }
+
     private class clickSanPhamListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -131,10 +145,14 @@ public class manhinhchinhController {
             }
         }
     }
+
     public static void main(String[] args) {
-        manhinhchinh manhinh=new manhinhchinh();
-        manhinhchinhController controller=new manhinhchinhController(manhinh);
-        manhinh.setVisible(true);
-        
+        SwingUtilities.invokeLater(() -> {
+            manhinhchinh manhinh = new manhinhchinh();
+            new manhinhchinhController(manhinh);
+            manhinh.setLocationRelativeTo(null);
+            manhinh.setVisible(true);
+        });
+
     }
 }

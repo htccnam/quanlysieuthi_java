@@ -6,6 +6,7 @@ package VIEW;
 
 import com.sun.net.httpserver.Headers;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -39,6 +40,7 @@ public class chucvuView extends JPanel{
 
     public chucvuView() {
         setLayout(null);
+        setPreferredSize(new Dimension(1200,900));
         JLabel machucvuJLabel=new JLabel("Mã chức vụ:");
         machucvuJLabel.setBounds(300, 50, 200, 40);
         machucvuJLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -101,6 +103,7 @@ public class chucvuView extends JPanel{
         chucvuJTable=new JTable(chucvuDefaultTableModel);
         chucvuJTable.setFont(new Font("Arial",Font.BOLD,18));
         chucvuJTable.setBackground(Color.pink);
+        chucvuJTable.setRowHeight(30);
 
         JTableHeader chucvuHeader=chucvuJTable.getTableHeader();
         chucvuHeader.setFont(new Font("Arial",Font.BOLD,20));

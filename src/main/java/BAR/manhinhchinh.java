@@ -5,6 +5,7 @@
 package BAR;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.MenuItem;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -38,7 +39,7 @@ public class manhinhchinh extends JFrame {
         setTitle("HỆ THỐNG QUẢN LÝ SIÊU THỊ");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setSize(1200, 1000);
+        setSize(1800, 1000);
 
         hangHoaVaKhoJMenu = new JMenu("Hàng Hóa và kho");
         danhSachSanPham = new JMenuItem("danh sách sản phẩm");
@@ -79,6 +80,7 @@ public class manhinhchinh extends JFrame {
         setJMenuBar(bar);
 
         containerJPanel = new JPanel(new BorderLayout());
+        containerJPanel.setPreferredSize(new Dimension(1200, 900)); // 👈 QUAN TRỌNG
         add(containerJPanel, BorderLayout.CENTER);
 
     }
@@ -86,7 +88,7 @@ public class manhinhchinh extends JFrame {
     //hàm hiển thị panel đổ xuông màn hình chính;
     public void showpanel(JPanel jP) {
         containerJPanel.removeAll();
-        containerJPanel.add(jP);
+        containerJPanel.add(jP,BorderLayout.CENTER);
         containerJPanel.revalidate();
         containerJPanel.repaint();
     }
