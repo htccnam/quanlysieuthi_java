@@ -97,8 +97,7 @@ public class manhinhchinhController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ChiTietView ctView = new ChiTietView();
-            new ChiTietController(ctView, dh.getMaDonHang());
+            ChiTietView ctView = new ChiTietView();           
             menu.showpanel(ctView);
         }
     }
@@ -137,9 +136,8 @@ public class manhinhchinhController {
         public void actionPerformed(ActionEvent e) {
             try {
                 SanPhamView spView = new SanPhamView();
-                SanPhamModel spModel = new SanPhamModel();
-                new SanPhamController(spModel, spView);
-
+                new SanPhamController(spView);
+                
                 menu.showpanel(spView);
             } catch (Exception ex) {
                 ex.printStackTrace();
