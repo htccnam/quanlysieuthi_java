@@ -8,7 +8,7 @@ public class TaoDonView extends JPanel {
 
     // ===== Components cần controller dùng =====
     private JTextField txtMaDon, txtNgayGD, txtTimKiem, txtTenSP;
-    private JComboBox<String> cboBanHang, cboThanhToan, cboMaNV, cboMaKM;
+    private JComboBox<String> cboBanHang, cboThanhToan, cboNV, cboMaKM, cboKH;
     private JTable table;
     private JLabel lblTongTien, lblTamTinh, lblKM;
     private JSpinner spinner;
@@ -37,11 +37,13 @@ public class TaoDonView extends JPanel {
 
         txtMaDon = new JTextField("DH-2023-001");
         txtNgayGD = new JTextField();
-        cboMaNV = new JComboBox<>(new String[]{"--Chọn nhân viên--"});
+        cboNV = new JComboBox<>(new String[]{"--Chọn nhân viên--"});
+        cboKH = new JComboBox<>(new String[]{"--Chọn khách hàng--"});
         cboMaKM = new JComboBox<>(new String[]{"Không áp dụng", "Áp dụng"});
         cboBanHang = new JComboBox<>(new String[]{"Online", "Offline"});
         cboThanhToan = new JComboBox<>(new String[]{"Tiền mặt", "Chuyển khoản"});
 
+        //Hàng 0
         g.gridx = 0; g.gridy = 0;
         p.add(new JLabel("Mã đơn hàng"), g);
         
@@ -58,8 +60,15 @@ public class TaoDonView extends JPanel {
         p.add(new JLabel("Nhân viên"), g);
 
         g.gridx = 5;
-        p.add(cboMaNV, g);
+        p.add(cboNV, g);
         
+        g.gridx = 6;
+        p.add(new JLabel("Khách hàng"), g);
+
+        g.gridx = 7;
+        p.add(cboKH, g);
+        
+        //Hàng 1
         g.gridx = 0; g.gridy = 1;
         p.add(new JLabel("Phương thức bán"), g);
         
@@ -93,17 +102,33 @@ public class TaoDonView extends JPanel {
         top.add(new JLabel("Tìm sản phẩm:"));
         txtTimKiem = new JTextField(20);
         top.add(txtTimKiem);
+        
         top.add(new JLabel("Tên sản phẩm:"));
         txtTenSP = new JTextField(20);
         txtTenSP.setEditable(false);
         top.add(txtTenSP);
+        
         top.add(new JLabel("Số lượng:"));
         spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1)); //(value, min, max, stepSize)
         spinner.setPreferredSize(new Dimension(40, 25));
         top.add(spinner);
+        
         JButton btnThem = new JButton("+ Thêm");
+        btnThem.setBackground(new Color(59, 130, 246));
+        btnThem.setForeground(Color.WHITE);
+        btnThem.setBorderPainted(false);
+        btnThem.setFocusPainted(false);
+        btnThem.setFont(new Font("Arial", Font.BOLD, 13));
         top.add(btnThem);
 
+        JButton btnXoa = new JButton("- Xóa");
+        btnXoa.setBackground(new Color(239, 68, 68));
+        btnXoa.setForeground(Color.WHITE);
+        btnXoa.setBorderPainted(false);
+        btnXoa.setFocusPainted(false);
+        btnXoa.setFont(new Font("Arial", Font.BOLD, 13));
+        top.add(btnXoa);
+        
         // ---- Table ----
         String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
         DefaultTableModel model = new DefaultTableModel(cols, 0);
@@ -136,10 +161,16 @@ public class TaoDonView extends JPanel {
         lblKM = new JLabel("Giảm giá: 100,000 đ");
         JButton btnLuu = new JButton("Lưu đơn hàng");
         
+        btnLuu.setBackground(new Color(59, 130, 246));
+        btnLuu.setForeground(Color.WHITE);
+        btnLuu.setBorderPainted(false);
+        btnLuu.setFocusPainted(false);
+        btnLuu.setFont(new Font("Arial", Font.BOLD, 15));
+        
         lblTongTien.setFont(lblTongTien.getFont().deriveFont(Font.BOLD, 16f));
         lblTamTinh.setFont(lblTongTien.getFont().deriveFont(Font.BOLD, 16f));
         lblKM.setFont(lblTongTien.getFont().deriveFont(Font.BOLD, 16f));
-        lblTongTien.setForeground(new Color(33, 150, 243));
+        lblTongTien.setForeground(new Color(22, 163, 74));
 
         left.add(lblTamTinh);
         left.add(Box.createVerticalStrut(10));
@@ -167,6 +198,8 @@ public class TaoDonView extends JPanel {
     public JTextField getTxtMaDon() {
         return txtMaDon;
     }
+    
+    
 }
 
 
