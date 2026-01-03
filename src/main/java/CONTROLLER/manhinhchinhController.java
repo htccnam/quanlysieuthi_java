@@ -17,7 +17,7 @@ import VIEW.SanPhamView;
 import VIEW.TaoDonView;
 import VIEW.chucvuView;
 import VIEW.nhanvienViews;
-import VIEW.tintucView;
+import VIEW.khuyenmaiView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -36,7 +36,7 @@ public class manhinhchinhController {
         this.menu= view;
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickQuanLyChucVu(new clickChucVu());
-        menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
+        menu.addClickQuanLyKhuyenMai(new clickQuanLyKhuyenMai());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.addClickTaoDonMoi(new clickTaoDonListener());
         menu.addClickChiTiet(new clickChiTietListener());
@@ -65,13 +65,13 @@ public class manhinhchinhController {
         }
         
     }
-    private class clickQuanLyTinTuc implements ActionListener{
+    private class clickQuanLyKhuyenMai implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            tintucView tintuc=new tintucView();
-            tintucController ttController=new tintucController(tintuc);
-            menu.showpanel(tintuc);
+            khuyenmaiView km=new khuyenmaiView();
+            khuyenmaiController kmController=new khuyenmaiController(km);
+            menu.showpanel(km);
         }
         
     }
@@ -107,6 +107,7 @@ public class manhinhchinhController {
             try {
                 // Tạo View - Model - Controller cho Nhà Cung Cấp
                 NhaCungCapView nccView = new NhaCungCapView();
+                NhaCungCapModel nccModel = new NhaCungCapModel();
                 new NhaCungCapController(nccView);
                 
                 // Hiển thị
