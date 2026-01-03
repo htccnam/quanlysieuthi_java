@@ -1,111 +1,136 @@
 package VIEW;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import com.toedter.calendar.JDateChooser; // Import thư viện lịch
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import com.toedter.calendar.JDateChooser; // Import thư viện Lịch
-
-// Import Model để dùng cho ComboBox
-import MODEL.LoaiHang;
-import MODEL.NhaCungCap;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class SanPhamView extends JPanel {
+
+    // 1. Khai báo các thành phần
     public JTextField txtMaSP = new JTextField();
     public JTextField txtTenSP = new JTextField();
     
-    // Thay TextField bằng ComboBox
-    public JComboBox<LoaiHang> cbbLoaiHang = new JComboBox<>();
-    public JComboBox<NhaCungCap> cbbNhaCungCap = new JComboBox<>();
+// Đổi String -> Object
+    public JComboBox<Object> cboLoai = new JComboBox<>();
+    public JComboBox<Object> cboNCC = new JComboBox<>();
     
     public JTextField txtXuatXu = new JTextField();
     public JTextField txtSoLuong = new JTextField();
     
-    // Thay TextField bằng JDateChooser (Lịch)
-    public JDateChooser dateNgaySX = new JDateChooser();
-    public JDateChooser dateHanSD = new JDateChooser();
+    // --- THAY ĐỔI Ở ĐÂY: Dùng JDateChooser thay cho JTextField ---
+    public JDateChooser txtNgaySX = new JDateChooser();
+    public JDateChooser txtHanSD = new JDateChooser(); 
     
-    // ComboBox Tình trạng (Cố định)
-    public JComboBox<String> cbbTinhTrang = new JComboBox<>(new String[]{"Tốt", "Đã hết hạn"});
-    
+
+    public JComboBox<String> cboTinhTrang = new JComboBox<>(new String[] { "Tốt", "Đã hết hạn" });
     public JTextField txtGiaNhap = new JTextField();
     public JTextField txtGiaBan = new JTextField();
-    public JTextField txtDVT = new JTextField();
+    public JTextField txtDonViTinh = new JTextField();
+    
+    // Ô tìm kiếm
+    public JTextField txtTimKiem = new JTextField();
 
+    // 2. Các nút chức năng
+    public JButton btnTimKiem = new JButton("Tìm Kiếm");
     public JButton btnAdd = new JButton("Thêm");
     public JButton btnEdit = new JButton("Sửa");
     public JButton btnDelete = new JButton("Xóa");
     public JButton btnReset = new JButton("Làm mới");
 
+    // 3. Bảng dữ liệu
     public JTable table;
     public DefaultTableModel tableModel;
 
     public SanPhamView() {
         setLayout(null);
-        
-        JLabel title = new JLabel("QUẢN LÝ DANH SÁCH SẢN PHẨM");
+        setBounds(0, 0, 1000, 750); 
+
+        // --- TIÊU ĐỀ ---
+        JLabel title = new JLabel("QUẢN LÝ SẢN PHẨM");
         title.setFont(new Font("Arial", Font.BOLD, 24));
-        title.setBounds(350, 10, 500, 30);
+        title.setForeground(Color.BLUE);
+        title.setBounds(350, 10, 400, 30);
         add(title);
 
-        // --- CỘT 1 ---
-        int col1_x = 20, col1_val = 100;
-        addLabel("Mã SP:", col1_x, 60);     addInput(txtMaSP, col1_val, 60);
-        addLabel("Tên SP:", col1_x, 100);    addInput(txtTenSP, col1_val, 100);
-        addLabel("Loại:", col1_x, 140);      addComponent(cbbLoaiHang, col1_val, 140); // Dùng hàm addComponent
-        addLabel("NCC:", col1_x, 180);       addComponent(cbbNhaCungCap, col1_val, 180);
 
-        // --- CỘT 2 ---
-        int col2_x = 320, col2_val = 400;
-        addLabel("Xuất xứ:", col2_x, 60);    addInput(txtXuatXu, col2_val, 60);
-        addLabel("Số lượng:", col2_x, 100);  addInput(txtSoLuong, col2_val, 100);
+         txtNgaySX.setDateFormatString("dd-MM-yyyy"); 
+         txtHanSD.setDateFormatString("dd-MM-yyyy");
+
+        // --- CỘT TRÁI (6 trường) ---
+        int x1 = 30, yStart = 60, wLabel = 100, wText = 250, gap = 40;
         
-        // Setup định dạng ngày tháng hiển thị
-        dateNgaySX.setDateFormatString("yyyy-MM-dd");
-        dateHanSD.setDateFormatString("yyyy-MM-dd");
-        addLabel("Ngày SX:", col2_x, 140);   addComponent(dateNgaySX, col2_val, 140);
-        addLabel("Hạn SD:", col2_x, 180);    addComponent(dateHanSD, col2_val, 180);
+        addLabel("Mã SP:", x1, yStart);            add(txtMaSP); txtMaSP.setBounds(x1 + wLabel, yStart, wText, 25);
+        addLabel("Tên SP:", x1, yStart + gap);     add(txtTenSP); txtTenSP.setBounds(x1 + wLabel, yStart + gap, wText, 25);
+        addLabel("Loại Hàng:", x1, yStart + gap*2); add(cboLoai); cboLoai.setBounds(x1 + wLabel, yStart + gap*2, wText, 25);
+        addLabel("Nhà CC:", x1, yStart + gap*3);   add(cboNCC); cboNCC.setBounds(x1 + wLabel, yStart + gap*3, wText, 25);
+        addLabel("Xuất Xứ:", x1, yStart + gap*4);  add(txtXuatXu); txtXuatXu.setBounds(x1 + wLabel, yStart + gap*4, wText, 25);
+        addLabel("Số Lượng:", x1, yStart + gap*5); add(txtSoLuong); txtSoLuong.setBounds(x1 + wLabel, yStart + gap*5, wText, 25);
 
-        // --- CỘT 3 ---
-        int col3_x = 620, col3_val = 700;
-        addLabel("Tình trạng:", col3_x, 60); addComponent(cbbTinhTrang, col3_val, 60);
-        addLabel("Giá nhập:", col3_x, 100);  addInput(txtGiaNhap, col3_val, 100);
-        addLabel("Giá bán:", col3_x, 140);   addInput(txtGiaBan, col3_val, 140);
-        addLabel("Đơn vị:", col3_x, 180);    addInput(txtDVT, col3_val, 180);
+        // --- CỘT PHẢI (6 trường) ---
+        int x2 = 450; // Dời sang phải
+        
+        // Thay thế Textbox bằng JDateChooser
+        addLabel("Ngày SX:", x2, yStart);          add(txtNgaySX); txtNgaySX.setBounds(x2 + wLabel, yStart, wText, 25);
+        addLabel("Hạn SD:", x2, yStart + gap);     add(txtHanSD); txtHanSD.setBounds(x2 + wLabel, yStart + gap, wText, 25);
 
-        // Nút bấm
-        int yBtn = 240;
-        btnAdd.setBounds(300, yBtn, 100, 30);
-        btnEdit.setBounds(420, yBtn, 100, 30);
-        btnDelete.setBounds(540, yBtn, 100, 30);
-        btnReset.setBounds(660, yBtn, 100, 30);
+        addLabel("Tình Trạng:", x2, yStart + gap*2); add(cboTinhTrang); cboTinhTrang.setBounds(x2 + wLabel, yStart + gap*2, wText, 25);
+        addLabel("Giá Nhập:", x2, yStart + gap*3);   add(txtGiaNhap); txtGiaNhap.setBounds(x2 + wLabel, yStart + gap*3, wText, 25);
+        addLabel("Giá Bán:", x2, yStart + gap*4);    add(txtGiaBan); txtGiaBan.setBounds(x2 + wLabel, yStart + gap*4, wText, 25);
+        addLabel("Đơn Vị:", x2, yStart + gap*5);     add(txtDonViTinh); txtDonViTinh.setBounds(x2 + wLabel, yStart + gap*5, wText, 25);
+
+        // --- CÁC NÚT CHỨC NĂNG ---
+        int yBtn = 320;
+        btnAdd.setBounds(250, yBtn, 100, 35);
+        btnEdit.setBounds(370, yBtn, 100, 35);
+        btnDelete.setBounds(490, yBtn, 100, 35);
+        btnReset.setBounds(610, yBtn, 100, 35);
+        
         add(btnAdd); add(btnEdit); add(btnDelete); add(btnReset);
 
-        // Bảng
-        String[] cols = {"Mã", "Tên", "Loại", "NCC", "Xuất xứ", "SL", "NSX", "HSD", "Tình trạng", "Giá nhập", "Giá bán", "ĐVT"};
+        // --- TÌM KIẾM ---
+        JLabel lbTim = new JLabel("Tìm kiếm:");
+        lbTim.setBounds(150, 370, 80, 30);
+        add(lbTim);
+        
+        txtTimKiem.setBounds(230, 370, 400, 30);
+        add(txtTimKiem);
+        
+        btnTimKiem.setBounds(650, 370, 100, 30);
+        add(btnTimKiem);
+
+        // --- BẢNG DỮ LIỆU ---
+        String[] cols = {
+            "Mã SP", "Tên SP", "Mã Loại", "Mã NCC", "Xuất Xứ", "Số Lượng",
+            "Ngày SX", "Hạn SD", "Tình Trạng", "Giá Nhập", "Giá Bán", "Đơn Vị"
+        };
         tableModel = new DefaultTableModel(cols, 0);
         table = new JTable(tableModel);
+        
         JScrollPane sp = new JScrollPane(table);
-        sp.setBounds(20, 300, 1140, 400);
+        sp.setBounds(20, 420, 940, 250); 
         add(sp);
     }
 
     private void addLabel(String text, int x, int y) {
-        JLabel lb = new JLabel(text); lb.setBounds(x, y, 80, 25); add(lb);
+        JLabel lb = new JLabel(text);
+        lb.setFont(new Font("Arial", Font.PLAIN, 14));
+        lb.setBounds(x, y, 100, 25);
+        add(lb);
     }
-    private void addInput(JTextField field, int x, int y) {
-        field.setBounds(x, y, 200, 25); add(field);
+
+    // --- HÀM THÔNG BÁO & SỰ KIỆN ---
+    public void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
-    // Hàm mới để add ComboBox và DateChooser
-    private void addComponent(JComponent comp, int x, int y) {
-        comp.setBounds(x, y, 200, 25); add(comp);
-    }
-    
-    public void showMessage(String msg) { JOptionPane.showMessageDialog(this, msg); }
+
     public void addAddListener(ActionListener l) { btnAdd.addActionListener(l); }
     public void addEditListener(ActionListener l) { btnEdit.addActionListener(l); }
     public void addDeleteListener(ActionListener l) { btnDelete.addActionListener(l); }
     public void addResetListener(ActionListener l) { btnReset.addActionListener(l); }
+    public void addSearchListener(ActionListener l) { btnTimKiem.addActionListener(l); }
     public void addTableMouseListener(MouseListener l) { table.addMouseListener(l); }
 }

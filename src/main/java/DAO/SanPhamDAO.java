@@ -5,30 +5,42 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SanPhamDAO {
-    
-    public ArrayList<SanPham> getAll() {
+    public ArrayList<SanPham> getAll(){
         ArrayList<SanPham> list = new ArrayList<>();
+        
         try {
             Connection c = DBConnection.getConnection();
-            ResultSet rs = c.createStatement().executeQuery("SELECT * FROM sanpham");
-            while (rs.next()) {
+            String sql = "SELECT * FROM sanpham";
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
                 list.add(new SanPham(
-                    rs.getString("masanpham"), rs.getString("tensanpham"),
-                    rs.getString("maloai"), rs.getString("manhacungcap"),
-                    rs.getString("xuatxu"), rs.getInt("soluong"),
-                    rs.getDate("ngaysanxuat"), rs.getDate("hansudung"),
-                    rs.getString("tinhtrang"), rs.getDouble("gianhap"),
-                    rs.getDouble("giaban"), rs.getString("donvitinh")
+                        rs.getString("masanpham"),
+                        rs.getString("tensanpham"),
+                        rs.getString("maloai"),
+                        rs.getString("manhacungcap"),
+                        rs.getString("xuatxu"),
+                        rs.getInt("soluong"),
+                        rs.getDate("ngaysanxuat"),
+                        rs.getDate("hansudung"),
+                        rs.getString("tinhtrang"),
+                        rs.getDouble("gianhap"),
+                        rs.getDouble("giaban"),
+                        rs.getString("donvitinh")
+                
+                
                 ));
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
-
-    public void insert(SanPham sp) {
-        String sql = "INSERT INTO sanpham VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    public void insert(SanPham sp){
         try {
             Connection c = DBConnection.getConnection();
+            String sql = "INSERT INTO sanpham VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, sp.getMaSP());
             ps.setString(2, sp.getTenSP());
@@ -42,14 +54,16 @@ public class SanPhamDAO {
             ps.setDouble(10, sp.getGiaNhap());
             ps.setDouble(11, sp.getGiaBan());
             ps.setString(12, sp.getDonViTinh());
+            
             ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    public void update(SanPham sp) {
-        String sql = "UPDATE sanpham SET tensanpham=?, maloai=?, manhacungcap=?, xuatxu=?, soluong=?, ngaysanxuat=?, hansudung=?, tinhtrang=?, gianhap=?, giaban=?, donvitinh=? WHERE masanpham=?";
+    public void update(SanPham sp){
         try {
             Connection c = DBConnection.getConnection();
+            String sql = "UPDATE sanpham SET tensanpham=? , maloai=? , manhacungcap=?,xuatxu=?,soluong=?,ngaysanxuat=?,hansudung=?,tinhtrang=?,gianhap=?,giaban=?,donvitinh=?  WHERE masanpham=?";
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, sp.getTenSP());
             ps.setString(2, sp.getMaLoai());
@@ -63,16 +77,67 @@ public class SanPhamDAO {
             ps.setDouble(10, sp.getGiaBan());
             ps.setString(11, sp.getDonViTinh());
             ps.setString(12, sp.getMaSP());
+            
             ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    public void delete(String maSP) {
+    public void delete(String maSP){
         try {
             Connection c = DBConnection.getConnection();
-            PreparedStatement ps = c.prepareStatement("DELETE FROM sanpham WHERE masanpham=?");
+            String sql = "DELETE FROM sanpham WHERE masanpham=?";
+            PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, maSP);
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
+        
     }
+    public SanPham checktrung(String ma) {
+        try {
+            Connection c = DBConnection.getConnection();
+            String sql = "SELECT * FROM sanpham WHERE masanpham=?";
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, ma);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return new SanPham(
+                    rs.getString("masanpham"), rs.getString("tensanpham"),
+                    rs.getString("maloai"), rs.getString("manhacungcap"),
+                    rs.getString("xuatxu"), rs.getInt("soluong"),
+                    rs.getDate("ngaysanxuat"), rs.getDate("hansudung"),
+                    rs.getString("tinhtrang"), rs.getDouble("gianhap"),
+                    rs.getDouble("giaban"), rs.getString("donvitinh")
+                );
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
+    public ArrayList<SanPham> timkiem(String keyword) {
+        ArrayList<SanPham> list = new ArrayList<>();
+        try {
+            Connection c = DBConnection.getConnection();
+            String sql = "SELECT * FROM sanpham WHERE tensanpham LIKE ? OR masanpham LIKE ?";
+            PreparedStatement ps = c.prepareStatement(sql);
+            
+            String str = "%" + keyword + "%";
+            ps.setString(1, str);
+            ps.setString(2, str);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new SanPham(
+                    rs.getString("masanpham"), rs.getString("tensanpham"),
+                    rs.getString("maloai"), rs.getString("manhacungcap"),
+                    rs.getString("xuatxu"), rs.getInt("soluong"),
+                    rs.getDate("ngaysanxuat"), rs.getDate("hansudung"),
+                    rs.getString("tinhtrang"), rs.getDouble("gianhap"),
+                    rs.getDouble("giaban"), rs.getString("donvitinh")
+                ));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+    
 }

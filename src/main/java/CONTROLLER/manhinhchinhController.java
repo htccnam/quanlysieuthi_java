@@ -122,8 +122,7 @@ public class manhinhchinhController {
         public void actionPerformed(ActionEvent e) {
             try {
                 SanPhamView spView = new SanPhamView();
-                SanPhamModel spModel = new SanPhamModel();
-                new SanPhamController(spModel, spView);
+                new SanPhamController(spView);
                 
                 menu.showpanel(spView);
             } catch (Exception ex) {
