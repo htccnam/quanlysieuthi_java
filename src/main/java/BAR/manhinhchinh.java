@@ -26,8 +26,8 @@ public class manhinhchinh extends JFrame {
     JMenuItem taoDonMoi, ChiTietDonHang;
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
-    JMenu tinTucJMenu;
-    JMenuItem quanLyTinTuc;
+    JMenu khuyenmaiJMenu;
+    JMenuItem quanlykhuyenmai;
     JMenu nhanSuJMenu;
     JMenuItem quanLyNhanVien;
     JMenuItem chucvuItem;
@@ -59,9 +59,9 @@ public class manhinhchinh extends JFrame {
         khachHangJMenu.add(quanLyKhachHang);
         khachHangJMenu.setVisible(false);
         
-        tinTucJMenu = new JMenu("Tin tức");
-        quanLyTinTuc= new JMenuItem("Quản lý tin tức");
-        tinTucJMenu.add(quanLyTinTuc);
+        khuyenmaiJMenu = new JMenu("Khuyến mại");
+        quanlykhuyenmai= new JMenuItem("Quản lý khuyến mại");
+        khuyenmaiJMenu.add(quanlykhuyenmai);
         
         nhanSuJMenu = new JMenu("Nhân sự");
         quanLyNhanVien=new JMenuItem("Quản lý nhân viên");
@@ -74,7 +74,7 @@ public class manhinhchinh extends JFrame {
         bar.add(hangHoaVaKhoJMenu);
         bar.add(banHangJMenu);
         bar.add(khachHangJMenu);
-        bar.add(tinTucJMenu);
+        bar.add(khuyenmaiJMenu);
         bar.add(nhanSuJMenu);
         setJMenuBar(bar);
 
@@ -115,8 +115,8 @@ public class manhinhchinh extends JFrame {
         quanLyKhachHang.addActionListener(listener);
     }
 
-    public void addClickQuanLyTinTuc(ActionListener listener) {
-        quanLyTinTuc.addActionListener(listener);
+    public void addClickQuanLyKhuyenMai(ActionListener listener) {
+        quanlykhuyenmai.addActionListener(listener);
     }
 
     public void addClickQuanLyNhanVien(ActionListener listener) {
