@@ -22,6 +22,15 @@ public class SanPham {
 
     public SanPham() {}
 
+    public SanPham(String maSP, String tenSP, int soLuong, double giaBan) {
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+        this.soLuong = soLuong;
+        this.giaBan = giaBan;
+    }
+
+    
+    
     public SanPham(String maSP, String tenSP, String maLoai, String maNCC, String xuatXu, int soLuong, Date ngaySX, Date hanSD, String tinhTrang, double giaNhap, double giaBan, String donViTinh) {
         this.maSP = maSP;
         this.tenSP = tenSP;
