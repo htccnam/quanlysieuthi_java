@@ -84,7 +84,8 @@ public class manhinhchinhController {
     private class clickTaoDonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            TaoDonView tdView = new TaoDonView();           
+            TaoDonView tdView = new TaoDonView();  
+            new TaoDonController(tdView);
             menu.showpanel(tdView);
         }
     }
