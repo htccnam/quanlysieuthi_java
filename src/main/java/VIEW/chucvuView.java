@@ -100,7 +100,13 @@ public class chucvuView extends JPanel{
         
         String[] tieudeStrings={"mã chức vụ","tên chức vụ"};
         chucvuDefaultTableModel=new DefaultTableModel(tieudeStrings,0);
-        chucvuJTable=new JTable(chucvuDefaultTableModel);
+        chucvuJTable=new JTable(chucvuDefaultTableModel){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        
+        };
         chucvuJTable.setFont(new Font("Arial",Font.BOLD,18));
         chucvuJTable.setBackground(Color.pink);
         chucvuJTable.setRowHeight(30);

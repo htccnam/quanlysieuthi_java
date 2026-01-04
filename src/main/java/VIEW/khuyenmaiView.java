@@ -144,7 +144,13 @@ public class khuyenmaiView extends JPanel {
 
         String[] colStrings = {"Mã khuyến mại", "Tên khuyến mại", "Mô tả", "Ngày tạo"};
         khuyenmaiDefaultTableModel = new DefaultTableModel(colStrings, 0);
-        khuyenmaiJTable = new JTable(khuyenmaiDefaultTableModel);
+        khuyenmaiJTable = new JTable(khuyenmaiDefaultTableModel){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+            
+        };
         khuyenmaiJTable.setBackground(Color.pink);
         khuyenmaiJTable.setFont(new Font("Arial",Font.BOLD,17));
         khuyenmaiJTable.setRowHeight(30);
