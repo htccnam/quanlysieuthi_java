@@ -187,7 +187,13 @@ public class nhanvienViews extends JPanel {
         //table
         String[] nhanvienStrings = {"Mã NV", "Tên NV", "Ngày sinh", "Giới tính","Số điện thoại","Email", "Địa chỉ", "Mã chức vụ"};
         nhanvienDefaultTableModel = new DefaultTableModel(nhanvienStrings, 0);
-        nhanvienJTable = new JTable(nhanvienDefaultTableModel);
+        nhanvienJTable = new JTable(nhanvienDefaultTableModel){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        
+        };
         nhanvienJTable.setBackground(Color.pink);
         nhanvienJTable.setFont(new Font("Arial",Font.BOLD,19));
         nhanvienJTable.setRowHeight(30);
