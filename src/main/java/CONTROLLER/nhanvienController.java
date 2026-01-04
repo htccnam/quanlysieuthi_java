@@ -96,19 +96,19 @@ public class nhanvienController {
             String machucvuString = views.chucvuBox.getSelectedItem().toString().trim();
             String tachchuoiString = machucvuString.split("-")[0].trim();
 
-            if(textMaNhanVienString.matches(".+@gmail\\.com")){
+            if (!textemailString.matches(".+@gmail\\.com")) {
                 JOptionPane.showMessageDialog(views, "email phải có đuôi @gmail.com");
                 return;
             }
-            if(!soDienThoaiString.startsWith("0") || soDienThoaiString.length()!=10){
+            if (!soDienThoaiString.startsWith("0") || soDienThoaiString.length() != 10) {
                 JOptionPane.showMessageDialog(views, "số điện thoại phải bắt đầu bằng số 0 và có 10 số");
                 return;
             }
-            if(textMaNhanVienString.isEmpty()){
+            if (textMaNhanVienString.isEmpty()) {
                 JOptionPane.showMessageDialog(views, "mã nhân viên không được để trống");
                 return;
             }
-            if(textTenNhanVienString.isEmpty()){
+            if (textTenNhanVienString.isEmpty()) {
                 JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
                 return;
             }
@@ -140,11 +140,19 @@ public class nhanvienController {
             String textMaChucVuString = views.chucvuBox.getSelectedItem().toString().trim();
             String tachchuoiString = textMaChucVuString.split("-")[0].trim();
 
-             if(textTenNhanVienString.isEmpty()){
+            if (textTenNhanVienString.isEmpty()) {
                 JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
             }
+            if (!textEmailString.matches(".+@gmail\\.com")) {
+                JOptionPane.showMessageDialog(views, "email phải có đuôi @gmail.com");
+                return;
+            }
+            if (!textSoDienThoaiString.startsWith("0") || textSoDienThoaiString.length() != 10) {
+                JOptionPane.showMessageDialog(views, "số điện thoại phải bắt đầu bằng số 0 và có 10 số");
+                return;
+            }
             String textMaNhanVienString = views.manhanvienField.getText();
-            
+
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaysinhDate, textGioiTinhString, textSoDienThoaiString, textEmailString, textDiaChiString, tachchuoiString);
             try {
                 if (nvDAO.suaNhanVien(nv)) {
@@ -184,7 +192,7 @@ public class nhanvienController {
         @Override
         public void actionPerformed(ActionEvent e) {
             views.manhanvienField.setEnabled(true);
-                    
+
             views.manhanvienField.setText("");
             views.tennhanvienField.setText("");
             views.ngaysinhChooser.setDate(new java.util.Date());
@@ -207,8 +215,8 @@ public class nhanvienController {
             String timkiemString = views.timkiemField.getText().toString().trim();
             views.nhanvienDefaultTableModel.setRowCount(0);
             try {
-                List<nhanvien> list=nvDAO.timKiemNhanVien(timkiemString);
-                for(nhanvien nv: list){
+                List<nhanvien> list = nvDAO.timKiemNhanVien(timkiemString);
+                for (nhanvien nv : list) {
                     views.nhanvienDefaultTableModel.addRow(new Object[]{
                         nv.getManhanvienString(),
                         nv.getTennhanvienString(),
@@ -221,7 +229,7 @@ public class nhanvienController {
                     });
                 }
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(views, "lỗi tìm kiếm:"+exception.getMessage());
+                JOptionPane.showMessageDialog(views, "lỗi tìm kiếm:" + exception.getMessage());
             }
         }
     }

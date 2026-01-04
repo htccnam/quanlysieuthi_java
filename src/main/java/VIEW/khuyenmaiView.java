@@ -95,6 +95,7 @@ public class khuyenmaiView extends JPanel {
         add(ngaytaoJLabel);
 
         ngaytaoChooser=new JDateChooser();
+        ngaytaoChooser.setDateFormatString("dd/MM/yyyy");
         ngaytaoChooser.setBounds(300, 200, 400, 40);
         ngaytaoChooser.setFont(new Font("Arial",Font.ITALIC,24));
         add(ngaytaoChooser);
