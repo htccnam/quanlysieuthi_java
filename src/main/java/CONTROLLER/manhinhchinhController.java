@@ -73,7 +73,9 @@ public class manhinhchinhController {
         public void actionPerformed(ActionEvent e) {
             
             HangThanhVienView htvView = new HangThanhVienView();
-            //new HangThanhVienController(htvView); 
+            
+            //Kích hoạt Controller : (Siêu quan trọng )
+            new HangThanhVienController(htvView); 
             menu.showpanel(htvView);
         }
     }
