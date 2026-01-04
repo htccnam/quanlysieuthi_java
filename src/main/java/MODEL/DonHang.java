@@ -3,17 +3,14 @@ package MODEL;
 import java.sql.Date;
 
 public class DonHang {
-    private String maDonHang, maNhanSu, maKM, PTban, PTgiaodich;
+    private String maDonHang, maKM, PTban, PTgiaodich, maKH, maNV;
     private Date ngayGD;
-    private String maKH;
-    private String maNV;
     private double tongTien;
 
     public DonHang() {}
 
-    public DonHang(String maDonHang, String maNhanSu, String maKM, String PTban, String PTgiaodich, Date ngayGD, String maKH, String maNV, double tongTien) {
-        this.maDonHang = maDonHang;
-        this.maNhanSu = maNhanSu;
+    public DonHang(String maDonHang, String maKH, String maNV, String maKM, Date ngayGD, String PTban, String PTgiaodich, double tongTien) {
+        this.maDonHang = maDonHang;    
         this.maKM = maKM;
         this.PTban = PTban;
         this.PTgiaodich = PTgiaodich;
@@ -29,14 +26,6 @@ public class DonHang {
 
     public void setMaDonHang(String maDonHang) {
         this.maDonHang = maDonHang;
-    }
-
-    public String getMaNhanSu() {
-        return maNhanSu;
-    }
-
-    public void setMaNhanSu(String maNhanSu) {
-        this.maNhanSu = maNhanSu;
     }
 
     public String getMaKM() {
