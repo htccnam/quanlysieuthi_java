@@ -12,69 +12,93 @@ import java.time.LocalDate;
  * @author Admin
  */
 public class nhanvien {
-    private String maNhanVienString;
-    private String tenNhanVienString;
-    private LocalDate ngaySinhDate;
-    private String gioiTinhString,diaChiString,soDienThoaiString;
+   private String manhanvienString;
+   private String tennhanvienString;
+   private LocalDate ngaysinhDate;
+   private String gioitinhString;
+   private String sodienthoaiString;
+   private String emailString;
+   private String diachiString;
+   private String machucvuString;
 
     public nhanvien() {
     }
 
-    public nhanvien(String maNhanVienString, String tenNhanVienString, LocalDate ngaySinhDate, String gioiTinhString, String diaChiString, String soDienThoaiString) {
-        this.maNhanVienString = maNhanVienString;
-        this.tenNhanVienString = tenNhanVienString;
-        this.ngaySinhDate = ngaySinhDate;
-        this.gioiTinhString = gioiTinhString;
-        this.diaChiString = diaChiString;
-        this.soDienThoaiString = soDienThoaiString;
+    public nhanvien(String manhanvienString, String tennhanvienString, LocalDate ngaysinhDate, String gioitinhString, String sodienthoaiString, String emailString, String diachiString, String machucvuString) {
+        this.manhanvienString = manhanvienString;
+        this.tennhanvienString = tennhanvienString;
+        this.ngaysinhDate = ngaysinhDate;
+        this.gioitinhString = gioitinhString;
+        this.sodienthoaiString = sodienthoaiString;
+        this.emailString = emailString;
+        this.diachiString = diachiString;
+        this.machucvuString = machucvuString;
     }
 
-    public String getMaNhanVienString() {
-        return maNhanVienString;
+    public String getManhanvienString() {
+        return manhanvienString;
     }
 
-    public void setMaNhanVienString(String maNhanVienString) {
-        this.maNhanVienString = maNhanVienString;
+    public void setManhanvienString(String manhanvienString) {
+        this.manhanvienString = manhanvienString;
     }
 
-    public String getTenNhanVienString() {
-        return tenNhanVienString;
+    public String getTennhanvienString() {
+        return tennhanvienString;
     }
 
-    public void setTenNhanVienString(String tenNhanVienString) {
-        this.tenNhanVienString = tenNhanVienString;
+    public void setTennhanvienString(String tennhanvienString) {
+        this.tennhanvienString = tennhanvienString;
     }
 
-    public LocalDate getNgaySinhDate() {
-        return ngaySinhDate;
+    public LocalDate getNgaysinhDate() {
+        return ngaysinhDate;
     }
 
-    public void setNgaySinhDate(LocalDate ngaySinhDate) {
-        this.ngaySinhDate = ngaySinhDate;
+    public void setNgaysinhDate(LocalDate ngaysinhDate) {
+        this.ngaysinhDate = ngaysinhDate;
     }
 
-    public String getGioiTinhString() {
-        return gioiTinhString;
+    public String getGioitinhString() {
+        return gioitinhString;
     }
 
-    public void setGioiTinhString(String gioiTinhString) {
-        this.gioiTinhString = gioiTinhString;
+    public void setGioitinhString(String gioitinhString) {
+        this.gioitinhString = gioitinhString;
     }
 
-    public String getDiaChiString() {
-        return diaChiString;
+    public String getSodienthoaiString() {
+        return sodienthoaiString;
     }
 
-    public void setDiaChiString(String diaChiString) {
-        this.diaChiString = diaChiString;
+    public void setSodienthoaiString(String sodienthoaiString) {
+        this.sodienthoaiString = sodienthoaiString;
     }
 
-    public String getSoDienThoaiString() {
-        return soDienThoaiString;
+    public String getEmailString() {
+        return emailString;
     }
 
-    public void setSoDienThoaiString(String soDienThoaiString) {
-        this.soDienThoaiString = soDienThoaiString;
+    public void setEmailString(String emailString) {
+        this.emailString = emailString;
     }
+
+    public String getDiachiString() {
+        return diachiString;
+    }
+
+    public void setDiachiString(String diachiString) {
+        this.diachiString = diachiString;
+    }
+
+    public String getMachucvuString() {
+        return machucvuString;
+    }
+
+    public void setMachucvuString(String machucvuString) {
+        this.machucvuString = machucvuString;
+    }
+
     
+   
 }

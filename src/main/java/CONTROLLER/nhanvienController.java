@@ -4,7 +4,9 @@
  */
 package CONTROLLER;
 
+import DAO.chucvuDAO;
 import DAO.nhanvienDAO;
+import MODEL.chucvu;
 import MODEL.nhanvien;
 import VIEW.nhanvienViews;
 import java.awt.event.ActionEvent;
@@ -27,12 +29,14 @@ import javax.swing.JOptionPane;
 public class nhanvienController {
 
     private final nhanvienViews views;
-    private final nhanvienDAO nhanviendao;
+    private final nhanvienDAO nvDAO;
+    private chucvuDAO cvDAO;
     private int selectedRow = -1;
 
     public nhanvienController(nhanvienViews v) {
         this.views = v;
-        nhanviendao = new nhanvienDAO();
+        nvDAO = new nhanvienDAO();
+        cvDAO = new chucvuDAO();
         views.addThemListener(new themNhanVienlistener());
         views.addSuaListener(new capNhapNhanVienListener());
         views.addXoaListener(new xoaNhanVienListetenr());
@@ -41,22 +45,41 @@ public class nhanvienController {
 
         views.addCellClicktable(new cellClickListener());
         load_table();
+        load_chucvu();
+    }
+
+    private void load_chucvu() {
+        try {
+            List<chucvu> list = cvDAO.getAllChucVu();
+            for (chucvu cv : list) {
+                views.chucvuBox.addItem(cv.getMachucvuString() + "-" + cv.getTenchucvuString());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(views, "lỗi load chức vụ:" + e.getMessage());
+        }
+
     }
 
     private void load_table() {
         views.nhanvienDefaultTableModel.setRowCount(0);
-        List<nhanvien> list = nhanviendao.getAllNhanVien();
-        for (nhanvien nv : list) {
-            views.nhanvienDefaultTableModel.addRow(new Object[]{
-                nv.getMaNhanVienString(),
-                nv.getTenNhanVienString(),
-                nv.getNgaySinhDate(),
-                nv.getGioiTinhString(),
-                nv.getDiaChiString(),
-                nv.getSoDienThoaiString()
-            });
+        try {
+            List<nhanvien> list = nvDAO.getAllNhanVien();
+            for (nhanvien nv : list) {
+                views.nhanvienDefaultTableModel.addRow(new Object[]{
+                    nv.getManhanvienString(),
+                    nv.getTennhanvienString(),
+                    nv.getNgaysinhDate(),
+                    nv.getGioitinhString(),
+                    nv.getSodienthoaiString(),
+                    nv.getEmailString(),
+                    nv.getDiachiString(),
+                    nv.getMachucvuString()
+                });
+            }
+            views.nhanvienDefaultTableModel.fireTableDataChanged();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(views, "lỗi load bảng tin tức:" + e.getMessage());
         }
-        views.nhanvienDefaultTableModel.fireTableDataChanged();
     }
 
     private class themNhanVienlistener implements ActionListener {
@@ -66,21 +89,38 @@ public class nhanvienController {
             String textMaNhanVienString = views.manhanvienField.getText().toString().trim();
             String textTenNhanVienString = views.tennhanvienField.getText().toString().trim();
             LocalDate ngaySinhDate = views.ngaysinhChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            String gioiTinhString = views.gioitinhComboBox.getSelectedItem().toString().trim();
-            String diachiString = views.diachiField.getText().toString().trim();
+            String gioiTinhString = views.gioitinhComboBox.getSelectedItem().toString().trim();;
             String soDienThoaiString = views.sodienthoaiField.getText().toString().trim();
+            String textemailString = views.emailField.getText().toString().trim();
+            String textdiachiString = views.diachiField.getText().toString().trim();
+            String machucvuString = views.chucvuBox.getSelectedItem().toString().trim();
+            String tachchuoiString = machucvuString.split("-")[0].trim();
 
-            nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, diachiString, soDienThoaiString);
+            if (!textemailString.matches(".+@gmail\\.com")) {
+                JOptionPane.showMessageDialog(views, "email phải có đuôi @gmail.com");
+                return;
+            }
+            if (!soDienThoaiString.startsWith("0") || soDienThoaiString.length() != 10) {
+                JOptionPane.showMessageDialog(views, "số điện thoại phải bắt đầu bằng số 0 và có 10 số");
+                return;
+            }
+            if (textMaNhanVienString.isEmpty()) {
+                JOptionPane.showMessageDialog(views, "mã nhân viên không được để trống");
+                return;
+            }
+            if (textTenNhanVienString.isEmpty()) {
+                JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
+                return;
+            }
+            nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, soDienThoaiString, textemailString, textdiachiString, tachchuoiString);
 
             try {
-                if (nhanviendao.themNhanVien(nv)) {
+                if (nvDAO.themNhanVien(nv)) {
                     JOptionPane.showMessageDialog(views, "thêm thành công");
                     load_table();
                 }
-            } catch (RuntimeException exception) {
-                JOptionPane.showMessageDialog(views, "thêm thất bại :" + exception.getMessage());
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(views, "lỗi không xác định");
+                JOptionPane.showMessageDialog(views, "lỗi thêm nhân viên:" + exception.getMessage());
             }
 
         }
@@ -94,24 +134,36 @@ public class nhanvienController {
             String textTenNhanVienString = views.tennhanvienField.getText().toString().trim();
             LocalDate ngaysinhDate = views.ngaysinhChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             String textGioiTinhString = views.gioitinhComboBox.getSelectedItem().toString().trim();
-            String textDiaChiString = views.diachiField.getText().toString().trim();
             String textSoDienThoaiString = views.sodienthoaiField.getText().toString().trim();
+            String textEmailString = views.emailField.getText().toString().trim();
+            String textDiaChiString = views.diachiField.getText().toString().trim();
+            String textMaChucVuString = views.chucvuBox.getSelectedItem().toString().trim();
+            String tachchuoiString = textMaChucVuString.split("-")[0].trim();
+
+            if (textTenNhanVienString.isEmpty()) {
+                JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
+            }
+            if (!textEmailString.matches(".+@gmail\\.com")) {
+                JOptionPane.showMessageDialog(views, "email phải có đuôi @gmail.com");
+                return;
+            }
+            if (!textSoDienThoaiString.startsWith("0") || textSoDienThoaiString.length() != 10) {
+                JOptionPane.showMessageDialog(views, "số điện thoại phải bắt đầu bằng số 0 và có 10 số");
+                return;
+            }
             String textMaNhanVienString = views.manhanvienField.getText();
 
-            nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaysinhDate, textGioiTinhString, textDiaChiString, textSoDienThoaiString);
-
+            nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaysinhDate, textGioiTinhString, textSoDienThoaiString, textEmailString, textDiaChiString, tachchuoiString);
             try {
-                if (nhanviendao.suaNhanVien(nv)) {
+                if (nvDAO.suaNhanVien(nv)) {
                     JOptionPane.showMessageDialog(views, "sửa thành công");
                     load_table();
                 }
-            } catch (RuntimeException exception) {
-                JOptionPane.showMessageDialog(views, "sửa thất bại:" + exception.getMessage());
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(views, "sửa thất bại:" + exception.getMessage());
+                JOptionPane.showMessageDialog(views, "lỗi sửa nhân viên:" + exception.getMessage());
             }
-        }
 
+        }
     }
 
     private class xoaNhanVienListetenr implements ActionListener {
@@ -123,14 +175,12 @@ public class nhanvienController {
                 String maNhanVienString = views.manhanvienField.getText().toString();
 
                 try {
-                    if (nhanviendao.xoaNhanVien(maNhanVienString)) {
+                    if (nvDAO.xoaNhanVien(maNhanVienString)) {
                         JOptionPane.showMessageDialog(views, "xóa thành công");
                         load_table();
                     }
-                } catch (RuntimeException exception) {
-                    JOptionPane.showMessageDialog(views, "xóa thất bại:" + exception.getMessage());
                 } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(views, "xóa thất bại:" + exception.getMessage());
+                    JOptionPane.showMessageDialog(views, "lỗi xóa nhân viên:" + exception.getMessage());
                 }
             }
         }
@@ -141,12 +191,19 @@ public class nhanvienController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            views.manhanvienField.setEnabled(true);
+
             views.manhanvienField.setText("");
             views.tennhanvienField.setText("");
             views.ngaysinhChooser.setDate(new java.util.Date());
             views.gioitinhComboBox.setSelectedIndex(0);
-            views.diachiField.setText("");
             views.sodienthoaiField.setText("");
+            views.emailField.setText("");
+            views.diachiField.setText("");
+            views.chucvuBox.setSelectedIndex(0);
+            views.timkiemField.setText("");
+
+            load_table();
         }
 
     }
@@ -156,24 +213,25 @@ public class nhanvienController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String timkiemString = views.timkiemField.getText().toString().trim();
-
-            List<nhanvien> list = nhanviendao.timKiemNhanVien(timkiemString);
             views.nhanvienDefaultTableModel.setRowCount(0);
-            for (nhanvien nv : list) {
-                views.nhanvienDefaultTableModel.addRow(new Object[]{
-                    nv.getMaNhanVienString(),
-                    nv.getTenNhanVienString(),
-                    nv.getNgaySinhDate(),
-                    nv.getGioiTinhString(),
-                    nv.getDiaChiString(),
-                    nv.getSoDienThoaiString()
-
+            try {
+                List<nhanvien> list = nvDAO.timKiemNhanVien(timkiemString);
+                for (nhanvien nv : list) {
+                    views.nhanvienDefaultTableModel.addRow(new Object[]{
+                        nv.getManhanvienString(),
+                        nv.getTennhanvienString(),
+                        nv.getNgaysinhDate(),
+                        nv.getGioitinhString(),
+                        nv.getSodienthoaiString(),
+                        nv.getEmailString(),
+                        nv.getDiachiString(),
+                        nv.getMachucvuString()
+                    });
                 }
-                );
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(views, "lỗi tìm kiếm:" + exception.getMessage());
             }
-            views.nhanvienDefaultTableModel.fireTableDataChanged();
         }
-
     }
 
     private class cellClickListener implements MouseListener {
@@ -185,9 +243,10 @@ public class nhanvienController {
             views.tennhanvienField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 1).toString());
             views.ngaysinhChooser.setDate(Date.valueOf(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 2).toString()));
             views.gioitinhComboBox.setSelectedItem(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 3));
-            views.diachiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 4).toString());
-            views.sodienthoaiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 5).toString());
-
+            views.sodienthoaiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 4).toString());
+            views.emailField.setText(views.nhanvienJTable.getValueAt(selectedRow, 5).toString());
+            views.diachiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 6).toString());
+            views.chucvuBox.setSelectedItem(views.nhanvienJTable.getValueAt(selectedRow, 7).toString());
             views.manhanvienField.setEnabled(false);
         }
 

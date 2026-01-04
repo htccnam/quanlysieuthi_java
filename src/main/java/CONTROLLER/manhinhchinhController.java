@@ -15,26 +15,30 @@ import VIEW.LoaiHangView;
 import VIEW.NhaCungCapView;
 import VIEW.SanPhamView;
 import VIEW.TaoDonView;
+import VIEW.chucvuView;
 import VIEW.nhanvienViews;
-import VIEW.tintucView;
+import VIEW.khuyenmaiView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Admin
  */
 public class manhinhchinhController {
+
     final manhinhchinh menu;
     final DonHang dh = new DonHang();
 
-    public manhinhchinhController( ) {
-        this.menu=new manhinhchinh();
+    public manhinhchinhController(manhinhchinh view) {
+        this.menu = view;
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
-        menu.addClickQuanLyTinTuc(new clickQuanLyTinTuc());
+        menu.addClickQuanLyChucVu(new clickChucVu());
+        menu.addClickQuanLyKhuyenMai(new clickQuanLyKhuyenMai());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
         menu.addClickTaoDonMoi(new clickTaoDonListener());
         menu.addClickChiTiet(new clickChiTietListener());
@@ -42,46 +46,64 @@ public class manhinhchinhController {
         menu.addClickDanhSachSanPham(new clickSanPhamListener());
         menu.setVisible(true);
     }
-    
-    private class clickNhanSuListener implements ActionListener{
+
+    private class clickNhanSuListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            nhanvienViews nhanvien=new nhanvienViews();
-            new nhanvienController(nhanvien);
+            nhanvienViews nhanvien = new nhanvienViews();
+//            new nhanvienController(nhanvien);
             menu.showpanel(nhanvien);
+            SwingUtilities.invokeLater(() -> {
+            new nhanvienController(nhanvien);
+        });
         }
-        
+
     }
-    private class clickQuanLyTinTuc implements ActionListener{
+
+    private class clickChucVu implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            tintucView tintuc=new tintucView();
-            tintucController ttController=new tintucController(tintuc);
-            menu.showpanel(tintuc);
+            chucvuView chucvu = new chucvuView();
+            chucvuController controller = new chucvuController(chucvu);
+            menu.showpanel(chucvu);
         }
-        
+
     }
-    private class clickPhanLoaiHangListener implements ActionListener{
+
+    private class clickQuanLyKhuyenMai implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            khuyenmaiView km = new khuyenmaiView();
+            khuyenmaiController kmController = new khuyenmaiController(km);
+            menu.showpanel(km);
+        }
+
+    }
+
+    private class clickPhanLoaiHangListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             LoaiHangView lhView = new LoaiHangView();
-            LoaiHangModel lhModel = new LoaiHangModel();
-            new LoaiHangController(lhModel, lhView);
+            new LoaiHangController(lhView);
             menu.showpanel(lhView);
         }
     }
-    
-    private class clickChiTietListener implements ActionListener{
+
+    private class clickChiTietListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             ChiTietView ctView = new ChiTietView();           
             menu.showpanel(ctView);
         }
     }
-    
-    private class clickTaoDonListener implements ActionListener{
+
+    private class clickTaoDonListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             TaoDonView tdView = new TaoDonView();  
@@ -89,16 +111,17 @@ public class manhinhchinhController {
             menu.showpanel(tdView);
         }
     }
-    
+
     private class clickNhaCungCapListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 // Tạo View - Model - Controller cho Nhà Cung Cấp
                 NhaCungCapView nccView = new NhaCungCapView();
                 NhaCungCapModel nccModel = new NhaCungCapModel();
-                new NhaCungCapController(nccModel, nccView);
-                
+                new NhaCungCapController(nccView);
+
                 // Hiển thị
                 menu.showpanel(nccView);
             } catch (Exception ex) {
@@ -107,13 +130,14 @@ public class manhinhchinhController {
             }
         }
     }
+
     private class clickSanPhamListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 SanPhamView spView = new SanPhamView();
-                SanPhamModel spModel = new SanPhamModel();
-                new SanPhamController(spModel, spView);
+                new SanPhamController(spView);
                 
                 menu.showpanel(spView);
             } catch (Exception ex) {
@@ -122,7 +146,14 @@ public class manhinhchinhController {
             }
         }
     }
+
     public static void main(String[] args) {
-        new manhinhchinhController();
+        SwingUtilities.invokeLater(() -> {
+            manhinhchinh manhinh = new manhinhchinh();
+            new manhinhchinhController(manhinh);
+            manhinh.setLocationRelativeTo(null);
+            manhinh.setVisible(true);
+        });
+
     }
 }

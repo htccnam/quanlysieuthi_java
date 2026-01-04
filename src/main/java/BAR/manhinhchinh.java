@@ -5,6 +5,7 @@
 package BAR;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.MenuItem;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -26,10 +27,11 @@ public class manhinhchinh extends JFrame {
     JMenuItem taoDonMoi, ChiTietDonHang;
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
-    JMenu tinTucJMenu;
-    JMenuItem quanLyTinTuc;
+    JMenu khuyenmaiJMenu;
+    JMenuItem quanlykhuyenmai;
     JMenu nhanSuJMenu;
     JMenuItem quanLyNhanVien;
+    JMenuItem chucvuItem;
 
     JPanel containerJPanel;
 
@@ -37,7 +39,7 @@ public class manhinhchinh extends JFrame {
         setTitle("HỆ THỐNG QUẢN LÝ SIÊU THỊ");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setSize(1200, 1000);
+        setSize(1800, 1000);
 
         hangHoaVaKhoJMenu = new JMenu("Hàng Hóa và kho");
         danhSachSanPham = new JMenuItem("danh sách sản phẩm");
@@ -56,25 +58,29 @@ public class manhinhchinh extends JFrame {
         khachHangJMenu = new JMenu("Khách hàng");
         quanLyKhachHang= new JMenuItem("quản lý khách hàng");
         khachHangJMenu.add(quanLyKhachHang);
+        khachHangJMenu.setVisible(false);
         
-        tinTucJMenu = new JMenu("Tin tức");
-        quanLyTinTuc= new JMenuItem("Quản lý tin tức");
-        tinTucJMenu.add(quanLyTinTuc);
+        khuyenmaiJMenu = new JMenu("Khuyến mại");
+        quanlykhuyenmai= new JMenuItem("Quản lý khuyến mại");
+        khuyenmaiJMenu.add(quanlykhuyenmai);
         
         nhanSuJMenu = new JMenu("Nhân sự");
         quanLyNhanVien=new JMenuItem("Quản lý nhân viên");
+        chucvuItem=new JMenuItem("Chức vụ");
         nhanSuJMenu.add(quanLyNhanVien);
+        nhanSuJMenu.add(chucvuItem);
 
         JMenuBar bar = new JMenuBar();
         //
         bar.add(hangHoaVaKhoJMenu);
         bar.add(banHangJMenu);
         bar.add(khachHangJMenu);
-        bar.add(tinTucJMenu);
+        bar.add(khuyenmaiJMenu);
         bar.add(nhanSuJMenu);
         setJMenuBar(bar);
 
         containerJPanel = new JPanel(new BorderLayout());
+        containerJPanel.setPreferredSize(new Dimension(1200, 900)); // 👈 QUAN TRỌNG
         add(containerJPanel, BorderLayout.CENTER);
 
     }
@@ -82,7 +88,7 @@ public class manhinhchinh extends JFrame {
     //hàm hiển thị panel đổ xuông màn hình chính;
     public void showpanel(JPanel jP) {
         containerJPanel.removeAll();
-        containerJPanel.add(jP);
+        containerJPanel.add(jP,BorderLayout.CENTER);
         containerJPanel.revalidate();
         containerJPanel.repaint();
     }
@@ -111,12 +117,15 @@ public class manhinhchinh extends JFrame {
         quanLyKhachHang.addActionListener(listener);
     }
 
-    public void addClickQuanLyTinTuc(ActionListener listener) {
-        quanLyTinTuc.addActionListener(listener);
+    public void addClickQuanLyKhuyenMai(ActionListener listener) {
+        quanlykhuyenmai.addActionListener(listener);
     }
 
     public void addClickQuanLyNhanVien(ActionListener listener) {
         quanLyNhanVien.addActionListener(listener);
+    }
+    public void addClickQuanLyChucVu(ActionListener listener){
+        chucvuItem.addActionListener(listener);
     }
 
 }
