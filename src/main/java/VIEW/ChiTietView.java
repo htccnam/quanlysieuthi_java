@@ -10,7 +10,7 @@ public class ChiTietView extends JPanel {
     private JTable table;
     private DefaultTableModel model;
     private JTextField txtSearch;
-    private JButton btnXuatExcel, btnSua, btnXoa, btnXemChiTiet;
+    private JButton btnSua, btnXoa, btnXemChiTiet;
     
     // Các Label thống kê để Controller set text
     private JLabel lblTongDoanhThu, lblTongDon, lblDoanhThuTB;
@@ -69,14 +69,9 @@ public class ChiTietView extends JPanel {
         btnXoa = new JButton("Xóa");
         styleButton(btnXoa, new Color(239, 68, 68)); // Màu Đỏ
 
-        // Nút Xuất Excel (Giữ lại nếu cần)
-        btnXuatExcel = new JButton("Xuất Excel");
-        styleButton(btnXuatExcel, new Color(22, 163, 74)); // Xanh lá
-
         right.add(btnXemChiTiet);
         right.add(btnSua);
-        right.add(btnXoa);
-        right.add(btnXuatExcel);
+        right.add(btnXoa); 
 
         topBar.add(left, BorderLayout.WEST);
         topBar.add(right, BorderLayout.EAST);
@@ -195,7 +190,6 @@ public class ChiTietView extends JPanel {
     public JButton getBtnSua() { return btnSua; }
     public JButton getBtnXoa() { return btnXoa; }
     public JButton getBtnXemChiTiet() { return btnXemChiTiet; }
-    public JButton getBtnXuatExcel() { return btnXuatExcel; }
     
     public JLabel getLblTongDoanhThu() { return lblTongDoanhThu; }
     public JLabel getLblTongDon() { return lblTongDon; }
