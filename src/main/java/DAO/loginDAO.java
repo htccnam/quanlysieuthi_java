@@ -19,12 +19,14 @@ public class loginDAO {
         try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString);) {
             pr.setString(1, matkhauString);
             pr.setString(2, matkhauString);
-            ResultSet resultset = pr.executeQuery();
-            if (resultset.next()) {
-                return true;
-            }else{
-                return false;
+            try (ResultSet resultset = pr.executeQuery();) {
+                if (resultset.next()) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
+
         } catch (Exception e) {
             throw e;
         }
