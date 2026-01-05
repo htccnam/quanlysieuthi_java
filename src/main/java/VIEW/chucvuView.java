@@ -6,6 +6,7 @@ package VIEW;
 
 import com.sun.net.httpserver.Headers;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -39,6 +40,7 @@ public class chucvuView extends JPanel{
 
     public chucvuView() {
         setLayout(null);
+        setPreferredSize(new Dimension(1200,900));
         JLabel machucvuJLabel=new JLabel("Mã chức vụ:");
         machucvuJLabel.setBounds(300, 50, 200, 40);
         machucvuJLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -98,14 +100,21 @@ public class chucvuView extends JPanel{
         
         String[] tieudeStrings={"mã chức vụ","tên chức vụ"};
         chucvuDefaultTableModel=new DefaultTableModel(tieudeStrings,0);
-        chucvuJTable=new JTable(chucvuDefaultTableModel);
+        chucvuJTable=new JTable(chucvuDefaultTableModel){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        
+        };
         chucvuJTable.setFont(new Font("Arial",Font.BOLD,18));
         chucvuJTable.setBackground(Color.pink);
+        chucvuJTable.setRowHeight(30);
 
         JTableHeader chucvuHeader=chucvuJTable.getTableHeader();
         chucvuHeader.setFont(new Font("Arial",Font.BOLD,20));
-        chucvuHeader.setForeground(Color.red);
-        chucvuHeader.setBackground(Color.yellow);
+        chucvuHeader.setForeground(Color.BLACK);
+        chucvuHeader.setBackground(Color.GREEN);
                 
         JScrollPane chucvuJScrollPane=new JScrollPane(chucvuJTable);
         chucvuJScrollPane.setBounds(200, 250, 800, 600);

@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,17 +54,21 @@ public class chucvuController {
                 return;
             }
 
-            if (cvDAO.checkTrungMaChucVu(machucvuString)) {
-                JOptionPane.showMessageDialog(view, "mã chức vụ đã tồn tại");
-                view.machucvuField.setText("");
-                return;
+            try {
+                if (cvDAO.checkTrungMaChucVu(machucvuString)) {
+                    JOptionPane.showMessageDialog(view, "mã chức vụ đã tồn tại");
+                    view.machucvuField.setText("");
+                    return;
+                }
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(view, "lỗi check mã chức vụ:" + exception.getMessage());
             }
 
             try {
                 chucvu cv = new chucvu(machucvuString, tenchucvuString);
                 cvDAO.themChucVu(cv);
-                loadTable();
                 JOptionPane.showMessageDialog(view, "thêm chức vụ thành công");
+                loadTable();
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(view, "Lỗi thêm chức vụ:" + exception.getMessage());
             }
@@ -141,7 +147,7 @@ public class chucvuController {
             try {
                 List<chucvu> list = cvDAO.timKiemChucVu(dieukientimkiemString);
                 view.chucvuDefaultTableModel.setRowCount(0);
-                for(chucvu cv : list){
+                for (chucvu cv : list) {
                     view.chucvuDefaultTableModel.addRow(new Object[]{
                         cv.getMachucvuString(),
                         cv.getTenchucvuString()

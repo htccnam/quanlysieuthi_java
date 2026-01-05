@@ -4,19 +4,39 @@
  */
 package MODEL;
 
+import DAO.NhaCungCapDAO;
+import java.util.ArrayList;
+
 /**
  *
  * @author VŨ HÙNG HẢI
  */
 
-import DAO.NhaCungCapDAO;
-import java.util.ArrayList;
+
 
 public class NhaCungCapModel {
     private NhaCungCapDAO dao = new NhaCungCapDAO();
-
-    public ArrayList<NhaCungCap> getList() { return dao.getAll(); }
-    public void add(NhaCungCap ncc) { dao.insert(ncc); }
-    public void update(NhaCungCap ncc) { dao.update(ncc); }
-    public void delete(String maNCC) { dao.delete(maNCC); }
+    public ArrayList<NhaCungCap> getList(){
+       return dao.getAll();
+    }
+    public void add(NhaCungCap ncc){
+        dao.insert(ncc);
+    }
+    public void update(NhaCungCap ncc){
+        dao.update(ncc);
+    }
+    public void delete(String ma){
+        dao.delete(ma);
+    }
+    public boolean checkExist(String ma){
+        NhaCungCap ncc = dao.checktrung(ma);
+        if(ncc!=null){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public ArrayList<NhaCungCap> timkiem(String keyword){
+        return dao.timkiem(keyword);
+    }
 }
