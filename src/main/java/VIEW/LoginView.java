@@ -8,60 +8,47 @@ package VIEW;
  *
  * @author VŨ HÙNG HẢI
  */
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.*;
 import java.awt.event.*;
 
 public class LoginView extends JFrame {
-    // Để public để Controller có thể truy cập trực tiếp (hoặc dùng getter)
-    public JTextField txtUser = new JTextField();
-    public JPasswordField txtPass = new JPasswordField();
-    public JButton btnLogin = new JButton("Đăng nhập");
-    public JButton btnRegister = new JButton("Thoát"); // Đổi nút đăng ký thành Thoát hoặc để ẩn đi tùy bạn
+
+    public JTextField taikhoanField = new JTextField();
+    public JPasswordField matkhauField = new JPasswordField();
+    public JButton dangnhapButton = new JButton("Đăng nhập");
 
     public LoginView() {
         setTitle("Đăng nhập Hệ thống");
-        setSize(350, 200);
+        setSize(500, 300);
         setLayout(null);
-        setLocationRelativeTo(null); // Căn giữa màn hình
-
-        addLabel("Tài khoản:", 30, 30); 
-        addText(txtUser, 100, 30);
         
-        addLabel("Mật khẩu:", 30, 70); 
-        addText(txtPass, 100, 70);
-
-        btnLogin.setBounds(50, 120, 100, 30);
-        btnRegister.setBounds(180, 120, 100, 30);
+        JLabel taikhoanJLabel=new JLabel("Nhập tài khoản:");
+        taikhoanJLabel.setBounds(10, 10, 150, 40);
+        taikhoanJLabel.setFont(new Font("Arial",Font.BOLD,17));
+        add(taikhoanJLabel);
         
-        add(btnLogin); 
-        add(btnRegister);
-        btnRegister.setVisible(false);
+        taikhoanField.setBounds(200, 10, 200, 40);
+        taikhoanField.setFont(new Font("Arial",Font.BOLD,17));
+        add(taikhoanField);
+        
+        JLabel matkhauJLabel=new JLabel("Nhập mật khẩu:");
+        matkhauJLabel.setBounds(10, 60, 150, 40);
+        matkhauJLabel.setFont(new Font("Arial",Font.BOLD,17));
+        add(matkhauJLabel);
+        
+        matkhauField.setBounds(200, 60, 200, 40);
+        taikhoanJLabel.setFont(new Font("Arial",Font.BOLD,17));
+        add(matkhauField);
+        
+        dangnhapButton.setBounds(20, 110, 250, 30);
+        dangnhapButton.setBackground(Color.GREEN);
+        dangnhapButton.setFont(new Font("Arial",Font.BOLD,17));
+        add(dangnhapButton);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
     }
-
-    private void addLabel(String t, int x, int y){
-        JLabel lb = new JLabel(t); 
-        lb.setBounds(x, y, 70, 25); 
-        add(lb);
-    }
-    
-    private void addText(JComponent t, int x, int y){
-        t.setBounds(x, y, 180, 25); 
-        add(t);
-    }
-
-    // Các hàm để Controller gọi
-    public void addLoginListener(ActionListener l){ 
-        btnLogin.addActionListener(l); 
-    }
-    
-    public void addRegisterListener(ActionListener l){ 
-        btnRegister.addActionListener(l); 
-    }
-
-    public void showMsg(String m){ 
-        JOptionPane.showMessageDialog(this, m); 
-    }
+    public void addDangNhapListener (ActionListener listener) {
+        dangnhapButton.addActionListener(listener);
+    };
 }

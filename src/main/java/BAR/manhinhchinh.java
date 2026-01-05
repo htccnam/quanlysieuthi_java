@@ -7,7 +7,9 @@ package BAR;
 import VIEW.KhachHangView;
 import VIEW.nhanvienViews;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionListener;
@@ -31,13 +33,14 @@ public class manhinhchinh extends JFrame {
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
     JMenuItem hangThanhVien;
-    JMenu tinTucJMenu;
-    JMenuItem quanLyTinTuc;
     JMenu khuyenmaiJMenu;
     JMenuItem quanlykhuyenmai;
     JMenu nhanSuJMenu;
     JMenuItem quanLyNhanVien;
     JMenuItem chucvuItem;
+    
+    JMenu thaotacJMenu;
+    JMenuItem dangxuatItem;
 
     JPanel containerJPanel;
 
@@ -46,11 +49,15 @@ public class manhinhchinh extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(1800, 1000);
-
+        
         hangHoaVaKhoJMenu = new JMenu("Hàng Hóa và kho");
         danhSachSanPham = new JMenuItem("danh sách sản phẩm");
         phanLoaiHang = new JMenuItem("phân loại hàng");
         nhaCungCap = new JMenuItem("Nhà cung cấp");
+        hangHoaVaKhoJMenu.setFont(new Font("Arial",Font.BOLD,20));
+        danhSachSanPham.setFont(new Font("Arial",Font.BOLD,17));
+        phanLoaiHang.setFont(new Font("Arial",Font.BOLD,17));   
+        nhaCungCap.setFont(new Font("Arial",Font.BOLD,17));
         hangHoaVaKhoJMenu.add(danhSachSanPham);
         hangHoaVaKhoJMenu.add(phanLoaiHang);
         hangHoaVaKhoJMenu.add(nhaCungCap);
@@ -58,25 +65,42 @@ public class manhinhchinh extends JFrame {
         banHangJMenu = new JMenu("Bán hàng");
         taoDonMoi = new JMenuItem("tạo đơn mới");
         ChiTietDonHang = new JMenuItem("chi tiết đơn hàng");
+        banHangJMenu.setFont(new Font("Arial",Font.BOLD,20));
+        taoDonMoi.setFont(new Font("Arial",Font.BOLD,17));   
+        ChiTietDonHang.setFont(new Font("Arial",Font.BOLD,17));
         banHangJMenu.add(taoDonMoi);
         banHangJMenu.add(ChiTietDonHang);
 
         khachHangJMenu = new JMenu("Khách hàng");
         quanLyKhachHang= new JMenuItem("Quản lý khách hàng");
         hangThanhVien = new JMenuItem("Hạng thành viên (VIP)");
+        khachHangJMenu.setFont(new Font("Arial",Font.BOLD,20));
+        quanLyKhachHang.setFont(new Font("Arial",Font.BOLD,17));   
+        hangThanhVien.setFont(new Font("Arial",Font.BOLD,17));
         khachHangJMenu.add(quanLyKhachHang);
         khachHangJMenu.add(hangThanhVien);
         khachHangJMenu.setVisible(true);
         
         khuyenmaiJMenu = new JMenu("Khuyến mại");
         quanlykhuyenmai= new JMenuItem("Quản lý khuyến mại");
+        khuyenmaiJMenu.setFont(new Font("Arial",Font.BOLD,20));
+        quanlykhuyenmai.setFont(new Font("Arial",Font.BOLD,17));   
         khuyenmaiJMenu.add(quanlykhuyenmai);
         
         nhanSuJMenu = new JMenu("Nhân sự");
         quanLyNhanVien=new JMenuItem("Quản lý nhân viên");
         chucvuItem=new JMenuItem("Chức vụ");
+        nhanSuJMenu.setFont(new Font("Arial",Font.BOLD,20));
+        quanLyNhanVien.setFont(new Font("Arial",Font.BOLD,17));   
+        chucvuItem.setFont(new Font("Arial",Font.BOLD,17));
         nhanSuJMenu.add(quanLyNhanVien);
         nhanSuJMenu.add(chucvuItem);
+        
+        thaotacJMenu=new JMenu("Thao tác");
+        dangxuatItem=new JMenuItem("Đăng xuất");
+        thaotacJMenu.setFont(new Font("Arial",Font.BOLD,20));
+        dangxuatItem.setFont(new Font("Arial",Font.BOLD,17));   
+        thaotacJMenu.add(dangxuatItem);
 
         JMenuBar bar = new JMenuBar();
         //
@@ -85,6 +109,8 @@ public class manhinhchinh extends JFrame {
         bar.add(khachHangJMenu);
         bar.add(khuyenmaiJMenu);
         bar.add(nhanSuJMenu);
+        bar.add(thaotacJMenu);
+        bar.setBackground(Color.GREEN);
         setJMenuBar(bar);
 
         containerJPanel = new JPanel(new java.awt.BorderLayout());
@@ -141,5 +167,8 @@ public class manhinhchinh extends JFrame {
     }
     public void addClickHangThanhVien(ActionListener listener) { 
         hangThanhVien.addActionListener(listener); 
+    }
+    public void addClickDangXuat(ActionListener listener){
+        dangxuatItem.addActionListener(listener);
     }
 }

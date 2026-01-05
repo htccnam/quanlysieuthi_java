@@ -14,6 +14,7 @@ import MODEL.SanPhamModel;
 import VIEW.ChiTietView;
 import MODEL.DonHang;
 import VIEW.LoaiHangView;
+import VIEW.LoginView;
 import VIEW.NhaCungCapView;
 import VIEW.SanPhamView;
 import VIEW.TaoDonView;
@@ -48,6 +49,7 @@ public class manhinhchinhController {
         menu.addClickChiTiet(new clickChiTietListener());
         menu.addClickNhaCungCap(new clickNhaCungCapListener());
         menu.addClickDanhSachSanPham(new clickSanPhamListener());
+        menu.addClickDangXuat(new clickDangXuat());
         menu.setVisible(true);
     }
 
@@ -55,38 +57,41 @@ public class manhinhchinhController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            nhanvienViews nhanvien=new nhanvienViews();
-            new nhanvienController(nhanvien); 
+            nhanvienViews nhanvien = new nhanvienViews();
+            new nhanvienController(nhanvien);
             menu.showpanel(nhanvien);
             SwingUtilities.invokeLater(() -> {
-            new nhanvienController(nhanvien);
-        });
+                new nhanvienController(nhanvien);
+            });
         }
 
     }
-    
+
     private class clickKhachHangListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             KhachHangView khachhang = new KhachHangView();
             new KhachHangController(khachhang);
             menu.showpanel(khachhang);
         }
-        
+
     }
+
     private class clickHangThanhVienListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+
             HangThanhVienView htvView = new HangThanhVienView();
-            
+
             //Kích hoạt Controller : (Siêu quan trọng )
-            new HangThanhVienController(htvView); 
+            new HangThanhVienController(htvView);
             menu.showpanel(htvView);
         }
     }
-      
-    private class clickChucVu implements ActionListener{
+
+    private class clickChucVu implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -122,7 +127,7 @@ public class manhinhchinhController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ChiTietView ctView = new ChiTietView();   
+            ChiTietView ctView = new ChiTietView();
             new ChiTietController(ctView);
             menu.showpanel(ctView);
         }
@@ -132,7 +137,7 @@ public class manhinhchinhController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            TaoDonView tdView = new TaoDonView();  
+            TaoDonView tdView = new TaoDonView();
             new TaoDonController(tdView);
             menu.showpanel(tdView);
         }
@@ -164,12 +169,27 @@ public class manhinhchinhController {
             try {
                 SanPhamView spView = new SanPhamView();
                 new SanPhamController(spView);
-                
+
                 menu.showpanel(spView);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(menu, "Lỗi: " + ex.getMessage());
             }
+        }
+    }
+
+    private class clickDangXuat implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int check = JOptionPane.showConfirmDialog(menu, "bạn có chắc chắn muốn đăng xuất");
+            if (check == JOptionPane.YES_OPTION) {
+                LoginView loginView = new LoginView();
+                loginController lgController = new loginController(loginView);
+                menu.dispose();
+                loginView.setVisible(true);
+            }
+
         }
     }
 
