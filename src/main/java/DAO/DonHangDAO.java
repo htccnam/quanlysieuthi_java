@@ -70,6 +70,22 @@ public class DonHangDAO {
         return list;
     } 
     
+    public ArrayList<String> getMaKM(){
+        ArrayList<String> list = new ArrayList<>();
+        String sql = "SELECT makhuyenmai FROM khuyenmai;";
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+            
+            while(rs.next()){
+                list.add(rs.getString("makhuyenmai"));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    } 
+    
     public ArrayList<SanPham> getSP(){
         ArrayList<SanPham> list = new ArrayList<>();
         String sql = "SELECT masanpham, tensanpham, soluong, giaban FROM sanpham";
@@ -112,7 +128,7 @@ public class DonHangDAO {
 // [MỚI] Hàm lưu chi tiết đơn hàng vào bảng 'chitiethoadon' (Yêu cầu 6)
 // Giả sử bảng chitiethoadon có các cột: madonhang, masanpham, soluong, dongia, thanhtien
 public boolean insertChiTiet(ChiTietDon ctd) {
-    String sql = "INSERT INTO chitiethoadon (madonhang, masanpham, tensanpham, soluong, gia, thanhtien) VALUES (?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO chitietdonhang (madonhang, masanpham, tensanpham, soluong, dongia, thanhtien) VALUES (?, ?, ?, ?, ?, ?)";
     try (Connection conn = DBConnection.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
         
@@ -127,6 +143,56 @@ public boolean insertChiTiet(ChiTietDon ctd) {
     } catch (Exception e) {
         e.printStackTrace();
         return false;
+    }
+}
+
+public boolean update(DonHang dh, ArrayList<ChiTietDon> dsChiTiet) {
+    Connection conn = null;
+    try {
+        conn = DBConnection.getConnection();
+        conn.setAutoCommit(false); // Bắt đầu Transaction
+
+        // 1. Cập nhật bảng DonHang
+        String sqlUpdateDon = "UPDATE donhang SET makhachhang=?, manhanvien=?, makhuyenmai=?, ngaylap=?, phuongthucban=?, thanhtoan=?, tongtien=? WHERE madonhang=?";
+        PreparedStatement psDon = conn.prepareStatement(sqlUpdateDon);
+        psDon.setString(1, dh.getMaKH());
+        psDon.setString(2, dh.getMaNV());
+        psDon.setString(3, dh.getMaKM());
+        psDon.setDate(4, new java.sql.Date(dh.getNgayGD().getTime()));
+        psDon.setString(5, dh.getPTban());
+        psDon.setString(6, dh.getPTgiaodich());
+        psDon.setDouble(7, dh.getTongTien());
+        psDon.setString(8, dh.getMaDonHang());
+        psDon.executeUpdate();
+
+        // 2. Xóa tất cả ChiTiet cũ của đơn hàng này
+        String sqlDelChiTiet = "DELETE FROM chitietdonhang WHERE madonhang=?";
+        PreparedStatement psDel = conn.prepareStatement(sqlDelChiTiet);
+        psDel.setString(1, dh.getMaDonHang());
+        psDel.executeUpdate();
+
+        // 3. Chèn lại danh sách ChiTiet mới từ bảng
+        String sqlInsChiTiet = "INSERT INTO chitietdonhang (madonhang, masanpham, tensanpham, soluong, dongia, thanhtien) VALUES (?,?,?,?,?,?)";
+        PreparedStatement psIns = conn.prepareStatement(sqlInsChiTiet);
+        for (ChiTietDon ct : dsChiTiet) {
+            psIns.setString(1, ct.getMaDonHang());
+            psIns.setString(2, ct.getMaSanPham());
+            psIns.setString(3, ct.getTenSanPham());
+            psIns.setInt(4, ct.getSoluong());
+            psIns.setDouble(5, ct.getGia());
+            psIns.setDouble(6, ct.getThanhtien());
+            psIns.addBatch();
+        }
+        psIns.executeBatch();
+
+        conn.commit(); // Lưu tất cả thay đổi
+        return true;
+    } catch (Exception e) {
+        try { if (conn != null) conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
+        e.printStackTrace();
+        return false;
+    } finally {
+        try { if (conn != null) conn.setAutoCommit(true); } catch (Exception e) { e.printStackTrace(); }
     }
 }
 }
