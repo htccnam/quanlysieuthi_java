@@ -19,7 +19,7 @@ public class KhachHangView extends JPanel {
     private JTextField txtMaKH, txtHoTen, txtSDT, txtEmail, txtNgaySinh, txtTimKiem;
     private JTextField txtDiemTichLuy; 
     private JComboBox<String> cbGioiTinh;
-    private JButton btnThem, btnSua, btnXoa, btnLamMoi, btnTimKiem, btnLichSu;
+    private JButton btnThem, btnSua, btnXoa, btnLamMoi, btnTimKiem;
     private JTable tblKhachHang;
     private DefaultTableModel tableModel;
 
@@ -87,13 +87,13 @@ public class KhachHangView extends JPanel {
         btnSua = createButton("Sửa", "edit.png", colorWarning);
         btnXoa = createButton("Xóa", "delete.png", colorDanger);
         btnLamMoi = createButton("Làm mới", "refresh.png", new Color(108, 117, 125));
-        btnLichSu = createButton("Lịch sử mua hàng", "history.png", new Color(23, 162, 184));
+       
 
         pnlButtons.add(btnThem); 
         pnlButtons.add(btnSua);
         pnlButtons.add(btnXoa); 
         pnlButtons.add(btnLamMoi);
-        pnlButtons.add(btnLichSu);
+        
         
 
         JPanel pnlSearch = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -244,7 +244,6 @@ public class KhachHangView extends JPanel {
     public void addXoaListener(ActionListener al) { btnXoa.addActionListener(al); }
     public void addLamMoiListener(ActionListener al) { btnLamMoi.addActionListener(al); }
     public void addTimKiemListener(ActionListener al) { btnTimKiem.addActionListener(al); }
-    public void addLichSuListener(ActionListener al) { btnLichSu.addActionListener(al); }
     public void addTableMouseListener(MouseListener ml) { tblKhachHang.addMouseListener(ml); }
 
     // --- HIỂN THỊ ---
