@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -56,6 +57,7 @@ public class nhanvienViews extends JPanel {
     
     public nhanvienViews() {
         setLayout(null);
+        setPreferredSize(new Dimension(1200,900));
 
         //manhanvien
         JLabel manhanvienJLabel = new JLabel("Mã nhân viên:");
@@ -84,6 +86,7 @@ public class nhanvienViews extends JPanel {
         add(ngaysinhJLabel);
         
         ngaysinhChooser=new JDateChooser();
+        ngaysinhChooser.setDateFormatString("dd/MM/yyyy");
         ngaysinhChooser.setBounds(300, 150, 300, 40);
         ngaysinhChooser.setFont(new Font("Arial",Font.ITALIC,23));
         add(ngaysinhChooser);
@@ -171,7 +174,6 @@ public class nhanvienViews extends JPanel {
         add(resetButton);
         
         timkiemField=new JTextField();
-        timkiemField=new JTextField();
         timkiemField.setBounds(50, 500, 300, 40);
         timkiemField.setFont(new Font("Arial",Font.ITALIC,23));
         add(timkiemField);
@@ -185,9 +187,16 @@ public class nhanvienViews extends JPanel {
         //table
         String[] nhanvienStrings = {"Mã NV", "Tên NV", "Ngày sinh", "Giới tính","Số điện thoại","Email", "Địa chỉ", "Mã chức vụ"};
         nhanvienDefaultTableModel = new DefaultTableModel(nhanvienStrings, 0);
-        nhanvienJTable = new JTable(nhanvienDefaultTableModel);
+        nhanvienJTable = new JTable(nhanvienDefaultTableModel){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        
+        };
         nhanvienJTable.setBackground(Color.pink);
         nhanvienJTable.setFont(new Font("Arial",Font.BOLD,19));
+        nhanvienJTable.setRowHeight(30);
         
         JTableHeader tieudeHeaders=nhanvienJTable.getTableHeader();
         tieudeHeaders.setFont(new Font("Arial",Font.BOLD,20));

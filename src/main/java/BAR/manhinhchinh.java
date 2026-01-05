@@ -7,6 +7,7 @@ package BAR;
 import VIEW.KhachHangView;
 import VIEW.nhanvienViews;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionListener;
@@ -29,8 +30,8 @@ public class manhinhchinh extends JFrame {
     JMenuItem taoDonMoi, ChiTietDonHang;
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
-    JMenu tinTucJMenu;
-    JMenuItem quanLyTinTuc;
+    JMenu khuyenmaiJMenu;
+    JMenuItem quanlykhuyenmai;
     JMenu nhanSuJMenu;
     JMenuItem quanLyNhanVien;
     JMenuItem chucvuItem;
@@ -41,7 +42,7 @@ public class manhinhchinh extends JFrame {
         setTitle("HỆ THỐNG QUẢN LÝ SIÊU THỊ");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setSize(1200, 1000);
+        setSize(1800, 1000);
 
         hangHoaVaKhoJMenu = new JMenu("Hàng Hóa và kho");
         danhSachSanPham = new JMenuItem("danh sách sản phẩm");
@@ -62,9 +63,9 @@ public class manhinhchinh extends JFrame {
         khachHangJMenu.add(quanLyKhachHang);
         khachHangJMenu.setVisible(true);
         
-        tinTucJMenu = new JMenu("Tin tức");
-        quanLyTinTuc= new JMenuItem("Quản lý tin tức");
-        tinTucJMenu.add(quanLyTinTuc);
+        khuyenmaiJMenu = new JMenu("Khuyến mại");
+        quanlykhuyenmai= new JMenuItem("Quản lý khuyến mại");
+        khuyenmaiJMenu.add(quanlykhuyenmai);
         
         nhanSuJMenu = new JMenu("Nhân sự");
         quanLyNhanVien=new JMenuItem("Quản lý nhân viên");
@@ -77,11 +78,13 @@ public class manhinhchinh extends JFrame {
         bar.add(hangHoaVaKhoJMenu);
         bar.add(banHangJMenu);
         bar.add(khachHangJMenu);
-        bar.add(tinTucJMenu);
+        bar.add(khuyenmaiJMenu);
         bar.add(nhanSuJMenu);
         setJMenuBar(bar);
 
         containerJPanel = new JPanel(new java.awt.BorderLayout());
+
+        containerJPanel.setPreferredSize(new Dimension(1200, 900)); // 👈 QUAN TRỌNG
         add(containerJPanel, BorderLayout.CENTER);
 
     }
@@ -121,8 +124,8 @@ public class manhinhchinh extends JFrame {
         quanLyKhachHang.addActionListener(listener);
     }
 
-    public void addClickQuanLyTinTuc(ActionListener listener) {
-        quanLyTinTuc.addActionListener(listener);
+    public void addClickQuanLyKhuyenMai(ActionListener listener) {
+        quanlykhuyenmai.addActionListener(listener);
     }
 
     public void addClickQuanLyNhanVien(ActionListener listener) {

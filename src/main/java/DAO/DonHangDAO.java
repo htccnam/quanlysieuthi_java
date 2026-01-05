@@ -1,94 +1,198 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package DAO;
 
-import MODEL.*;
-import java.sql.*;
+import MODEL.ChiTietDon;
+import MODEL.DonHang;
+import MODEL.SanPham;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class DonHangDAO {
-
-    private Connection conn;
-
-    public DonHangDAO(Connection conn) {
-        this.conn = conn;
-    }
-
-    // 1️⃣ Thêm đơn hàng + trả về mã đơn
-    public int insertDonHang(DonHang dh) throws SQLException {
-        String sql = """
-            INSERT INTO DonHang (NgayLap, MaKH, MaNV, TongTien)
-            VALUES (?, ?, ?, ?)
-        """;
-
-        PreparedStatement ps = conn.prepareStatement(
-                sql, Statement.RETURN_GENERATED_KEYS
-        );
-
-        ps.setDate(1, dh.getNgayLap());
-        ps.setString(2, dh.getMaKH());
-        ps.setString(3, dh.getMaNV());
-        ps.setDouble(4, dh.getTongTien());
-
-        ps.executeUpdate();
-
-        ResultSet rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            return rs.getInt(1);
+    public boolean insert(DonHang dh) throws SQLException, Exception{
+        String sql = "INSERT INTO donhang VALUES (?,?,?,?,?,?,?,?)";
+        boolean check = false;
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+            
+            ps.setString(1, dh.getMaDonHang());
+            ps.setString(2, dh.getMaKH());
+            ps.setString(3, dh.getMaNV());
+            ps.setString(4, dh.getMaKM());
+            ps.setDate(5, new java.sql.Date(dh.getNgayGD().getTime()));
+            ps.setString(6, dh.getPTban());
+            ps.setString(7, dh.getPTgiaodich());
+            ps.setDouble(8, dh.getTongTien());
+            if(ps.executeUpdate() > 0){
+                check = true;
+            }         
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-        return -1;
+        return check;
     }
-
-    // 2️⃣ Thêm chi tiết đơn hàng
-    public void insertChiTiet(ChiTietDonHang ct) throws SQLException {
-        String sql = """
-            INSERT INTO ChiTietDonHang
-            (MaDonHang, MaSP, SoLuong, DonGia)
-            VALUES (?, ?, ?, ?)
-        """;
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, ct.getMaDonHang());
-        ps.setString(2, ct.getMaSP());
-        ps.setInt(3, ct.getSoLuong());
-        ps.setDouble(4, ct.getDonGia());
-        ps.executeUpdate();
-    }
-
-    // 3️⃣ Lấy danh sách đơn hàng (cho DonHangView)
-    public ArrayList<DonHang> getAllDonHang() throws SQLException {
-        ArrayList<DonHang> list = new ArrayList<>();
-
-        String sql = "SELECT * FROM DonHang ORDER BY MaDonHang DESC";
-        Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery(sql);
-
-        while (rs.next()) {
-            DonHang dh = new DonHang(
-                rs.getString("MaDonHang"),
-                rs.getDate("NgayLap"),
-                rs.getString("MaKH"),
-                rs.getString("MaNV"),
-                rs.getDouble("TongTien")
-            );
-            list.add(dh);
+    
+    public ArrayList<String> getMaNV(){
+        ArrayList<String> list = new ArrayList<>();
+        String sql = "SELECT manhanvien FROM nhanvien;";
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+            
+            while(rs.next()){
+                list.add(rs.getString("manhanvien"));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }
-
-    // 4️⃣ Tính tổng tiền từ chi tiết
-    public double tinhTongTien(int maDonHang) throws SQLException {
-        String sql = """
-            SELECT SUM(SoLuong * DonGia) AS Tong
-            FROM ChiTietDonHang
-            WHERE MaDonHang = ?
-        """;
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, maDonHang);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            return rs.getDouble("Tong");
+    
+    public ArrayList<String> getMaKH(){
+        ArrayList<String> list = new ArrayList<>();
+        String sql = "SELECT makhachhang FROM khachhang;";
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+            
+            while(rs.next()){
+                list.add(rs.getString("makhachhang"));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-        return 0;
+        return list;
+    } 
+    
+    public ArrayList<String> getMaKM(){
+        ArrayList<String> list = new ArrayList<>();
+        String sql = "SELECT makhuyenmai FROM khuyenmai;";
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+            
+            while(rs.next()){
+                list.add(rs.getString("makhuyenmai"));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    } 
+    
+    public ArrayList<SanPham> getSP(){
+        ArrayList<SanPham> list = new ArrayList<>();
+        String sql = "SELECT masanpham, tensanpham, soluong, giaban FROM sanpham";
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+            
+            while(rs.next()){
+                SanPham sp = new SanPham(rs.getString("masanpham"), rs.getString("tensanpham"), rs.getInt("soluong"), rs.getDouble("giaban"));
+                list.add(sp);
+            }            
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return list;
     }
+    
+    //AI
+    public ArrayList<SanPham> timKiemSP(String keyword) {
+    ArrayList<SanPham> list = new ArrayList<>();
+    String sql = "SELECT masanpham, tensanpham, soluong, giaban FROM sanpham WHERE tensanpham LIKE ?";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, "%" + keyword + "%");
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new SanPham(
+                    rs.getString("masanpham"), 
+                    rs.getString("tensanpham"), 
+                    rs.getInt("soluong"), 
+                    rs.getDouble("giaban")
+                ));
+            }
+        }
+    } catch (Exception e) { e.printStackTrace(); }
+    return list;
+}
+
+// [MỚI] Hàm lưu chi tiết đơn hàng vào bảng 'chitiethoadon' (Yêu cầu 6)
+// Giả sử bảng chitiethoadon có các cột: madonhang, masanpham, soluong, dongia, thanhtien
+public boolean insertChiTiet(ChiTietDon ctd) {
+    String sql = "INSERT INTO chitietdonhang (madonhang, masanpham, tensanpham, soluong, dongia, thanhtien) VALUES (?, ?, ?, ?, ?, ?)";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setString(1, ctd.getMaDonHang());
+        ps.setString(2, ctd.getMaSanPham());
+        ps.setString(3, ctd.getTenSanPham());
+        ps.setInt(4, ctd.getSoluong());
+        ps.setDouble(5, ctd.getGia());
+        ps.setDouble(6, ctd.getThanhtien());
+        
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+public boolean update(DonHang dh, ArrayList<ChiTietDon> dsChiTiet) {
+    Connection conn = null;
+    try {
+        conn = DBConnection.getConnection();
+        conn.setAutoCommit(false); // Bắt đầu Transaction
+
+        // 1. Cập nhật bảng DonHang
+        String sqlUpdateDon = "UPDATE donhang SET makhachhang=?, manhanvien=?, makhuyenmai=?, ngaylap=?, phuongthucban=?, thanhtoan=?, tongtien=? WHERE madonhang=?";
+        PreparedStatement psDon = conn.prepareStatement(sqlUpdateDon);
+        psDon.setString(1, dh.getMaKH());
+        psDon.setString(2, dh.getMaNV());
+        psDon.setString(3, dh.getMaKM());
+        psDon.setDate(4, new java.sql.Date(dh.getNgayGD().getTime()));
+        psDon.setString(5, dh.getPTban());
+        psDon.setString(6, dh.getPTgiaodich());
+        psDon.setDouble(7, dh.getTongTien());
+        psDon.setString(8, dh.getMaDonHang());
+        psDon.executeUpdate();
+
+        // 2. Xóa tất cả ChiTiet cũ của đơn hàng này
+        String sqlDelChiTiet = "DELETE FROM chitietdonhang WHERE madonhang=?";
+        PreparedStatement psDel = conn.prepareStatement(sqlDelChiTiet);
+        psDel.setString(1, dh.getMaDonHang());
+        psDel.executeUpdate();
+
+        // 3. Chèn lại danh sách ChiTiet mới từ bảng
+        String sqlInsChiTiet = "INSERT INTO chitietdonhang (madonhang, masanpham, tensanpham, soluong, dongia, thanhtien) VALUES (?,?,?,?,?,?)";
+        PreparedStatement psIns = conn.prepareStatement(sqlInsChiTiet);
+        for (ChiTietDon ct : dsChiTiet) {
+            psIns.setString(1, ct.getMaDonHang());
+            psIns.setString(2, ct.getMaSanPham());
+            psIns.setString(3, ct.getTenSanPham());
+            psIns.setInt(4, ct.getSoluong());
+            psIns.setDouble(5, ct.getGia());
+            psIns.setDouble(6, ct.getThanhtien());
+            psIns.addBatch();
+        }
+        psIns.executeBatch();
+
+        conn.commit(); // Lưu tất cả thay đổi
+        return true;
+    } catch (Exception e) {
+        try { if (conn != null) conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
+        e.printStackTrace();
+        return false;
+    } finally {
+        try { if (conn != null) conn.setAutoCommit(true); } catch (Exception e) { e.printStackTrace(); }
+    }
+}
 }
