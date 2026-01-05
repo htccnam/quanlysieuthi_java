@@ -1,22 +1,27 @@
 package VIEW;
 
+import MODEL.SanPham;
+import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TaoDonView extends JPanel {
 
     // ===== Components cần controller dùng =====
-    private JTextField txtMaDon, txtNgayGD, txtTimKiem, txtTenSP;
+    private JDateChooser ngayGD;
+    private JTextField txtMaDon, txtTimKiem;
     private JComboBox<String> cboBanHang, cboThanhToan, cboNV, cboMaKM, cboKH;
-    private JTable table;
+    private JTable table, tableSanPham;
     private JLabel lblTongTien, lblTamTinh, lblKM;
     private JSpinner spinner;
+    private JButton btnLuu, btnThem, btnXoa;
 
     public TaoDonView() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        setBackground(Color.WHITE);
+        setBackground(new Color(245, 247, 249));
 
         add(panelThongTinChung());
         add(Box.createVerticalStrut(15));
@@ -36,10 +41,10 @@ public class TaoDonView extends JPanel {
         g.fill = GridBagConstraints.HORIZONTAL;
 
         txtMaDon = new JTextField("DH-2023-001");
-        txtNgayGD = new JTextField();
-        cboNV = new JComboBox<>(new String[]{"--Chọn nhân viên--"});
-        cboKH = new JComboBox<>(new String[]{"--Chọn khách hàng--"});
-        cboMaKM = new JComboBox<>(new String[]{"Không áp dụng", "Áp dụng"});
+        ngayGD = new JDateChooser();
+        cboNV = new JComboBox<>(new String[]{});
+        cboKH = new JComboBox<>(new String[]{});
+        cboMaKM = new JComboBox<>(new String[]{});
         cboBanHang = new JComboBox<>(new String[]{"Online", "Offline"});
         cboThanhToan = new JComboBox<>(new String[]{"Tiền mặt", "Chuyển khoản"});
 
@@ -54,7 +59,7 @@ public class TaoDonView extends JPanel {
         p.add(new JLabel("Ngày giao dịch"), g);
         
         g.gridx = 3;
-        p.add(txtNgayGD, g);
+        p.add(ngayGD, g);
 
         g.gridx = 4;
         p.add(new JLabel("Nhân viên"), g);
@@ -92,74 +97,91 @@ public class TaoDonView extends JPanel {
 
     // ================= CHI TIẾT ĐƠN =================
     private JPanel panelChiTiet() {
-        JPanel p = new JPanel(new BorderLayout(10, 10));
-        p.setBorder(BorderFactory.createTitledBorder("Chi tiết đơn hàng"));
-        p.setBackground(Color.WHITE);
+    
+    JPanel p = new JPanel(new GridLayout(1, 2, 15, 0)); 
+    p.setBackground(Color.WHITE);
 
-        // ---- Thanh tìm + thêm ----
-        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        top.setBackground(Color.WHITE);
-        top.add(new JLabel("Tìm sản phẩm:"));
-        txtTimKiem = new JTextField(20);
-        top.add(txtTimKiem);
-        
-        top.add(new JLabel("Tên sản phẩm:"));
-        txtTenSP = new JTextField(20);
-        txtTenSP.setEditable(false);
-        top.add(txtTenSP);
-        
-        top.add(new JLabel("Số lượng:"));
-        spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1)); //(value, min, max, stepSize)
-        spinner.setPreferredSize(new Dimension(40, 25));
-        top.add(spinner);
-        
-        JButton btnThem = new JButton("+ Thêm");
-        btnThem.setBackground(new Color(59, 130, 246));
-        btnThem.setForeground(Color.WHITE);
-        btnThem.setBorderPainted(false);
-        btnThem.setFocusPainted(false);
-        btnThem.setFont(new Font("Arial", Font.BOLD, 13));
-        top.add(btnThem);
+    // --- CỘT TRÁI: DANH SÁCH SẢN PHẨM ĐỂ CHỌN ---
+    JPanel leftPanel = new JPanel(new BorderLayout(5, 5));
+    leftPanel.setBorder(BorderFactory.createTitledBorder("Danh sách sản phẩm"));
+    leftPanel.setBackground(Color.WHITE);
+  
+    JPanel topSearch = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    topSearch.setBackground(Color.WHITE);
+       
+    txtTimKiem = new JTextField(15);     
+    spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+    spinner.setPreferredSize(new Dimension(50, 25));
+    btnThem = new JButton("+ Thêm");
+    btnThem.setBackground(new Color(59, 130, 246));
+    btnThem.setForeground(Color.WHITE);
+    btnThem.setBorderPainted(false);
+    btnThem.setFocusPainted(false);
+    btnThem.setFont(new Font("Arial", Font.BOLD, 13));
+    topSearch.add(new JLabel("Tìm:"));
+    topSearch.add(txtTimKiem);
+    topSearch.add(new JLabel("Số lượng:"));
+    topSearch.add(spinner);
+    topSearch.add(btnThem);
 
-        JButton btnXoa = new JButton("- Xóa");
-        btnXoa.setBackground(new Color(239, 68, 68));
-        btnXoa.setForeground(Color.WHITE);
-        btnXoa.setBorderPainted(false);
-        btnXoa.setFocusPainted(false);
-        btnXoa.setFont(new Font("Arial", Font.BOLD, 13));
-        top.add(btnXoa);
-        
-        // ---- Table ----
-        String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0);
-        table = new JTable(model);
-        table.setRowHeight(32);
+    // Bảng mới để hiện sản phẩm từ Database
+    String[] colsSP = {"Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng"};
+    DefaultTableModel modelSP = new DefaultTableModel(colsSP, 0);
+    tableSanPham = new JTable(modelSP);
+    tableSanPham.setRowHeight(30);
+    JScrollPane scrollSP = new JScrollPane(tableSanPham);
 
-        // dữ liệu mẫu
-        model.addRow(new Object[]{"SP001", "Laptop Dell XPS 13", 25000000, 1, 25000000});
-        model.addRow(new Object[]{"SP045", "Chuột Logitech", 500000, 2, 1000000});
+    leftPanel.add(topSearch, BorderLayout.NORTH);
+    leftPanel.add(scrollSP, BorderLayout.CENTER);
 
-        JScrollPane scroll = new JScrollPane(table);
 
-        p.add(top, BorderLayout.NORTH);
-        p.add(scroll, BorderLayout.CENTER);
+    // --- CỘT PHẢI: CHI TIẾT ĐƠN HÀNG (GIỮ NGUYÊN CODE CỦA BẠN) ---
+    JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
+    rightPanel.setBorder(BorderFactory.createTitledBorder("Chi tiết đơn hàng"));
+    rightPanel.setBackground(Color.WHITE);
 
-        return p;
-    }
+    JPanel topControl = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+    topControl.setBackground(Color.WHITE);
+  
+    // Dùng lại các nút bấm cũ của bạn
+    btnXoa = new JButton("- Xóa");
+    btnXoa.setBackground(new Color(239, 68, 68));
+    btnXoa.setForeground(Color.WHITE);
+    btnXoa.setBorderPainted(false);
+    btnXoa.setFocusPainted(false);
+    btnXoa.setFont(new Font("Arial", Font.BOLD, 13));
+    topControl.add(btnXoa);
+    
+    // Dùng lại table cũ của bạn
+    String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
+    DefaultTableModel model = new DefaultTableModel(cols, 0);
+    table = new JTable(model);
+    table.setRowHeight(32);
+    JScrollPane scroll = new JScrollPane(table);
+
+    rightPanel.add(topControl, BorderLayout.NORTH);
+    rightPanel.add(scroll, BorderLayout.CENTER);
+
+    // Thêm cả 2 vào panel chính
+    p.add(leftPanel);
+    p.add(rightPanel);
+
+    return p;
+}
 
     // ================= TỔNG TIỀN =================
     private JPanel panelTongTien() {
         JPanel p = new JPanel(new BorderLayout());
-        p.setBackground(Color.WHITE);
+        p.setBackground(new Color(245, 247, 249));
 
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
-        left.setBackground(Color.WHITE);
+        left.setBackground(new Color(245, 247, 249));
         
-        lblTongTien = new JLabel("Tổng tiền: 23,400,000 đ");
-        lblTamTinh = new JLabel("Tạm tính: 24,500,000 đ");
-        lblKM = new JLabel("Giảm giá: 100,000 đ");
-        JButton btnLuu = new JButton("Lưu đơn hàng");
+        lblTongTien = new JLabel("Tổng tiền: 0 đ");
+        lblTamTinh = new JLabel("Tạm tính: 0 đ");
+        lblKM = new JLabel("Giảm giá: 0 đ");
+        btnLuu = new JButton("Lưu đơn hàng");
         
         btnLuu.setBackground(new Color(59, 130, 246));
         btnLuu.setForeground(Color.WHITE);
@@ -185,8 +207,80 @@ public class TaoDonView extends JPanel {
         p.add(left, BorderLayout.EAST);
         return p;
     }
+    
+    public void setNVToComboBox(ArrayList<String> list) {
+        cboNV.removeAllItems();
+        for (String ten : list) {
+            cboNV.addItem(ten);
+        }
+    }
 
+    public void setKHToComboBox(ArrayList<String> list) {
+        cboKH.removeAllItems();
+        for (String ten : list) {
+            cboKH.addItem(ten);
+        }
+    }
+    
+    public void setKMToComboBox(ArrayList<String> list) {
+        cboMaKM.removeAllItems();
+        for (String ten : list) {
+            cboMaKM.addItem(ten);
+        }
+    }
+    
+    public void loadDataTable(ArrayList<SanPham> list){
+        DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();
+
+        model.setRowCount(0);
+        for (SanPham sp : list) {
+        Object[] row = {
+            sp.getMaSP(),
+            sp.getTenSP(),
+            sp.getGiaBan(),
+            sp.getSoLuong()
+        };
+        model.addRow(row);
+    }
+    }
+    
     // ================= GETTER cho Controller =================
+    public JButton getBtnLuu() {
+        return btnLuu;
+    }
+
+    public JTextField getTxtMaDon() {
+        return txtMaDon;
+    }
+
+    public JDateChooser getNgayGD() {
+        return ngayGD;
+    }
+
+    public JTextField getTxtTimKiem() {
+        return txtTimKiem;
+    }
+
+    public JComboBox<String> getCboBanHang() {
+        return cboBanHang;
+    }
+
+    public JComboBox<String> getCboThanhToan() {
+        return cboThanhToan;
+    }
+
+    public JComboBox<String> getCboNV() {
+        return cboNV;
+    }
+
+    public JComboBox<String> getCboMaKM() {
+        return cboMaKM;
+    }
+
+    public JComboBox<String> getCboKH() {
+        return cboKH;
+    }
+
     public JTable getTable() {
         return table;
     }
@@ -195,11 +289,39 @@ public class TaoDonView extends JPanel {
         return lblTongTien;
     }
 
-    public JTextField getTxtMaDon() {
-        return txtMaDon;
+    public JLabel getLblTamTinh() {
+        return lblTamTinh;
     }
+
+    public JLabel getLblKM() {
+        return lblKM;
+    }
+
+    public JSpinner getSpinner() {
+        return spinner;
+    } 
     
-    
+    public JTable getTableSanPham() {
+    return tableSanPham;
+}
+
+public JButton getBtnThem() {
+    return btnThem;
+}
+
+public JButton getBtnXoa() {
+    return btnXoa;
+}
+
+// Getter helper để lấy model bảng phải nhanh hơn
+public DefaultTableModel getModelTablePhai() {
+    return (DefaultTableModel) table.getModel();
+}
+
+// Getter helper để lấy model bảng trái nhanh hơn
+public DefaultTableModel getModelTableTrai() {
+    return (DefaultTableModel) tableSanPham.getModel();
+}
 }
 
 

@@ -97,7 +97,8 @@ public class manhinhchinhController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ChiTietView ctView = new ChiTietView();           
+            ChiTietView ctView = new ChiTietView();   
+            new ChiTietController(ctView);
             menu.showpanel(ctView);
         }
     }
@@ -106,7 +107,8 @@ public class manhinhchinhController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            TaoDonView tdView = new TaoDonView();
+            TaoDonView tdView = new TaoDonView();  
+            new TaoDonController(tdView);
             menu.showpanel(tdView);
         }
     }
