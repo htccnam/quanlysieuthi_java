@@ -90,6 +90,7 @@ public class khuyenmaiDAO {
                 khuyenmai km = new khuyenmai(makhuyenmaiString, tenkhuyenmaiString, motaString, ngaytaoDate);
                 list.add(km);
             }
+            resultSet.close();
         } catch (Exception e) {
             throw e;
         }
@@ -99,8 +100,7 @@ public class khuyenmaiDAO {
     public List<khuyenmai> getAllKhuyenMai() throws Exception {
         List<khuyenmai> list = new ArrayList<>();
         String sqlString = "select * from khuyenmai";
-        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString);) {
-            ResultSet resultset = pr.executeQuery();
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString); ResultSet resultset = pr.executeQuery();) {
             while (resultset.next()) {
                 String makhuyenmaiString = resultset.getString("makhuyenmai");
                 String tenkhuyenmaiString = resultset.getString("tenkhuyenmai");
@@ -121,13 +121,15 @@ public class khuyenmaiDAO {
         try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString);) {
             pr.setString(1, makhuyenmaiString);
 
-            ResultSet resultSet = pr.executeQuery();
-            if (resultSet.next()) {
-                return true;
-            } else {
-                return false;
+            try (ResultSet resultSet = pr.executeQuery();) {
+                if (resultSet.next()) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
-        }catch(Exception e){ 
+
+        } catch (Exception e) {
             throw e;
         }
 
