@@ -5,6 +5,8 @@
 package CONTROLLER;
 
 import BAR.manhinhchinh;
+import VIEW.HangThanhVienView;
+import VIEW.KhachHangView;
 import MODEL.DonHang;
 import MODEL.LoaiHangModel;
 import MODEL.NhaCungCapModel;
@@ -37,6 +39,8 @@ public class manhinhchinhController {
     public manhinhchinhController(manhinhchinh view) {
         this.menu = view;
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
+        menu.addClickQuanLyKhachHang(new clickKhachHangListener());
+        menu.addClickHangThanhVien(new clickHangThanhVienListener());
         menu.addClickQuanLyChucVu(new clickChucVu());
         menu.addClickQuanLyKhuyenMai(new clickQuanLyKhuyenMai());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
@@ -51,8 +55,8 @@ public class manhinhchinhController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            nhanvienViews nhanvien = new nhanvienViews();
-//            new nhanvienController(nhanvien);
+            nhanvienViews nhanvien=new nhanvienViews();
+            new nhanvienController(nhanvien); 
             menu.showpanel(nhanvien);
             SwingUtilities.invokeLater(() -> {
             new nhanvienController(nhanvien);
@@ -60,8 +64,29 @@ public class manhinhchinhController {
         }
 
     }
-
-    private class clickChucVu implements ActionListener {
+    
+    private class clickKhachHangListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            KhachHangView khachhang = new KhachHangView();
+            new KhachHangController(khachhang);
+            menu.showpanel(khachhang);
+        }
+        
+    }
+    private class clickHangThanhVienListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+            HangThanhVienView htvView = new HangThanhVienView();
+            
+            //Kích hoạt Controller : (Siêu quan trọng )
+            new HangThanhVienController(htvView); 
+            menu.showpanel(htvView);
+        }
+    }
+      
+    private class clickChucVu implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {

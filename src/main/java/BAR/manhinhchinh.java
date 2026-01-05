@@ -4,9 +4,12 @@
  */
 package BAR;
 
+import VIEW.KhachHangView;
+import VIEW.nhanvienViews;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -27,6 +30,9 @@ public class manhinhchinh extends JFrame {
     JMenuItem taoDonMoi, ChiTietDonHang;
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
+    JMenuItem hangThanhVien;
+    JMenu tinTucJMenu;
+    JMenuItem quanLyTinTuc;
     JMenu khuyenmaiJMenu;
     JMenuItem quanlykhuyenmai;
     JMenu nhanSuJMenu;
@@ -56,9 +62,11 @@ public class manhinhchinh extends JFrame {
         banHangJMenu.add(ChiTietDonHang);
 
         khachHangJMenu = new JMenu("Khách hàng");
-        quanLyKhachHang= new JMenuItem("quản lý khách hàng");
+        quanLyKhachHang= new JMenuItem("Quản lý khách hàng");
+        hangThanhVien = new JMenuItem("Hạng thành viên (VIP)");
         khachHangJMenu.add(quanLyKhachHang);
-        khachHangJMenu.setVisible(false);
+        khachHangJMenu.add(hangThanhVien);
+        khachHangJMenu.setVisible(true);
         
         khuyenmaiJMenu = new JMenu("Khuyến mại");
         quanlykhuyenmai= new JMenuItem("Quản lý khuyến mại");
@@ -79,19 +87,23 @@ public class manhinhchinh extends JFrame {
         bar.add(nhanSuJMenu);
         setJMenuBar(bar);
 
-        containerJPanel = new JPanel(new BorderLayout());
+        containerJPanel = new JPanel(new java.awt.BorderLayout());
+
         containerJPanel.setPreferredSize(new Dimension(1200, 900)); // 👈 QUAN TRỌNG
         add(containerJPanel, BorderLayout.CENTER);
 
     }
 
     //hàm hiển thị panel đổ xuông màn hình chính;
-    public void showpanel(JPanel jP) {
-        containerJPanel.removeAll();
-        containerJPanel.add(jP,BorderLayout.CENTER);
-        containerJPanel.revalidate();
-        containerJPanel.repaint();
+   // Để hàm này chấp nhận được cả KhachHangView, SanPhamView, NhanVienView...
+    public void showpanel(javax.swing.JPanel jp) { 
+        
+        containerJPanel.removeAll(); // Xóa nội dung cũ đang hiển thị
+        containerJPanel.add(jp, java.awt.BorderLayout.CENTER); 
+        containerJPanel.revalidate(); // Tính toán lại bố cục
+        containerJPanel.repaint();    // Vẽ lại màn hình
     }
+    
 
     public void addClickDanhSachSanPham(ActionListener listener) {
         danhSachSanPham.addActionListener(listener);
@@ -127,5 +139,7 @@ public class manhinhchinh extends JFrame {
     public void addClickQuanLyChucVu(ActionListener listener){
         chucvuItem.addActionListener(listener);
     }
-
+    public void addClickHangThanhVien(ActionListener listener) { 
+        hangThanhVien.addActionListener(listener); 
+    }
 }
