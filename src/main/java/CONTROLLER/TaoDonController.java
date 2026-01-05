@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class TaoDonController {
@@ -23,6 +24,7 @@ public class TaoDonController {
         // Khởi tạo dữ liệu
         view.setNVToComboBox(dao.getMaNV());
         view.setKHToComboBox(dao.getMaKH());
+        view.setKMToComboBox(dao.getMaKM());
         view.loadDataTable(dao.getSP());
         
         // Gán sự kiện
@@ -46,6 +48,14 @@ public class TaoDonController {
 
         // 4. Sự kiện LƯU ĐƠN (Yêu cầu 6)
         view.getBtnLuu().addActionListener(e -> luuDonHang());
+        
+        view.getBtnLuu().addActionListener(e -> {
+        if (view.getBtnLuu().getText().equals("Cập nhật")) {
+            xuLyCapNhat();
+        } else {
+            luuDonHang(); // Hàm lưu mới cũ của bạn
+        }
+});
     }
 
     // --- LOGIC XỬ LÝ ---
@@ -199,4 +209,79 @@ public class TaoDonController {
         JOptionPane.showMessageDialog(view, "Lỗi: " + ex.getMessage());
     }
 }
+    
+    public void setEditData(DonHang dh, ArrayList<ChiTietDon> dsChiTiet) {
+    // 1. Set thông tin text/combo
+    view.getTxtMaDon().setText(dh.getMaDonHang());
+    view.getTxtMaDon().setEditable(false); // Không cho sửa Mã Đơn
+    view.getCboKH().setSelectedItem(dh.getMaKH());
+    view.getCboNV().setSelectedItem(dh.getMaNV());
+    view.getNgayGD().setDate(dh.getNgayGD());
+    view.getCboBanHang().setSelectedItem(dh.getPTban());
+    view.getCboThanhToan().setSelectedItem(dh.getPTgiaodich());
+    
+    // 2. Đổ bảng bên phải
+    DefaultTableModel modelPhai = view.getModelTablePhai();
+    modelPhai.setRowCount(0);
+    for (ChiTietDon ct : dsChiTiet) {
+        modelPhai.addRow(new Object[]{
+            ct.getMaSanPham(), ct.getTenSanPham(), ct.getGia(), ct.getSoluong(), ct.getThanhtien()
+        });
+    }
+    
+    // 3. Tính toán lại các nhãn tổng tiền
+    tinhTongTien(); 
+    
+    // 4. Đổi tên nút Lưu thành Cập Nhật
+    view.getBtnLuu().setText("Cập nhật");
+    }
+    
+    private void xuLyCapNhat() {
+    try {
+        // 1. Lấy thông tin từ View (Tương tự hàm lưu mới)
+        java.util.Date uDate = view.getNgayGD().getDate();
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        
+        Object val = view.getLblTongTien().getClientProperty("value");
+        double tongTien = (val != null) ? (double) val : 0;
+
+        DonHang dh = new DonHang(
+            view.getTxtMaDon().getText(),
+            view.getCboKH().getSelectedItem().toString(),
+            view.getCboNV().getSelectedItem().toString(),
+            view.getCboMaKM().getSelectedItem().toString(),
+            sDate,
+            view.getCboBanHang().getSelectedItem().toString(),
+            view.getCboThanhToan().getSelectedItem().toString(),
+            tongTien
+        );
+
+        // 2. Lấy danh sách sản phẩm mới từ bảng bên phải
+        ArrayList<ChiTietDon> dsMoi = new ArrayList<>();
+        DefaultTableModel modelPhai = view.getModelTablePhai();
+        for (int i = 0; i < modelPhai.getRowCount(); i++) {
+            dsMoi.add(new ChiTietDon(
+                dh.getMaDonHang(),
+                modelPhai.getValueAt(i, 0).toString(),
+                modelPhai.getValueAt(i, 1).toString(),
+                Integer.parseInt(modelPhai.getValueAt(i, 3).toString()),
+                Double.parseDouble(modelPhai.getValueAt(i, 2).toString()),
+                Double.parseDouble(modelPhai.getValueAt(i, 4).toString())
+            ));
+        }
+
+        // 3. Gọi DAO để cập nhật
+        if (dao.update(dh, dsMoi)) {
+            JOptionPane.showMessageDialog(view, "Cập nhật đơn hàng thành công!");
+            
+            // Đóng cửa sổ sửa
+            SwingUtilities.getWindowAncestor(view).dispose(); 
+        } else {
+            JOptionPane.showMessageDialog(view, "Cập nhật thất bại!");
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(view, "Lỗi cập nhật: " + ex.getMessage());
+    }
+    }
 }
