@@ -44,7 +44,7 @@ public class TaoDonView extends JPanel {
         ngayGD = new JDateChooser();
         cboNV = new JComboBox<>(new String[]{});
         cboKH = new JComboBox<>(new String[]{});
-        cboMaKM = new JComboBox<>(new String[]{"Không áp dụng", "Áp dụng"});
+        cboMaKM = new JComboBox<>(new String[]{});
         cboBanHang = new JComboBox<>(new String[]{"Online", "Offline"});
         cboThanhToan = new JComboBox<>(new String[]{"Tiền mặt", "Chuyển khoản"});
 
@@ -219,6 +219,13 @@ public class TaoDonView extends JPanel {
         cboKH.removeAllItems();
         for (String ten : list) {
             cboKH.addItem(ten);
+        }
+    }
+    
+    public void setKMToComboBox(ArrayList<String> list) {
+        cboMaKM.removeAllItems();
+        for (String ten : list) {
+            cboMaKM.addItem(ten);
         }
     }
     
