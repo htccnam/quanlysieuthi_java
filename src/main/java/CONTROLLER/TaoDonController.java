@@ -62,6 +62,10 @@ public class TaoDonController {
         view.getCboMaKM().addActionListener((e) -> {
                 tinhTongTien();
         });
+        
+        view.getTxtHang().addActionListener((e) -> {
+                tinhTongTien();
+        });
     }
 
     //LOGIC 
@@ -125,8 +129,6 @@ public class TaoDonController {
         double tamTinh = 0;
         double hang = 0;
         double km = 0;
-        double giamGia = hang + km;
-        double tongTien = tamTinh - giamGia;
 
         for (int i = 0; i < modelPhai.getRowCount(); i++) {
             tamTinh += Double.parseDouble(modelPhai.getValueAt(i, 4).toString());
@@ -140,7 +142,9 @@ public class TaoDonController {
             hang = tamTinh * 0.05;
         }else if(view.getTxtHang().getText().equalsIgnoreCase("Bạch kim")){
             hang = tamTinh * 0.1;
-        }   
+        }
+        double giamGia = hang + km;
+        double tongTien = tamTinh - giamGia;
         view.getLblKM().setText(String.format("Giảm giá: %,.0f đ", giamGia));
         view.getLblTamTinh().setText(String.format("Tạm tính: %,.0f đ", tamTinh));
         view.getLblTongTien().setText(String.format("Tổng tiền: %,.0f đ", tongTien));
