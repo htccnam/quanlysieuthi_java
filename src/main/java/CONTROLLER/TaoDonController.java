@@ -166,6 +166,11 @@ public class TaoDonController {
             return;
         }
       
+        if(view.getTxtMaDon().getText().equalsIgnoreCase("")){
+            JOptionPane.showMessageDialog(view, "Vui lòng nhập mã đơn hàng!");
+            return;
+        }
+        
         java.util.Date uDate = view.getNgayGD().getDate();
         java.sql.Date sDate = new java.sql.Date(uDate.getTime());
         
