@@ -88,7 +88,7 @@ public class DonHangDAO {
     
     public String getHang(String maKH) {
         String tenHang = "";
-        String sql = "SELECT h.tenhang FROM khachhang k JOIN hangthanhvien h ON k.mahang = h.mahang WHERE k.makhachhang = ?";
+        String sql = "SELECT h.tenhang FROM khachhang k JOIN hangthanhvien h ON k.makhachhang = h.makhachhang WHERE k.makhachhang = ?";
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maKH);
