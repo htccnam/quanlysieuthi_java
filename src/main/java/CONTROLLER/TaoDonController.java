@@ -63,11 +63,7 @@ public class TaoDonController {
 
         view.getCboMaKM().addActionListener((e) -> {
             tinhTongTien();
-        });
-        
-        view.getTxtHang().addActionListener((e) -> {
-                tinhTongTien();
-        });
+        });       
     }
 
     //LOGIC 
