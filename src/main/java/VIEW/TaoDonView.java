@@ -8,10 +8,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class TaoDonView extends JPanel {
-
-    // ===== Components cần controller dùng =====
+    
     private JDateChooser ngayGD;
-    private JTextField txtMaDon, txtTimKiem;
+    private JTextField txtMaDon, txtTimKiem, txtHang;
     private JComboBox<String> cboBanHang, cboThanhToan, cboNV, cboMaKM, cboKH;
     private JTable table, tableSanPham;
     private JLabel lblTongTien, lblTamTinh, lblKM;
@@ -30,7 +29,7 @@ public class TaoDonView extends JPanel {
         add(panelTongTien());
     }
 
-    // ================= THÔNG TIN CHUNG =================
+    //THÔNG TIN CHUNG 
     private JPanel panelThongTinChung() {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("Thông tin chung (Đơn hàng)"));
@@ -40,7 +39,9 @@ public class TaoDonView extends JPanel {
         g.insets = new Insets(6, 6, 6, 6);
         g.fill = GridBagConstraints.HORIZONTAL;
 
-        txtMaDon = new JTextField("DH-2023-001");
+        txtMaDon = new JTextField();
+        txtHang = new JTextField();
+        txtHang.setEditable(false);
         ngayGD = new JDateChooser();
         cboNV = new JComboBox<>(new String[]{});
         cboKH = new JComboBox<>(new String[]{});
@@ -92,25 +93,31 @@ public class TaoDonView extends JPanel {
         g.gridx = 5;
         p.add(cboMaKM, g);
 
+        g.gridx = 6;
+        p.add(new JLabel("Hạng thành viên"), g);
+
+        g.gridx = 7;
+        p.add(txtHang, g);
+        
         return p;
     }
 
-    // ================= CHI TIẾT ĐƠN =================
+    // SẢN PHẨM
     private JPanel panelChiTiet() {
     
     JPanel p = new JPanel(new GridLayout(1, 2, 15, 0)); 
     p.setBackground(Color.WHITE);
 
-    // --- CỘT TRÁI: DANH SÁCH SẢN PHẨM ĐỂ CHỌN ---
+    // Bảng trái
     JPanel leftPanel = new JPanel(new BorderLayout(5, 5));
     leftPanel.setBorder(BorderFactory.createTitledBorder("Danh sách sản phẩm"));
     leftPanel.setBackground(Color.WHITE);
   
+    //Panel trên
     JPanel topSearch = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    topSearch.setBackground(Color.WHITE);
-       
+    topSearch.setBackground(Color.WHITE);     
     txtTimKiem = new JTextField(15);     
-    spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+    spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));// (value, min, max, stepsize)
     spinner.setPreferredSize(new Dimension(50, 25));
     btnThem = new JButton("+ Thêm");
     btnThem.setBackground(new Color(59, 130, 246));
@@ -124,9 +131,15 @@ public class TaoDonView extends JPanel {
     topSearch.add(spinner);
     topSearch.add(btnThem);
 
-    // Bảng mới để hiện sản phẩm từ Database
-    String[] colsSP = {"Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng"};
-    DefaultTableModel modelSP = new DefaultTableModel(colsSP, 0);
+    // Table
+    String[] colsSP = {"MÃ SẢN PHẨM", "TÊN SẢN PHẨM", "ĐƠN GIÁ", "SỐ LƯỢNG"};
+    DefaultTableModel modelSP;
+    modelSP = new DefaultTableModel(colsSP, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     tableSanPham = new JTable(modelSP);
     tableSanPham.setRowHeight(30);
     JScrollPane scrollSP = new JScrollPane(tableSanPham);
@@ -135,7 +148,7 @@ public class TaoDonView extends JPanel {
     leftPanel.add(scrollSP, BorderLayout.CENTER);
 
 
-    // --- CỘT PHẢI: CHI TIẾT ĐƠN HÀNG (GIỮ NGUYÊN CODE CỦA BẠN) ---
+    //Bảng phải
     JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
     rightPanel.setBorder(BorderFactory.createTitledBorder("Chi tiết đơn hàng"));
     rightPanel.setBackground(Color.WHITE);
@@ -143,7 +156,6 @@ public class TaoDonView extends JPanel {
     JPanel topControl = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
     topControl.setBackground(Color.WHITE);
   
-    // Dùng lại các nút bấm cũ của bạn
     btnXoa = new JButton("- Xóa");
     btnXoa.setBackground(new Color(239, 68, 68));
     btnXoa.setForeground(Color.WHITE);
@@ -152,9 +164,15 @@ public class TaoDonView extends JPanel {
     btnXoa.setFont(new Font("Arial", Font.BOLD, 13));
     topControl.add(btnXoa);
     
-    // Dùng lại table cũ của bạn
-    String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
-    DefaultTableModel model = new DefaultTableModel(cols, 0);
+    //Bảng sản phẩm đã chọn
+    String[] cols = {"MÃ SẢN PHẨM", "TÊN SẢN PHẨM", "ĐƠN GIÁ", "SỐ LƯỢNG", "THÀNH TIỀN"};
+    DefaultTableModel model;
+    model = new DefaultTableModel(cols, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     table = new JTable(model);
     table.setRowHeight(32);
     JScrollPane scroll = new JScrollPane(table);
@@ -162,14 +180,13 @@ public class TaoDonView extends JPanel {
     rightPanel.add(topControl, BorderLayout.NORTH);
     rightPanel.add(scroll, BorderLayout.CENTER);
 
-    // Thêm cả 2 vào panel chính
     p.add(leftPanel);
     p.add(rightPanel);
 
     return p;
 }
 
-    // ================= TỔNG TIỀN =================
+    //TỔNG TIỀN
     private JPanel panelTongTien() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBackground(new Color(245, 247, 249));
@@ -228,7 +245,7 @@ public class TaoDonView extends JPanel {
             cboMaKM.addItem(ten);
         }
     }
-    
+       
     public void loadDataTable(ArrayList<SanPham> list){
         DefaultTableModel model = (DefaultTableModel) tableSanPham.getModel();
 
@@ -243,8 +260,11 @@ public class TaoDonView extends JPanel {
         model.addRow(row);
     }
     }
+
+    public JTextField getTxtHang() {
+        return txtHang;
+    } 
     
-    // ================= GETTER cho Controller =================
     public JButton getBtnLuu() {
         return btnLuu;
     }
@@ -303,25 +323,23 @@ public class TaoDonView extends JPanel {
     
     public JTable getTableSanPham() {
     return tableSanPham;
-}
+    }
 
-public JButton getBtnThem() {
-    return btnThem;
-}
+    public JButton getBtnThem() {
+        return btnThem;
+    }
 
-public JButton getBtnXoa() {
-    return btnXoa;
-}
+    public JButton getBtnXoa() {
+        return btnXoa;
+    }
 
-// Getter helper để lấy model bảng phải nhanh hơn
-public DefaultTableModel getModelTablePhai() {
-    return (DefaultTableModel) table.getModel();
-}
-
-// Getter helper để lấy model bảng trái nhanh hơn
-public DefaultTableModel getModelTableTrai() {
-    return (DefaultTableModel) tableSanPham.getModel();
-}
+    public DefaultTableModel getModelTablePhai() {
+        return (DefaultTableModel) table.getModel();
+    }
+    
+    public DefaultTableModel getModelTableTrai() {
+        return (DefaultTableModel) tableSanPham.getModel();
+    }
 }
 
 
