@@ -112,6 +112,11 @@ public class nhanvienController {
                 JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
                 return;
             }
+            if (nvDAO.checkTrungMaNhanVien(textMaNhanVienString)) {
+                JOptionPane.showMessageDialog(views, "Mã nhân viên đã tồn tại");
+                return;
+            }
+
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, soDienThoaiString, textemailString, textdiachiString, tachchuoiString);
 
             try {
@@ -173,7 +178,10 @@ public class nhanvienController {
             int result = JOptionPane.showConfirmDialog(views, "bạn có chắc chắn ");
             if (result == JOptionPane.YES_OPTION) {
                 String maNhanVienString = views.manhanvienField.getText().toString();
-
+                if (nvDAO.checkTrungMaNhanVien(maNhanVienString)) {
+                    JOptionPane.showMessageDialog(views, "Mã nhân viên đã được tạo đơn không thể xóa");
+                    return;
+                }
                 try {
                     if (nvDAO.xoaNhanVien(maNhanVienString)) {
                         JOptionPane.showMessageDialog(views, "xóa thành công");

@@ -89,6 +89,7 @@ public class nhanvienViews extends JPanel {
         ngaysinhChooser.setDateFormatString("dd/MM/yyyy");
         ngaysinhChooser.setBounds(300, 150, 300, 40);
         ngaysinhChooser.setFont(new Font("Arial",Font.ITALIC,23));
+//        ngaysinhChooser.setMaximumSize();
         add(ngaysinhChooser);
 
         //gioitinh
