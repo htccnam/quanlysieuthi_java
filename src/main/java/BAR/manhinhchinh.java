@@ -120,14 +120,12 @@ public class manhinhchinh extends JFrame {
 
     }
 
-    //hàm hiển thị panel đổ xuông màn hình chính;
-   // Để hàm này chấp nhận được cả KhachHangView, SanPhamView, NhanVienView...
     public void showpanel(javax.swing.JPanel jp) { 
         
-        containerJPanel.removeAll(); // Xóa nội dung cũ đang hiển thị
+        containerJPanel.removeAll();
         containerJPanel.add(jp, java.awt.BorderLayout.CENTER); 
-        containerJPanel.revalidate(); // Tính toán lại bố cục
-        containerJPanel.repaint();    // Vẽ lại màn hình
+        containerJPanel.revalidate(); 
+        containerJPanel.repaint();   
     }
     
 
