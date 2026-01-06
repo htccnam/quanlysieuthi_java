@@ -46,7 +46,7 @@ public class TaoDonController {
 
         view.getBtnLuu().addActionListener(e -> luuDonHang());
         
-        //sự kiện cập nhật
+        //sự kiện cập nhật của view ChiTiet
         view.getBtnLuu().addActionListener(e -> {
             if (view.getBtnLuu().getText().equals("Cập nhật")) {
                 xuLyCapNhat();
@@ -69,7 +69,7 @@ public class TaoDonController {
     Object selected = view.getCboKH().getSelectedItem();
         if (selected != null) {
             String maKH = selected.toString();
-            String tenHang = dao.getHang(maKH);       
+            String tenHang = dao.getHang(maKH);
             view.getTxtHang().setText(tenHang);    
             view.getTxtHang().setEditable(false);
         }
