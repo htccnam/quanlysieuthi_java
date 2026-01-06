@@ -41,7 +41,7 @@ public class SanPhamController {
         loadComboBoxData();
         loadTable(model.getList());
 
-        // --- NÚT THÊM ---
+        //NÚT THÊM
         view.addAddListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,13 +58,11 @@ public class SanPhamController {
                     String maNCC = ncc.getMaNCC();
                     
                     String xuatXu = view.txtXuatXu.getText();
-                    
-                    // --- SỬA: Lấy Tình trạng từ ComboBox ---
                     String tinhTrang = view.cboTinhTrang.getSelectedItem().toString();
                     
                     String donVi = view.txtDonViTinh.getText();
 
-                    // Validate
+                    // kt rỗng
                     if (ma.isEmpty() || ten.isEmpty()) {
                         view.showMessage("Mã và Tên không được để trống!");
                         return;
@@ -107,7 +105,7 @@ public class SanPhamController {
             }
         });
 
-        // --- NÚT SỬA ---
+        //SỬA
         view.addEditListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,7 +123,6 @@ public class SanPhamController {
                     String maNCC = ncc.getMaNCC();
                     String xuatXu = view.txtXuatXu.getText();
                     
-                    // --- SỬA: Lấy từ ComboBox ---
                     String tinhTrang = view.cboTinhTrang.getSelectedItem().toString();
                     
                     String donVi = view.txtDonViTinh.getText();
@@ -149,7 +146,7 @@ public class SanPhamController {
             }
         });
 
-        // --- NÚT XÓA ---
+        //XÓA
         view.addDeleteListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -168,7 +165,7 @@ public class SanPhamController {
             }
         });
 
-        // --- NÚT LÀM MỚI ---
+        //LÀM MỚI
         view.addResetListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -177,7 +174,7 @@ public class SanPhamController {
             }
         });
 
-        // --- CLICK BẢNG (QUAN TRỌNG: Xử lý định dạng ngày) ---
+        //CLICK BẢNG
         view.addTableMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -186,7 +183,7 @@ public class SanPhamController {
                     view.txtMaSP.setText(view.table.getValueAt(row, 0).toString());
                     view.txtTenSP.setText(view.table.getValueAt(row, 1).toString());
                     
-                    // 1. Chọn lại ComboBox Loại Hàng
+                    //Chọn lại ComboBox Loại Hàng
                     String maLoaiTable = view.table.getValueAt(row, 2).toString();
                     for(int i=0; i<view.cboLoai.getItemCount(); i++){
                         LoaiHang item = (LoaiHang) view.cboLoai.getItemAt(i);
@@ -196,7 +193,7 @@ public class SanPhamController {
                         }
                     }
                     
-                    // 2. Chọn lại ComboBox NCC
+                    //Chọn lại ComboBox NCC
                     String maNCCTable = view.table.getValueAt(row, 3).toString();
                     for(int i=0; i<view.cboNCC.getItemCount(); i++){
                         NhaCungCap item = (NhaCungCap) view.cboNCC.getItemAt(i);
@@ -209,7 +206,7 @@ public class SanPhamController {
                     view.txtXuatXu.setText(view.table.getValueAt(row, 4).toString());
                     view.txtSoLuong.setText(view.table.getValueAt(row, 5).toString());
                     
-                    // 3. XỬ LÝ NGÀY THÁNG (Parse từ String dd-MM-yyyy về Date)
+                    //XỬ LÝ NGÀY THÁNG
                     try {
                         String sNgaySX = view.table.getValueAt(row, 6).toString();
                         String sHanSD = view.table.getValueAt(row, 7).toString();
@@ -220,7 +217,7 @@ public class SanPhamController {
                         System.out.println("Lỗi parse ngày: " + ex);
                     }
 
-                    // 4. SỬA: Set Tình trạng vào ComboBox
+                    //Set Tình trạng vào ComboBox
                     String tinhTrangTable = view.table.getValueAt(row, 8).toString();
                     view.cboTinhTrang.setSelectedItem(tinhTrangTable);
                     
@@ -247,7 +244,7 @@ public class SanPhamController {
         });
     }
 
-    // --- CÁC HÀM HỖ TRỢ ---
+    //CÁC HÀM HỖ TRỢ
 
     private void resetForm() {
         view.txtMaSP.setText("");
@@ -267,7 +264,7 @@ public class SanPhamController {
         view.txtMaSP.setEditable(true);
     }
 
-    // --- SỬA HÀM LOAD TABLE ĐỂ ĐỊNH DẠNG NGÀY ---
+    // LOAD TABLE
     private void loadTable(ArrayList<SanPham> list) {
         view.tableModel.setRowCount(0);
         for (SanPham sp : list) {

@@ -79,7 +79,7 @@ public class NhaCungCapView extends JPanel {
         
     }
     
-    // --- HÀM HỖ TRỢ VẼ GIAO DIỆN NHANH ---
+    //HÀM HỖ TRỢ VẼ GIAO DIỆN NHANH
     private void addLabel(String text, int x, int y) {
         JLabel lb = new JLabel(text);
         lb.setBounds(x, y, 100, 25);
@@ -91,12 +91,12 @@ public class NhaCungCapView extends JPanel {
         add(field);
     }
 
-    // --- HÀM HIỆN THÔNG BÁO ---
+    //HÀM HIỆN THÔNG BÁO
     public void showMessage(String msg) {
         JOptionPane.showMessageDialog(this, msg);
     }
 
-    // --- CÁC HÀM GẮN SỰ KIỆN (LISTENER) ---
+    //CÁC HÀM GẮN SỰ KIỆN (LISTENER)
     public void addAddListener(ActionListener l) { btnAdd.addActionListener(l); }
     public void addEditListener(ActionListener l) { btnEdit.addActionListener(l); }
     public void addDeleteListener(ActionListener l) { btnDelete.addActionListener(l); }

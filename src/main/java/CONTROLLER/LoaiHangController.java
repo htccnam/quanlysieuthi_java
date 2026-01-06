@@ -25,15 +25,13 @@ public class LoaiHangController {
     private LoaiHangView view;
     private LoaiHangModel model;
 
-    //HÀM KHỞI TẠO 
     public LoaiHangController(LoaiHangView view) {
         this.view = view;
-        this.model = new LoaiHangModel(); // Tự tạo model
+        this.model = new LoaiHangModel(); 
 
-        // 1. Chạy lên là nạp bảng ngay
         loadTable(model.getList());
 
-        // 2. Gắn sự kiện cho nút THÊM
+        //Gắn sự kiện cho nút THÊM
         view.addAddListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +58,7 @@ public class LoaiHangController {
             }
         });
 
-        // 3. Gắn sự kiện cho nút SỬA
+        //Gắn sự kiện cho nút SỬA
         view.addEditListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,7 +79,7 @@ public class LoaiHangController {
             }
         });
 
-        // 4. Gắn sự kiện cho nút XÓA
+        //Gắn sự kiện cho nút XÓA
         view.addDeleteListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +105,7 @@ public class LoaiHangController {
             }
         });
 
-        // 5. Gắn sự kiện cho nút LÀM MỚI (Reset)
+        //Gắn sự kiện cho nút LÀM MỚI (Reset)
         view.addResetListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,7 +114,7 @@ public class LoaiHangController {
             }
         });
 
-        // 6. Gắn sự kiện CLICK VÀO BẢNG (Để đổ dữ liệu lên ô nhập)
+        //Gắn sự kiện CLICK VÀO BẢNG (Để đổ dữ liệu lên ô nhập)
         view.addTableMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -132,13 +130,12 @@ public class LoaiHangController {
                     view.txtMaLoai.setText(ma);
                     view.txtTenLoai.setText(ten);
                     
-                    // Khóa ô Mã lại không cho sửa (vì Mã là khóa chính) - Tùy chọn
-                    // view.txtMaLoai.setEditable(false); 
+                    view.txtMaLoai.setEditable(false); 
                 }
             }
         });
         
-        // 7. Gắn sự kiện cho nút TÌM KIẾM
+        //Gắn sự kiện cho nút TÌM KIẾM
         view.addSearchListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
