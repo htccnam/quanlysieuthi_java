@@ -128,6 +128,10 @@ public class khuyenmaiController {
             int check = JOptionPane.showConfirmDialog(kmView, "bạn có chắc chắn muốn xóa");
             if (check == JOptionPane.YES_OPTION) {
                 try {
+                    if(kmDAO.checkXoaKhuyenMai(makhuyenmaiString)){
+                        JOptionPane.showMessageDialog(kmView, "mã khuyến mại đã được tạo đơn không thể xóa");
+                        return;
+                    }
                     kmDAO.xoaKhuyenMai(makhuyenmaiString);
                     JOptionPane.showMessageDialog(kmView, "xóa thành công");
                     load_table();

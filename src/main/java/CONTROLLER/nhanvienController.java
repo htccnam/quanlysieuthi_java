@@ -178,12 +178,13 @@ public class nhanvienController {
         public void actionPerformed(ActionEvent e) {
             int result = JOptionPane.showConfirmDialog(views, "bạn có chắc chắn ");
             if (result == JOptionPane.YES_OPTION) {
-                String maNhanVienString = views.manhanvienField.getText().toString();
-                if (nvDAO.checkTrungMaNhanVien(maNhanVienString)) {
-                    JOptionPane.showMessageDialog(views, "Mã nhân viên đã được tạo đơn không thể xóa");
-                    return;
-                }
+                String maNhanVienString = views.manhanvienField.getText();
+
                 try {
+                    if (nvDAO.checkTrungMaNhanVien(maNhanVienString)) {
+                        JOptionPane.showMessageDialog(views, "Mã nhân viên đã được tạo đơn không thể xóa");
+                        return;
+                    }
                     if (nvDAO.xoaNhanVien(maNhanVienString)) {
                         JOptionPane.showMessageDialog(views, "xóa thành công");
                         load_table();
@@ -204,7 +205,7 @@ public class nhanvienController {
 
             views.manhanvienField.setText("");
             views.tennhanvienField.setText("");
-            Calendar calendar=Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.YEAR, -18);
             views.ngaysinhChooser.setDate(calendar.getTime());
             views.gioitinhComboBox.setSelectedIndex(0);

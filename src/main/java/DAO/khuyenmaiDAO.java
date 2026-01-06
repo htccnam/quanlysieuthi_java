@@ -134,4 +134,20 @@ public class khuyenmaiDAO {
         }
 
     }
+    public boolean checkXoaKhuyenMai(String makhuyenmaiString) {
+        String sqlString = "select makhuyenmai from donhang where makhuyenmai=?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString)) {
+            pr.setString(1, makhuyenmaiString);
+            try (ResultSet resultSet = pr.executeQuery();) {
+                if (resultSet.next()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        } catch (Exception e) {
+            return true;
+        }
+    }
 }

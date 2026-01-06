@@ -60,9 +60,6 @@ public class manhinhchinhController {
             nhanvienViews nhanvien = new nhanvienViews();
             new nhanvienController(nhanvien);
             menu.showpanel(nhanvien);
-            SwingUtilities.invokeLater(() -> {
-                new nhanvienController(nhanvien);
-            });
         }
 
     }
