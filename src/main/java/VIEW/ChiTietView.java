@@ -6,13 +6,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class ChiTietView extends JPanel {
-    // Các component cần truy cập từ Controller
     private JTable table;
     private DefaultTableModel model;
     private JTextField txtSearch;
     private JButton btnSua, btnXoa, btnXemChiTiet;
     
-    // Các Label thống kê để Controller set text
     private JLabel lblTongDoanhThu, lblTongDon, lblDoanhThuTB;
 
     public ChiTietView() {
@@ -20,27 +18,19 @@ public class ChiTietView extends JPanel {
         setBackground(new Color(245, 247, 249));
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // 1. Thanh công cụ (Tìm kiếm + Nút bấm)
-        add(createTopBar(), BorderLayout.NORTH);
+        add(CongCu(), BorderLayout.NORTH);
         
         JPanel centerPanel = new JPanel(new BorderLayout(0, 20));
-        centerPanel.setOpaque(false);
-        
-        // 2. Các ô thống kê (3 ô theo yêu cầu)
-        centerPanel.add(createStatCards(), BorderLayout.NORTH);
-        
-        // 3. Bảng dữ liệu (Cột đã sửa)
-        centerPanel.add(createTablePanel(), BorderLayout.CENTER);
-        
+        centerPanel.setOpaque(false);    
+        centerPanel.add(ThongKe(), BorderLayout.NORTH);     
+        centerPanel.add(Table(), BorderLayout.CENTER);    
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    // --- 1. THANH CÔNG CỤ ---
-    private JPanel createTopBar() {
+    private JPanel CongCu() {
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setOpaque(false);
 
-        // Bên trái: Tìm kiếm
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         left.setOpaque(false);
         
@@ -53,21 +43,17 @@ public class ChiTietView extends JPanel {
         left.add(lblTimKiem);
         left.add(txtSearch);
 
-        // Bên phải: Các nút chức năng (Sửa, Xóa, Xem, Xuất)
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         right.setOpaque(false);
 
-        // Nút Xem Chi Tiết
         btnXemChiTiet = new JButton("Xem CT");
-        styleButton(btnXemChiTiet, new Color(59, 130, 246)); // Xanh dương
+        styleButton(btnXemChiTiet, new Color(59, 130, 246));
 
-        // Nút Sửa
         btnSua = new JButton("Sửa");
-        styleButton(btnSua, new Color(245, 158, 11)); // Màu Cam
+        styleButton(btnSua, new Color(245, 158, 11)); 
 
-        // Nút Xóa
         btnXoa = new JButton("Xóa");
-        styleButton(btnXoa, new Color(239, 68, 68)); // Màu Đỏ
+        styleButton(btnXoa, new Color(239, 68, 68));
 
         right.add(btnXemChiTiet);
         right.add(btnSua);
@@ -79,7 +65,6 @@ public class ChiTietView extends JPanel {
         return topBar;
     }
 
-    // Hàm phụ trợ trang trí nút bấm
     private void styleButton(JButton btn, Color bgColor) {
         btn.setPreferredSize(new Dimension(100, 35));
         btn.setBackground(bgColor);
@@ -89,33 +74,26 @@ public class ChiTietView extends JPanel {
         btn.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
-    // --- 2. CÁC THẺ THỐNG KÊ (3 Ô) ---
-    private JPanel createStatCards() {
-        // GridLayout 1 hàng 3 cột, khoảng cách 20px
-        JPanel pnlCards = new JPanel(new GridLayout(1, 3, 20, 0)); 
-        pnlCards.setOpaque(false);
+    private JPanel ThongKe() {
+        JPanel pnlCard = new JPanel(new GridLayout(1, 3, 20, 0)); 
+        pnlCard.setOpaque(false);
 
-        // Khởi tạo các Label và Card
-        // Card 1: Tổng doanh thu
         lblTongDoanhThu = new JLabel("0 đ");
-        pnlCards.add(renderCard("Tổng doanh thu", lblTongDoanhThu, new Color(232, 252, 241), new Color(34, 197, 94)));
+        pnlCard.add(Card("Tổng doanh thu", lblTongDoanhThu, new Color(232, 252, 241), new Color(34, 197, 94)));
 
-        // Card 2: Tổng số đơn
         lblTongDon = new JLabel("0");
-        pnlCards.add(renderCard("Tổng số đơn hàng", lblTongDon, new Color(239, 246, 255), new Color(59, 130, 246)));
+        pnlCard.add(Card("Tổng số đơn hàng", lblTongDon, new Color(239, 246, 255), new Color(59, 130, 246)));
 
-        // Card 3: Doanh thu trung bình / đơn
         lblDoanhThuTB = new JLabel("0 đ/đơn");
-        pnlCards.add(renderCard("Doanh thu TB/Đơn", lblDoanhThuTB, new Color(255, 251, 235), new Color(245, 158, 11)));
+        pnlCard.add(Card("Doanh thu TB/Đơn", lblDoanhThuTB, new Color(255, 251, 235), new Color(245, 158, 11)));
 
-        return pnlCards;
+        return pnlCard;
     }
 
-    // Hàm vẽ giao diện từng Card
-    private JPanel renderCard(String title, JLabel lblVal, Color bgColor, Color accentColor) {
+    private JPanel Card(String title, JLabel lblVal, Color bgColor, Color accentColor) {
         JPanel card = new JPanel(new BorderLayout());
         card.setBackground(Color.WHITE);
-        // Viền nhẹ và padding
+      
         card.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(230, 230, 230), 1),
             new EmptyBorder(15, 20, 15, 20)
@@ -128,9 +106,8 @@ public class ChiTietView extends JPanel {
         lblVal.setFont(new Font("SansSerif", Font.BOLD, 20));
         lblVal.setForeground(Color.DARK_GRAY);
 
-        // Icon màu bên phải trang trí
         JPanel icon = new JPanel();
-        icon.setPreferredSize(new Dimension(5, 40)); // Chỉ là 1 vạch màu
+        icon.setPreferredSize(new Dimension(5, 40));
         icon.setBackground(accentColor);
         
         card.add(lblTitle, BorderLayout.NORTH);
@@ -140,13 +117,11 @@ public class ChiTietView extends JPanel {
         return card;
     }
 
-    // --- 3. BẢNG DỮ LIỆU ---
-    private JPanel createTablePanel() {
+    private JPanel Table() {
         JPanel pnlContent = new JPanel(new BorderLayout());
         pnlContent.setBackground(Color.WHITE);
         pnlContent.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
 
-        // Cập nhật tên cột theo yêu cầu số 3
         String[] cols = {
             "MÃ ĐƠN HÀNG", 
             "NGÀY GIAO DỊCH", 
@@ -159,7 +134,7 @@ public class ChiTietView extends JPanel {
         model = new DefaultTableModel(cols, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Không cho sửa trực tiếp trên bảng
+                return false;
             }
         };
 
@@ -169,7 +144,6 @@ public class ChiTietView extends JPanel {
         table.setGridColor(new Color(245, 245, 245));
         table.setSelectionBackground(new Color(240, 247, 255));
         
-        // Font Header
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
         table.getTableHeader().setBackground(new Color(250, 250, 250));
         table.getTableHeader().setPreferredSize(new Dimension(0, 40));
@@ -182,7 +156,6 @@ public class ChiTietView extends JPanel {
         return pnlContent;
     }
 
-    // --- GETTER CHO CONTROLLER ---
     public JTable getTable() { return table; }
     public DefaultTableModel getModel() { return model; }
     public JTextField getTxtSearch() { return txtSearch; }
