@@ -64,6 +64,10 @@ public class TaoDonController {
         view.getCboMaKM().addActionListener((e) -> {
             tinhTongTien();
         });
+        
+        view.getTxtHang().addActionListener((e) -> {
+                tinhTongTien();
+        });
     }
 
     //LOGIC 
@@ -127,7 +131,6 @@ public class TaoDonController {
         double tamTinh = 0;
         double hang = 0;
         double km = 0;
-        double giamGia = 0;
 
         for (int i = 0; i < modelPhai.getRowCount(); i++) {
             tamTinh += Double.parseDouble(modelPhai.getValueAt(i, 4).toString());
@@ -138,15 +141,12 @@ public class TaoDonController {
         }
         if (view.getTxtHang().getText().equalsIgnoreCase("Bạc")) {
             hang = tamTinh * 0.02;
-            giamGia = hang + km;
         } else if (view.getTxtHang().getText().equalsIgnoreCase("Vàng")) {
             hang = tamTinh * 0.05;
-            giamGia = hang + km;
         } else if (view.getTxtHang().getText().equalsIgnoreCase("Kim cương")) {
             hang = tamTinh * 0.1;
-            giamGia = hang + km;
         }
-
+        double giamGia = hang + km;
         double tongTien = tamTinh - giamGia;
         view.getLblKM().setText(String.format("Giảm giá: %,.0f đ", giamGia));
         view.getLblTamTinh().setText(String.format("Tạm tính: %,.0f đ", tamTinh));
@@ -163,17 +163,22 @@ public class TaoDonController {
     }
 
     private void luuDonHang() {
-        try {
-            if (view.getModelTablePhai().getRowCount() == 0) {
-                JOptionPane.showMessageDialog(view, "Vui lòng thêm sản phẩm vào đơn hàng!");
-                return;
-            }
-
-            java.util.Date uDate = view.getNgayGD().getDate();
-            java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-
-            Object tt = view.getLblTongTien().getClientProperty("value");
-            double tongTien = (tt != null) ? (double) tt : 0;
+    try {
+        if (view.getModelTablePhai().getRowCount() == 0) {
+            JOptionPane.showMessageDialog(view, "Vui lòng thêm sản phẩm vào đơn hàng!");
+            return;
+        }
+      
+        if(view.getTxtMaDon().getText().equalsIgnoreCase("")){
+            JOptionPane.showMessageDialog(view, "Vui lòng nhập mã đơn hàng!");
+            return;
+        }
+        
+        java.util.Date uDate = view.getNgayGD().getDate();
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        
+        Object tt = view.getLblTongTien().getClientProperty("value");
+        double tongTien = (tt != null) ? (double) tt : 0;
 
             DonHang dh = new DonHang(
                     view.getTxtMaDon().getText(),
