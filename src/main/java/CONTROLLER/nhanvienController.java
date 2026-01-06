@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -203,7 +204,9 @@ public class nhanvienController {
 
             views.manhanvienField.setText("");
             views.tennhanvienField.setText("");
-            views.ngaysinhChooser.setDate(new java.util.Date());
+            Calendar calendar=Calendar.getInstance();
+            calendar.add(Calendar.YEAR, -18);
+            views.ngaysinhChooser.setDate(calendar.getTime());
             views.gioitinhComboBox.setSelectedIndex(0);
             views.sodienthoaiField.setText("");
             views.emailField.setText("");

@@ -58,6 +58,7 @@ public class TaoDonController {
 
         view.getCboKH().addActionListener(e -> {
             capNhatHangThanhVien();
+            tinhTongTien();
         });
 
         view.getCboMaKM().addActionListener((e) -> {
