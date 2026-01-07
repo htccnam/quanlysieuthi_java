@@ -7,7 +7,7 @@ import java.util.List;
 
 public class KhachHangDAO {
     
-    // 1. Thêm Khách Hàng (Giữ nguyên: Điểm mặc định = 0)
+    // 1. Thêm Khách Hàng 
     public boolean addKhachHang(KhachHang kh) throws Exception {
         String sql = "INSERT INTO khachhang(makhachhang, tenkhachhang, sodienthoai, gioitinh, email, ngaysinh, diemtichluy) VALUES(?,?,?,?,?,?,?)";
         
@@ -94,7 +94,7 @@ public class KhachHangDAO {
                     kh.setNgaySinh(sqlDate.toLocalDate());
                 }
                 
-                // Lấy trực tiếp điểm hiện tại trong kho (đã được cộng/trừ)
+                // Lấy trực tiếp điểm hiện tại trong kho 
                 kh.setDiemtichluy(rs.getInt("diemtichluy"));
                 
                 list.add(kh);

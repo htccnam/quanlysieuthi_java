@@ -41,7 +41,7 @@ public class KhachHangController {
         }
     }
 
-    // --- CÁC CLASS LẮNG NGHE SỰ KIỆN  ---
+    // Các Class lắng nghe sự kiện 
 
     // 1. Thêm
     class AddListener implements ActionListener {

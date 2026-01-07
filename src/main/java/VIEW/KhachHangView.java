@@ -204,7 +204,7 @@ public class KhachHangView extends JPanel {
         p.add(input, gbc);
     }
 
-    // --- CÁC HÀM GET DỮ LIỆU TỪ FORM (LOGIC GIỮ NGUYÊN) ---> Hàm đóng gói dữ liệu đầu vào
+    // hàm đóng gói dữ liệu đầu vào
     public KhachHang getKhachHangFromForm() throws Exception {
         String ma = txtMaKH.getText().trim();
         String ten = txtHoTen.getText().trim();
