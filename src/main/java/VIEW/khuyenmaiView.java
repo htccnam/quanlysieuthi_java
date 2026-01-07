@@ -104,6 +104,7 @@ public class khuyenmaiView extends JPanel {
         calendar.add(Calendar.YEAR, 0);
         ngaytaoChooser.setMaxSelectableDate(calendar.getTime());
         ngaytaoChooser.setDate(calendar.getTime());
+        ((JTextField)(ngaytaoChooser.getDateEditor().getUiComponent())).setEditable(false);
         add(ngaytaoChooser);
 
         //button
@@ -166,7 +167,7 @@ public class khuyenmaiView extends JPanel {
         khuyenmaiHeader.setBackground(Color.green);
         
         JScrollPane khuyenmaiJScrollPane = new JScrollPane(khuyenmaiJTable);
-        khuyenmaiJScrollPane.setBounds(50, 350, 800, 500);
+        khuyenmaiJScrollPane.setBounds(50, 350, 1000, 500);
         add(khuyenmaiJScrollPane);
     }
 
