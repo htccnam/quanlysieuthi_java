@@ -20,16 +20,16 @@ public class HangThanhVienController {
         this.view = view;
         this.dao = new HangThanhVienDAO();
         
-        System.out.println("DEBUG: HangThanhVienController đã khởi động!"); // <--- KIỂM TRA DÒNG NÀY TRONG OUTPUT
+        System.out.println("DEBUG: HangThanhVienController đã khởi động!"); 
         
         // Load dữ liệu cho cả 2 phần (Tra cứu & Bảng chính)
         loadDataToMainTable();
         loadDataToLookupCombo();
         
-        // --- SỰ KIỆN PHẦN TRA CỨU ---
+        // Sự kiện tra cứu
         view.btnCheck.addActionListener(e -> checkTongTien());
         
-        // --- SỰ KIỆN PHẦN CRUD BẢNG XẾP HẠNG ---
+        // Sự kiện CRUD Xếp hạng
         view.btnThem.addActionListener(e -> xuLyThem());
         view.btnXoa.addActionListener(e -> xuLyXoa());
     }
@@ -70,8 +70,7 @@ public class HangThanhVienController {
         }
     }
 
-    // --- XỬ LÝ SỰ KIỆN ---
-
+    // Xử lý sự kiện
     // Nút Kiểm Tra (Check tiền nhanh)
     private void checkTongTien() {
         try {
@@ -103,8 +102,8 @@ public class HangThanhVienController {
             
             if (dao.themThanhVien(htv)) {
                 JOptionPane.showMessageDialog(view, "Thêm xếp hạng thành công!");
-                loadDataToMainTable(); // Refresh bảng chính
-                // Có thể cần refresh cả Dialog nếu mở lại, nhưng Dialog tạo mới mỗi lần nên ok
+                loadDataToMainTable(); 
+              
             } else {
                 JOptionPane.showMessageDialog(view, "Lỗi thêm! (Khách này có thể đã được xếp hạng rồi)");
             }
