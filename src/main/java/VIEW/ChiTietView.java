@@ -79,18 +79,18 @@ public class ChiTietView extends JPanel {
         pnlCard.setOpaque(false);
 
         lblTongDoanhThu = new JLabel("0 đ");
-        pnlCard.add(Card("Tổng doanh thu", lblTongDoanhThu, new Color(232, 252, 241), new Color(34, 197, 94)));
+        pnlCard.add(Card("Tổng doanh thu", lblTongDoanhThu, new Color(34, 197, 94)));
 
         lblTongDon = new JLabel("0");
-        pnlCard.add(Card("Tổng số đơn hàng", lblTongDon, new Color(239, 246, 255), new Color(59, 130, 246)));
+        pnlCard.add(Card("Tổng số đơn hàng", lblTongDon, new Color(59, 130, 246)));
 
         lblDoanhThuTB = new JLabel("0 đ/đơn");
-        pnlCard.add(Card("Doanh thu TB/Đơn", lblDoanhThuTB, new Color(255, 251, 235), new Color(245, 158, 11)));
+        pnlCard.add(Card("Doanh thu TB/Đơn", lblDoanhThuTB, new Color(245, 158, 11)));
 
         return pnlCard;
     }
 
-    private JPanel Card(String title, JLabel lblVal, Color bgColor, Color accentColor) {
+    private JPanel Card(String title, JLabel lblVal, Color accentColor) {
         JPanel card = new JPanel(new BorderLayout());
         card.setBackground(Color.WHITE);
       
