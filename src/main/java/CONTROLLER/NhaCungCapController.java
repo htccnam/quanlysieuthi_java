@@ -103,7 +103,6 @@ public class NhaCungCapController {
             }
         });
        
-       // click bảng
        view.addTableMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

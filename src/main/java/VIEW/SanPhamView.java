@@ -49,7 +49,6 @@ public class SanPhamView extends JPanel {
          txtNgaySX.setDateFormatString("dd-MM-yyyy"); 
          txtHanSD.setDateFormatString("dd-MM-yyyy");
 
-        //CỘT TRÁI
         int x1 = 30, yStart = 60, wLabel = 100, wText = 250, gap = 40;
         
         addLabel("Mã SP:", x1, yStart);            add(txtMaSP); txtMaSP.setBounds(x1 + wLabel, yStart, wText, 25);
@@ -59,8 +58,7 @@ public class SanPhamView extends JPanel {
         addLabel("Xuất Xứ:", x1, yStart + gap*4);  add(txtXuatXu); txtXuatXu.setBounds(x1 + wLabel, yStart + gap*4, wText, 25);
         addLabel("Số Lượng:", x1, yStart + gap*5); add(txtSoLuong); txtSoLuong.setBounds(x1 + wLabel, yStart + gap*5, wText, 25);
 
-        //CỘT PHẢI
-        int x2 = 450; // Dời sang phải
+        int x2 = 450; 
         
         addLabel("Ngày SX:", x2, yStart);          add(txtNgaySX); txtNgaySX.setBounds(x2 + wLabel, yStart, wText, 25);
         addLabel("Hạn SD:", x2, yStart + gap);     add(txtHanSD); txtHanSD.setBounds(x2 + wLabel, yStart + gap, wText, 25);
@@ -70,7 +68,6 @@ public class SanPhamView extends JPanel {
         addLabel("Giá Bán:", x2, yStart + gap*4);    add(txtGiaBan); txtGiaBan.setBounds(x2 + wLabel, yStart + gap*4, wText, 25);
         addLabel("Đơn Vị:", x2, yStart + gap*5);     add(txtDonViTinh); txtDonViTinh.setBounds(x2 + wLabel, yStart + gap*5, wText, 25);
 
-        // CÁC NÚT CHỨC NĂNG
         int yBtn = 320;
         btnAdd.setBounds(250, yBtn, 100, 35);
         btnEdit.setBounds(370, yBtn, 100, 35);
@@ -79,7 +76,6 @@ public class SanPhamView extends JPanel {
         
         add(btnAdd); add(btnEdit); add(btnDelete); add(btnReset);
 
-        //TÌM KIẾM
         JLabel lbTim = new JLabel("Tìm kiếm:");
         lbTim.setBounds(150, 370, 80, 30);
         add(lbTim);
@@ -90,7 +86,6 @@ public class SanPhamView extends JPanel {
         btnTimKiem.setBounds(650, 370, 100, 30);
         add(btnTimKiem);
 
-        //BẢNG DỮ LIỆ
         String[] cols = {
             "Mã SP", "Tên SP", "Mã Loại", "Mã NCC", "Xuất Xứ", "Số Lượng",
             "Ngày SX", "Hạn SD", "Tình Trạng", "Giá Nhập", "Giá Bán", "Đơn Vị"
@@ -110,7 +105,6 @@ public class SanPhamView extends JPanel {
         add(lb);
     }
 
-    // HÀM THÔNG BÁO & SỰ KIỆN
     public void showMessage(String msg) {
         JOptionPane.showMessageDialog(this, msg);
     }
