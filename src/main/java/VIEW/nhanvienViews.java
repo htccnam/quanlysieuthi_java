@@ -95,6 +95,7 @@ public class nhanvienViews extends JPanel {
         calendar.add(Calendar.YEAR, -18);
         ngaysinhChooser.setMaxSelectableDate(calendar.getTime());
         ngaysinhChooser.setDate(calendar.getTime());
+        ((JTextField)(ngaysinhChooser.getDateEditor().getUiComponent())).setEditable(false);
         add(ngaysinhChooser);
 
         //gioitinh
@@ -210,7 +211,7 @@ public class nhanvienViews extends JPanel {
         tieudeHeaders.setForeground(Color.black);
         
         JScrollPane nhanvienJScrollPane = new JScrollPane(nhanvienJTable);
-        nhanvienJScrollPane.setBounds(30, 550, 1000, 600);
+        nhanvienJScrollPane.setBounds(30, 550, 1400, 250);
         add(nhanvienJScrollPane);
     }
 

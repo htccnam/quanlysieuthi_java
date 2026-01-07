@@ -181,7 +181,7 @@ public class nhanvienController {
                 String maNhanVienString = views.manhanvienField.getText();
 
                 try {
-                    if (nvDAO.checkTrungMaNhanVien(maNhanVienString)) {
+                    if (nvDAO.checkXoaNhanVien(maNhanVienString)) {
                         JOptionPane.showMessageDialog(views, "Mã nhân viên đã được tạo đơn không thể xóa");
                         return;
                     }
@@ -258,7 +258,15 @@ public class nhanvienController {
             views.sodienthoaiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 4).toString());
             views.emailField.setText(views.nhanvienJTable.getValueAt(selectedRow, 5).toString());
             views.diachiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 6).toString());
-            views.chucvuBox.setSelectedItem(views.nhanvienJTable.getValueAt(selectedRow, 7).toString());
+            String machucvuString = views.nhanvienJTable.getValueAt(selectedRow, 7).toString();
+
+            for (int i = 0; i < views.chucvuBox.getItemCount(); i++) {
+                String item = views.chucvuBox.getItemAt(i);
+                if (item.startsWith(machucvuString + "-")) {
+                    views.chucvuBox.setSelectedIndex(i);
+                    break;
+                }
+            }
             views.manhanvienField.setEnabled(false);
         }
 
