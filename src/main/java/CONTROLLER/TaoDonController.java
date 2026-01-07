@@ -1,6 +1,7 @@
 package CONTROLLER;
 
 import DAO.DonHangDAO;
+import DAO.KhachHangDAO; // <--- 1. IMPORT MỚI
 import MODEL.ChiTietDon;
 import MODEL.DonHang;
 import MODEL.SanPham;
@@ -211,9 +212,28 @@ public class TaoDonController {
                 }
 
                 if (checkCT) {
+                    // --- BẮT ĐẦU ĐOẠN LOGIC MỚI: CỘNG ĐIỂM TÍCH LŨY ---
+                    try {
+                        KhachHangDAO khDao = new KhachHangDAO();
+                        
+                        // Lấy mã khách hàng (Cắt chuỗi nếu ComboBox dạng "Mã - Tên")
+                        String rawKH = view.getCboKH().getSelectedItem().toString();
+                        String maKH = rawKH.split(" - ")[0].trim(); // Lấy phần Mã trước dấu gạch ngang
+                        
+                        // Gọi hàm cộng điểm (10.000đ = 10 điểm)
+                        khDao.congDiemTichLuy(maKH, tongTien);
+                        
+                        System.out.println("Đã cộng điểm cho khách: " + maKH + " với tổng tiền: " + tongTien);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        // Không hiện thông báo lỗi ở đây để tránh làm phiền người dùng nếu đơn đã lưu thành công
+                    }
+                    // --- KẾT THÚC ĐOẠN LOGIC MỚI ---
+
                     JOptionPane.showMessageDialog(view, "Lưu đơn hàng thành công!");
                     modelPhai.setRowCount(0);
-                    view.getTxtMaDon().setText("");
+                    view.getTxtMaDon().setText(""); 
+                    
                     view.loadDataTable(dao.getSP());
                 }
             }

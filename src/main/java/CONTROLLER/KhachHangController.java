@@ -31,7 +31,7 @@ public class KhachHangController {
         loadDataToTable();
         this.view.setVisible(true);
     }
-
+    //Tải dữ liệu lên bảng : Liên kết với DAO -> Sử dụng View để dẩy dữ liệu lên
     private void loadDataToTable() {
         try {
             List<KhachHang> list = dao.getAllKhachHang(); 
@@ -41,7 +41,7 @@ public class KhachHangController {
         }
     }
 
-    // --- CÁC CLASS LẮNG NGHE SỰ KIỆN (INNER CLASSES) ---
+    // --- CÁC CLASS LẮNG NGHE SỰ KIỆN  ---
 
     // 1. Thêm
     class AddListener implements ActionListener {
