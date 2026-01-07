@@ -42,6 +42,7 @@ public class manhinhchinhController {
         menu.addClickQuanLyNhanVien(new clickNhanSuListener());
         menu.addClickQuanLyKhachHang(new clickKhachHangListener());
         menu.addClickHangThanhVien(new clickHangThanhVienListener());
+        menu.addClickDoiQua(new clickDoiQuaListener());
         menu.addClickQuanLyChucVu(new clickChucVu());
         menu.addClickQuanLyKhuyenMai(new clickQuanLyKhuyenMai());
         menu.addClickPhanLoaiHang(new clickPhanLoaiHangListener());
@@ -50,6 +51,7 @@ public class manhinhchinhController {
         menu.addClickNhaCungCap(new clickNhaCungCapListener());
         menu.addClickDanhSachSanPham(new clickSanPhamListener());
         menu.addClickDangXuat(new clickDangXuat());
+        
         menu.setVisible(true);
     }
 
@@ -66,7 +68,13 @@ public class manhinhchinhController {
         }
 
     }
-
+    private class clickDoiQuaListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Chức năng này mở ra cửa sổ riêng (JFrame), không nhúng vào panel chính
+            new CONTROLLER.DoiQuaController();
+        }
+    }
     private class clickKhachHangListener implements ActionListener {
 
         @Override

@@ -33,6 +33,7 @@ public class manhinhchinh extends JFrame {
     JMenu khachHangJMenu;
     JMenuItem quanLyKhachHang;
     JMenuItem hangThanhVien;
+    JMenuItem doiQuaItem; 
     JMenu khuyenmaiJMenu;
     JMenuItem quanlykhuyenmai;
     JMenu nhanSuJMenu;
@@ -71,14 +72,20 @@ public class manhinhchinh extends JFrame {
         banHangJMenu.add(taoDonMoi);
         banHangJMenu.add(ChiTietDonHang);
 
+        //3.Menu KhachHang :
         khachHangJMenu = new JMenu("Khách hàng");
         quanLyKhachHang= new JMenuItem("Quản lý khách hàng");
         hangThanhVien = new JMenuItem("Hạng thành viên (VIP)");
+        doiQuaItem = new JMenuItem("Đổi điểm nhận quà");
+        
         khachHangJMenu.setFont(new Font("Arial",Font.BOLD,20));
         quanLyKhachHang.setFont(new Font("Arial",Font.BOLD,17));   
         hangThanhVien.setFont(new Font("Arial",Font.BOLD,17));
+        doiQuaItem.setFont(new Font("Arial",Font.BOLD,17));
+        
         khachHangJMenu.add(quanLyKhachHang);
         khachHangJMenu.add(hangThanhVien);
+        khachHangJMenu.add(doiQuaItem);
         khachHangJMenu.setVisible(true);
         
         khuyenmaiJMenu = new JMenu("Khuyến mại");
@@ -168,7 +175,11 @@ public class manhinhchinh extends JFrame {
     public void addClickHangThanhVien(ActionListener listener) { 
         hangThanhVien.addActionListener(listener); 
     }
+    public void addClickDoiQua(ActionListener listener) { 
+        doiQuaItem.addActionListener(listener); 
+    }
     public void addClickDangXuat(ActionListener listener){
         dangxuatItem.addActionListener(listener);
     }
 }
+
