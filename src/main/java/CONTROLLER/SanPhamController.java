@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat; // Import thư viện định dạng ngày
+import java.text.SimpleDateFormat; 
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -30,14 +30,12 @@ public class SanPhamController {
     private SanPhamView view;
     private SanPhamModel model;
     
-    // Tạo định dạng ngày tháng Việt Nam
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     public SanPhamController(SanPhamView view) {
         this.view = view;
         this.model = new SanPhamModel();
 
-        // 1. Nạp dữ liệu ComboBox và Bảng
         loadComboBoxData();
         loadTable(model.getList());
 
@@ -46,11 +44,9 @@ public class SanPhamController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // Lấy dữ liệu
                     String ma = view.txtMaSP.getText();
                     String ten = view.txtTenSP.getText();
                     
-                    // ComboBox Đối tượng
                     LoaiHang lh = (LoaiHang) view.cboLoai.getSelectedItem();
                     String maLoai = lh.getMaLoai();
                     
@@ -244,15 +240,13 @@ public class SanPhamController {
         });
     }
 
-    //CÁC HÀM HỖ TRỢ
 
     private void resetForm() {
         view.txtMaSP.setText("");
         view.txtTenSP.setText("");
         view.txtXuatXu.setText("");
         view.txtSoLuong.setText("");
-        
-        // Reset ComboBox về phần tử đầu tiên
+       
         view.cboTinhTrang.setSelectedIndex(0); 
         
         view.txtGiaNhap.setText("");
@@ -264,20 +258,18 @@ public class SanPhamController {
         view.txtMaSP.setEditable(true);
     }
 
-    // LOAD TABLE
     private void loadTable(ArrayList<SanPham> list) {
         view.tableModel.setRowCount(0);
         for (SanPham sp : list) {
             
-            // Format ngày tháng ra chuỗi "dd-MM-yyyy"
             String hienThiNgaySX = (sp.getNgaySX() != null) ? sdf.format(sp.getNgaySX()) : "";
             String hienThiHanSD = (sp.getHanSD() != null) ? sdf.format(sp.getHanSD()) : "";
             
             view.tableModel.addRow(new Object[]{
                 sp.getMaSP(), sp.getTenSP(), sp.getMaLoai(), sp.getMaNCC(),
                 sp.getXuatXu(), sp.getSoLuong(),
-                hienThiNgaySX, // Đã format
-                hienThiHanSD,  // Đã format
+                hienThiNgaySX, 
+                hienThiHanSD,  
                 sp.getTinhTrang(), sp.getGiaNhap(), sp.getGiaBan(), sp.getDonViTinh()
             });
         }
@@ -289,14 +281,12 @@ public class SanPhamController {
     }
 
     private void loadComboBoxData() {
-        // Load Loại Hàng
         LoaiHangDAO lhDao = new LoaiHangDAO();
         view.cboLoai.removeAllItems();
         for (LoaiHang lh : lhDao.getAll()) {
             view.cboLoai.addItem(lh);
         }
         
-        // Load Nhà Cung Cấp
         NhaCungCapDAO nccDao = new NhaCungCapDAO();
         view.cboNCC.removeAllItems();
         for (NhaCungCap ncc : nccDao.getAll()) {
