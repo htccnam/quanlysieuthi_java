@@ -31,7 +31,7 @@ public class KhachHangController {
         loadDataToTable();
         this.view.setVisible(true);
     }
-
+    //Tải dữ liệu lên bảng : Liên kết với DAO -> Sử dụng View để dẩy dữ liệu lên
     private void loadDataToTable() {
         try {
             List<KhachHang> list = dao.getAllKhachHang(); 

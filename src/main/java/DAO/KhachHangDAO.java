@@ -27,8 +27,8 @@ public class KhachHangDAO {
                 ps.setDate(6, null);
             }
             
-            // LOGIC MỚI: Luôn set điểm tích lũy = 0 cho khách mới
-            // Không lấy từ kh.getDiemtichluy() nữa để tránh việc nhập tay
+            // Luôn set điểm tích lũy = 0 cho khách mới
+          
             ps.setInt(7, 0); 
             
             return ps.executeUpdate() > 0;
@@ -37,7 +37,7 @@ public class KhachHangDAO {
 
     // 2. Sửa Khách Hàng (Đã sửa logic: Không cho phép sửa điểm thủ công)
     public boolean updateKhachHang(KhachHang kh) throws Exception {
-        // LOGIC MỚI: Loại bỏ 'diemtichluy=?' ra khỏi câu lệnh UPDATE
+        
         // Điểm chỉ được cập nhật tự động qua đơn hàng, không được sửa ở đây
         String sql = "UPDATE khachhang SET tenkhachhang=?, sodienthoai=?, gioitinh=?, email=?, ngaysinh=? WHERE makhachhang=?";
         
@@ -55,7 +55,7 @@ public class KhachHangDAO {
                 ps.setDate(5, null);
             }
             
-            // Không setInt cho điểm tích lũy nữa
+            // Không setInt cho điểm tích lũy
             
             ps.setString(6, kh.getMaKH()); // Điều kiện WHERE là tham số thứ 6
             
@@ -73,7 +73,7 @@ public class KhachHangDAO {
         }
     }
 
-    // 4. Tìm kiếm & Lấy danh sách (Đã sửa logic: Tính điểm từ Tổng tiền đơn hàng)
+    // 4. Tìm kiếm & Lấy danh sách 
     public List<KhachHang> searchKhachHang(String keyword) throws Exception {
         List<KhachHang> list = new ArrayList<>();
         
@@ -83,7 +83,7 @@ public class KhachHangDAO {
         String sql = "SELECT k.makhachhang, k.tenkhachhang, k.sodienthoai, k.gioitinh, k.email, k.ngaysinh, " +
                      "FLOOR(COALESCE(SUM(d.tongtien), 0) / 10000) as DiemTuDong " +
                      "FROM khachhang k " +
-                     "LEFT JOIN donhang d ON k.makhachhang = d.makhachhang " + // Giả sử bảng đơn hàng tên là 'donhang'
+                     "LEFT JOIN donhang d ON k.makhachhang = d.makhachhang " + 
                      "WHERE k.makhachhang LIKE ? OR k.tenkhachhang LIKE ? " +
                      "GROUP BY k.makhachhang, k.tenkhachhang, k.sodienthoai, k.gioitinh, k.email, k.ngaysinh";
         
