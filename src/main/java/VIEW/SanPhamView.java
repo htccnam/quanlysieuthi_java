@@ -10,38 +10,28 @@ import javax.swing.table.DefaultTableModel;
 
 public class SanPhamView extends JPanel {
 
-    // 1. Khai báo các thành phần
     public JTextField txtMaSP = new JTextField();
     public JTextField txtTenSP = new JTextField();
-    
-// Đổi String -> Object
     public JComboBox<Object> cboLoai = new JComboBox<>();
     public JComboBox<Object> cboNCC = new JComboBox<>();
-    
     public JTextField txtXuatXu = new JTextField();
     public JTextField txtSoLuong = new JTextField();
-    
-    // --- THAY ĐỔI Ở ĐÂY: Dùng JDateChooser thay cho JTextField ---
     public JDateChooser txtNgaySX = new JDateChooser();
     public JDateChooser txtHanSD = new JDateChooser(); 
     
-
     public JComboBox<String> cboTinhTrang = new JComboBox<>(new String[] { "Tốt", "Đã hết hạn" });
     public JTextField txtGiaNhap = new JTextField();
     public JTextField txtGiaBan = new JTextField();
     public JTextField txtDonViTinh = new JTextField();
     
-    // Ô tìm kiếm
     public JTextField txtTimKiem = new JTextField();
 
-    // 2. Các nút chức năng
     public JButton btnTimKiem = new JButton("Tìm Kiếm");
     public JButton btnAdd = new JButton("Thêm");
     public JButton btnEdit = new JButton("Sửa");
     public JButton btnDelete = new JButton("Xóa");
     public JButton btnReset = new JButton("Làm mới");
 
-    // 3. Bảng dữ liệu
     public JTable table;
     public DefaultTableModel tableModel;
 
@@ -49,7 +39,6 @@ public class SanPhamView extends JPanel {
         setLayout(null);
         setBounds(0, 0, 1000, 750); 
 
-        // --- TIÊU ĐỀ ---
         JLabel title = new JLabel("QUẢN LÝ SẢN PHẨM");
         title.setFont(new Font("Arial", Font.BOLD, 24));
         title.setForeground(Color.BLUE);
@@ -60,7 +49,7 @@ public class SanPhamView extends JPanel {
          txtNgaySX.setDateFormatString("dd-MM-yyyy"); 
          txtHanSD.setDateFormatString("dd-MM-yyyy");
 
-        // --- CỘT TRÁI (6 trường) ---
+        //CỘT TRÁI
         int x1 = 30, yStart = 60, wLabel = 100, wText = 250, gap = 40;
         
         addLabel("Mã SP:", x1, yStart);            add(txtMaSP); txtMaSP.setBounds(x1 + wLabel, yStart, wText, 25);
@@ -70,10 +59,9 @@ public class SanPhamView extends JPanel {
         addLabel("Xuất Xứ:", x1, yStart + gap*4);  add(txtXuatXu); txtXuatXu.setBounds(x1 + wLabel, yStart + gap*4, wText, 25);
         addLabel("Số Lượng:", x1, yStart + gap*5); add(txtSoLuong); txtSoLuong.setBounds(x1 + wLabel, yStart + gap*5, wText, 25);
 
-        // --- CỘT PHẢI (6 trường) ---
+        //CỘT PHẢI
         int x2 = 450; // Dời sang phải
         
-        // Thay thế Textbox bằng JDateChooser
         addLabel("Ngày SX:", x2, yStart);          add(txtNgaySX); txtNgaySX.setBounds(x2 + wLabel, yStart, wText, 25);
         addLabel("Hạn SD:", x2, yStart + gap);     add(txtHanSD); txtHanSD.setBounds(x2 + wLabel, yStart + gap, wText, 25);
 
@@ -82,7 +70,7 @@ public class SanPhamView extends JPanel {
         addLabel("Giá Bán:", x2, yStart + gap*4);    add(txtGiaBan); txtGiaBan.setBounds(x2 + wLabel, yStart + gap*4, wText, 25);
         addLabel("Đơn Vị:", x2, yStart + gap*5);     add(txtDonViTinh); txtDonViTinh.setBounds(x2 + wLabel, yStart + gap*5, wText, 25);
 
-        // --- CÁC NÚT CHỨC NĂNG ---
+        // CÁC NÚT CHỨC NĂNG
         int yBtn = 320;
         btnAdd.setBounds(250, yBtn, 100, 35);
         btnEdit.setBounds(370, yBtn, 100, 35);
@@ -91,7 +79,7 @@ public class SanPhamView extends JPanel {
         
         add(btnAdd); add(btnEdit); add(btnDelete); add(btnReset);
 
-        // --- TÌM KIẾM ---
+        //TÌM KIẾM
         JLabel lbTim = new JLabel("Tìm kiếm:");
         lbTim.setBounds(150, 370, 80, 30);
         add(lbTim);
@@ -102,7 +90,7 @@ public class SanPhamView extends JPanel {
         btnTimKiem.setBounds(650, 370, 100, 30);
         add(btnTimKiem);
 
-        // --- BẢNG DỮ LIỆU ---
+        //BẢNG DỮ LIỆ
         String[] cols = {
             "Mã SP", "Tên SP", "Mã Loại", "Mã NCC", "Xuất Xứ", "Số Lượng",
             "Ngày SX", "Hạn SD", "Tình Trạng", "Giá Nhập", "Giá Bán", "Đơn Vị"
@@ -122,7 +110,7 @@ public class SanPhamView extends JPanel {
         add(lb);
     }
 
-    // --- HÀM THÔNG BÁO & SỰ KIỆN ---
+    // HÀM THÔNG BÁO & SỰ KIỆN
     public void showMessage(String msg) {
         JOptionPane.showMessageDialog(this, msg);
     }

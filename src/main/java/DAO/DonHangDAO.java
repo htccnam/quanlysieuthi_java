@@ -86,6 +86,22 @@ public class DonHangDAO {
         return list;
     } 
     
+    public String getHang(String maKH) {
+        String tenHang = "";
+        String sql = "SELECT h.tenhang FROM khachhang k JOIN hangthanhvien h ON k.makhachhang = h.makhachhang WHERE k.makhachhang = ?";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maKH);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+            tenHang = rs.getString("tenhang");
+            }
+        } catch (Exception e) {
+        e.printStackTrace();
+        }
+        return tenHang;
+    }
+    
     public ArrayList<SanPham> getSP(){
         ArrayList<SanPham> list = new ArrayList<>();
         String sql = "SELECT masanpham, tensanpham, soluong, giaban FROM sanpham";
@@ -104,29 +120,40 @@ public class DonHangDAO {
         return list;
     }
     
-    //AI
     public ArrayList<SanPham> timKiemSP(String keyword) {
-    ArrayList<SanPham> list = new ArrayList<>();
-    String sql = "SELECT masanpham, tensanpham, soluong, giaban FROM sanpham WHERE tensanpham LIKE ?";
+        ArrayList<SanPham> list = new ArrayList<>();
+        String sql = "SELECT masanpham, tensanpham, soluong, giaban FROM sanpham WHERE tensanpham LIKE ?";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new SanPham(
+                        rs.getString("masanpham"), 
+                        rs.getString("tensanpham"), 
+                        rs.getInt("soluong"), 
+                        rs.getDouble("giaban")
+                    ));
+                }
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    public void truSoLuongKho(String maSP, int soLuongMua) {
+    String sql = "UPDATE sanpham SET soluong = soluong - ? WHERE masanpham = ?";
     try (Connection conn = DBConnection.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, "%" + keyword + "%");
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                list.add(new SanPham(
-                    rs.getString("masanpham"), 
-                    rs.getString("tensanpham"), 
-                    rs.getInt("soluong"), 
-                    rs.getDouble("giaban")
-                ));
-            }
+        
+            ps.setInt(1, soLuongMua);
+            ps.setString(2, maSP);
+        
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) { e.printStackTrace(); }
-    return list;
-}
-
-// [MỚI] Hàm lưu chi tiết đơn hàng vào bảng 'chitiethoadon' (Yêu cầu 6)
-// Giả sử bảng chitiethoadon có các cột: madonhang, masanpham, soluong, dongia, thanhtien
+    }
+    
 public boolean insertChiTiet(ChiTietDon ctd) {
     String sql = "INSERT INTO chitietdonhang (madonhang, masanpham, tensanpham, soluong, dongia, thanhtien) VALUES (?, ?, ?, ?, ?, ?)";
     try (Connection conn = DBConnection.getConnection();
@@ -152,7 +179,6 @@ public boolean update(DonHang dh, ArrayList<ChiTietDon> dsChiTiet) {
         conn = DBConnection.getConnection();
         conn.setAutoCommit(false); // Bắt đầu Transaction
 
-        // 1. Cập nhật bảng DonHang
         String sqlUpdateDon = "UPDATE donhang SET makhachhang=?, manhanvien=?, makhuyenmai=?, ngaylap=?, phuongthucban=?, thanhtoan=?, tongtien=? WHERE madonhang=?";
         PreparedStatement psDon = conn.prepareStatement(sqlUpdateDon);
         psDon.setString(1, dh.getMaKH());
@@ -165,13 +191,11 @@ public boolean update(DonHang dh, ArrayList<ChiTietDon> dsChiTiet) {
         psDon.setString(8, dh.getMaDonHang());
         psDon.executeUpdate();
 
-        // 2. Xóa tất cả ChiTiet cũ của đơn hàng này
         String sqlDelChiTiet = "DELETE FROM chitietdonhang WHERE madonhang=?";
         PreparedStatement psDel = conn.prepareStatement(sqlDelChiTiet);
         psDel.setString(1, dh.getMaDonHang());
         psDel.executeUpdate();
 
-        // 3. Chèn lại danh sách ChiTiet mới từ bảng
         String sqlInsChiTiet = "INSERT INTO chitietdonhang (madonhang, masanpham, tensanpham, soluong, dongia, thanhtien) VALUES (?,?,?,?,?,?)";
         PreparedStatement psIns = conn.prepareStatement(sqlInsChiTiet);
         for (ChiTietDon ct : dsChiTiet) {
@@ -189,7 +213,6 @@ public boolean update(DonHang dh, ArrayList<ChiTietDon> dsChiTiet) {
         return true;
     } catch (Exception e) {
         try { if (conn != null) conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
-        e.printStackTrace();
         return false;
     } finally {
         try { if (conn != null) conn.setAutoCommit(true); } catch (Exception e) { e.printStackTrace(); }

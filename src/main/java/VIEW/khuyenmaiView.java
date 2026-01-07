@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.sql.Date;
+import java.util.Calendar;
 import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -98,6 +100,11 @@ public class khuyenmaiView extends JPanel {
         ngaytaoChooser.setDateFormatString("dd/MM/yyyy");
         ngaytaoChooser.setBounds(300, 200, 400, 40);
         ngaytaoChooser.setFont(new Font("Arial",Font.ITALIC,24));
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 0);
+        ngaytaoChooser.setMaxSelectableDate(calendar.getTime());
+        ngaytaoChooser.setDate(calendar.getTime());
+        ((JTextField)(ngaytaoChooser.getDateEditor().getUiComponent())).setEditable(false);
         add(ngaytaoChooser);
 
         //button
@@ -160,7 +167,7 @@ public class khuyenmaiView extends JPanel {
         khuyenmaiHeader.setBackground(Color.green);
         
         JScrollPane khuyenmaiJScrollPane = new JScrollPane(khuyenmaiJTable);
-        khuyenmaiJScrollPane.setBounds(50, 350, 800, 500);
+        khuyenmaiJScrollPane.setBounds(50, 350, 1000, 500);
         add(khuyenmaiJScrollPane);
     }
 

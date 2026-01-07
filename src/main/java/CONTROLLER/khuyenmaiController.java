@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,11 +67,11 @@ public class khuyenmaiController {
             String motaString = kmView.motaField.getText().toString().trim();
             LocalDate ngaytaoDate = kmView.ngaytaoChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-            if(makhuyenmaiString.isEmpty()){
+            if (makhuyenmaiString.isEmpty()) {
                 JOptionPane.showMessageDialog(kmView, "mã khuyến mại không được để trống");
                 return;
             }
-            if(tenkhuyenmaiString.isEmpty()){
+            if (tenkhuyenmaiString.isEmpty()) {
                 JOptionPane.showMessageDialog(kmView, "tên khuyến mại không được để trống");
                 return;
             }
@@ -127,6 +128,10 @@ public class khuyenmaiController {
             int check = JOptionPane.showConfirmDialog(kmView, "bạn có chắc chắn muốn xóa");
             if (check == JOptionPane.YES_OPTION) {
                 try {
+                    if(kmDAO.checkXoaKhuyenMai(makhuyenmaiString)){
+                        JOptionPane.showMessageDialog(kmView, "mã khuyến mại đã được tạo đơn không thể xóa");
+                        return;
+                    }
                     kmDAO.xoaKhuyenMai(makhuyenmaiString);
                     JOptionPane.showMessageDialog(kmView, "xóa thành công");
                     load_table();
@@ -146,7 +151,9 @@ public class khuyenmaiController {
             kmView.makhuyenmaiField.setText("");
             kmView.tenkhuyenmaiField.setText("");
             kmView.motaField.setText("");
-            kmView.ngaytaoChooser.setDate(Date.valueOf(LocalDate.now()));
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.YEAR, 0);
+            kmView.ngaytaoChooser.setDate(calendar.getTime());
 
             kmView.timkiemField.setText("");
 

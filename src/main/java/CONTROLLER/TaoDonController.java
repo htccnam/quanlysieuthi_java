@@ -10,36 +10,35 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class TaoDonController {
+
     private DonHangDAO dao;
     private TaoDonView view;
 
-    public TaoDonController(TaoDonView view) {      
+    public TaoDonController(TaoDonView view) {
         this.view = view;
         this.dao = new DonHangDAO();
-        
-        // Khởi tạo dữ liệu
+
         view.setNVToComboBox(dao.getMaNV());
         view.setKHToComboBox(dao.getMaKH());
         view.setKMToComboBox(dao.getMaKM());
         view.loadDataTable(dao.getSP());
-        
-        // Gán sự kiện
+
         initEvents();
+        capNhatHangThanhVien();
     }
 
     private void initEvents() {
-        // 1. Sự kiện nút THÊM
         view.getBtnThem().addActionListener(e -> themSanPham());
 
-        // 2. Sự kiện nút XÓA
         view.getBtnXoa().addActionListener(e -> xoaSanPham());
 
-        // 3. Sự kiện TÌM KIẾM
         view.getTxtTimKiem().addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -47,19 +46,35 @@ public class TaoDonController {
             }
         });
 
-        // 4. Sự kiện LƯU ĐƠN
-        // view.getBtnLuu().addActionListener(e -> luuDonHang()); // Dòng cũ
-        
+        //sự kiện cập nhật của view ChiTiet
         view.getBtnLuu().addActionListener(e -> {
             if (view.getBtnLuu().getText().equals("Cập nhật")) {
                 xuLyCapNhat();
             } else {
-                luuDonHang(); // Gọi hàm lưu mới
+                luuDonHang();
             }
         });
+
+        view.getCboKH().addActionListener(e -> {
+            capNhatHangThanhVien();
+            tinhTongTien();
+        });
+
+        view.getCboMaKM().addActionListener((e) -> {
+            tinhTongTien();
+        });       
     }
 
-    // --- LOGIC XỬ LÝ ---
+    //LOGIC 
+    private void capNhatHangThanhVien() {
+        Object selected = view.getCboKH().getSelectedItem();
+        if (selected != null) {
+            String maKH = selected.toString();
+            String tenHang = dao.getHang(maKH);
+            view.getTxtHang().setText(tenHang);
+            view.getTxtHang().setEditable(false);
+        }
+    }
 
     private void themSanPham() {
         int rowTrai = view.getTableSanPham().getSelectedRow();
@@ -76,7 +91,6 @@ public class TaoDonController {
 
         DefaultTableModel modelTrai = view.getModelTableTrai();
         int slTon = Integer.parseInt(modelTrai.getValueAt(rowTrai, 3).toString());
-
         if (slMua > slTon) {
             JOptionPane.showMessageDialog(view, "Không đủ hàng trong kho (Còn: " + slTon + ")");
             return;
@@ -101,26 +115,39 @@ public class TaoDonController {
             JOptionPane.showMessageDialog(view, "Chọn sản phẩm bên bảng phải để xóa!");
             return;
         }
+
         view.getModelTablePhai().removeRow(rowPhai);
+
         tinhTongTien();
     }
 
     private void tinhTongTien() {
         DefaultTableModel modelPhai = view.getModelTablePhai();
         double tamTinh = 0;
+        double hang = 0;
+        double km = 0;
 
         for (int i = 0; i < modelPhai.getRowCount(); i++) {
             tamTinh += Double.parseDouble(modelPhai.getValueAt(i, 4).toString());
         }
 
-        double giamGia = 0; 
-        view.getLblKM().setText("Giảm giá: 0 đ");
-
+        if (view.getCboMaKM().getSelectedItem().toString().equalsIgnoreCase("KM01")) {
+            km = tamTinh * 0.1;
+        }
+        if (view.getTxtHang().getText().equalsIgnoreCase("Bạc")) {
+            hang = tamTinh * 0.02;
+        } else if (view.getTxtHang().getText().equalsIgnoreCase("Vàng")) {
+            hang = tamTinh * 0.05;
+        } else if (view.getTxtHang().getText().equalsIgnoreCase("Kim cương")) {
+            hang = tamTinh * 0.1;
+        }
+        double giamGia = hang + km;
         double tongTien = tamTinh - giamGia;
-
+        view.getLblKM().setText(String.format("Giảm giá: %,.0f đ", giamGia));
         view.getLblTamTinh().setText(String.format("Tạm tính: %,.0f đ", tamTinh));
         view.getLblTongTien().setText(String.format("Tổng tiền: %,.0f đ", tongTien));
-        
+
+        //Lưu lại giá trị vào bộ nhớ tạm
         view.getLblTongTien().putClientProperty("value", tongTien);
     }
 
@@ -130,49 +157,55 @@ public class TaoDonController {
         view.loadDataTable(list);
     }
 
-    // --- XỬ LÝ LƯU ĐƠN (CÓ THÊM LOGIC CỘNG ĐIỂM) ---
     private void luuDonHang() {
-        try {
-            // 1. Kiểm tra dữ liệu đầu vào
-            if (view.getModelTablePhai().getRowCount() == 0) {
-                JOptionPane.showMessageDialog(view, "Vui lòng thêm sản phẩm vào đơn hàng!");
-                return;
-            }
-
-            // 2. Tạo đối tượng DonHang
-            java.util.Date uDate = view.getNgayGD().getDate();
-            java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-            
-            Object val = view.getLblTongTien().getClientProperty("value");
-            double tongTien = (val != null) ? (double) val : 0;
+    try {
+        if (view.getModelTablePhai().getRowCount() == 0) {
+            JOptionPane.showMessageDialog(view, "Vui lòng thêm sản phẩm vào đơn hàng!");
+            return;
+        }
+      
+        if(view.getTxtMaDon().getText().equalsIgnoreCase("")){
+            JOptionPane.showMessageDialog(view, "Vui lòng nhập mã đơn hàng!");
+            return;
+        }
+        
+        java.util.Date uDate = view.getNgayGD().getDate();
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        
+        Object tt = view.getLblTongTien().getClientProperty("value");
+        double tongTien = (tt != null) ? (double) tt : 0;
 
             DonHang dh = new DonHang(
-                view.getTxtMaDon().getText(),
-                view.getCboKH().getSelectedItem().toString(),
-                view.getCboNV().getSelectedItem().toString(),
-                view.getCboMaKM().getSelectedItem().toString(),
-                sDate,
-                view.getCboBanHang().getSelectedItem().toString(),
-                view.getCboThanhToan().getSelectedItem().toString(),
-                tongTien
+                    view.getTxtMaDon().getText(),
+                    view.getCboKH().getSelectedItem().toString(),
+                    view.getCboNV().getSelectedItem().toString(),
+                    view.getCboMaKM().getSelectedItem().toString(),
+                    sDate,
+                    view.getCboBanHang().getSelectedItem().toString(),
+                    view.getCboThanhToan().getSelectedItem().toString(),
+                    tongTien
             );
 
-            // 3. Thực hiện lưu vào Database
             if (dao.insert(dh)) {
                 DefaultTableModel modelPhai = view.getModelTablePhai();
                 boolean checkCT = true;
 
                 for (int i = 0; i < modelPhai.getRowCount(); i++) {
+                    String maSP = modelPhai.getValueAt(i, 0).toString();
+                    int slMua = Integer.parseInt(modelPhai.getValueAt(i, 3).toString());
+
                     ChiTietDon ctd = new ChiTietDon(
-                        dh.getMaDonHang(),
-                        modelPhai.getValueAt(i, 0).toString(),
-                        modelPhai.getValueAt(i, 1).toString(),
-                        Integer.parseInt(modelPhai.getValueAt(i, 3).toString()),
-                        Double.parseDouble(modelPhai.getValueAt(i, 2).toString()),
-                        Double.parseDouble(modelPhai.getValueAt(i, 4).toString())
+                            dh.getMaDonHang(),
+                            maSP,
+                            modelPhai.getValueAt(i, 1).toString(),
+                            slMua,
+                            Double.parseDouble(modelPhai.getValueAt(i, 2).toString()),
+                            Double.parseDouble(modelPhai.getValueAt(i, 4).toString())
                     );
 
-                    if (!dao.insertChiTiet(ctd)) {
+                    if (dao.insertChiTiet(ctd)) {
+                        dao.truSoLuongKho(maSP, slMua);
+                    } else {
                         checkCT = false;
                         break;
                     }
@@ -200,13 +233,15 @@ public class TaoDonController {
                     JOptionPane.showMessageDialog(view, "Lưu đơn hàng thành công!");
                     modelPhai.setRowCount(0);
                     view.getTxtMaDon().setText(""); 
+                    
+                    view.loadDataTable(dao.getSP());
                 }
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(view, "Lỗi: " + ex.getMessage());
         }
     }
-    
+
     public void setEditData(DonHang dh, ArrayList<ChiTietDon> dsChiTiet) {
         view.getTxtMaDon().setText(dh.getMaDonHang());
         view.getTxtMaDon().setEditable(false);
@@ -215,7 +250,7 @@ public class TaoDonController {
         view.getNgayGD().setDate(dh.getNgayGD());
         view.getCboBanHang().setSelectedItem(dh.getPTban());
         view.getCboThanhToan().setSelectedItem(dh.getPTgiaodich());
-        
+
         DefaultTableModel modelPhai = view.getModelTablePhai();
         modelPhai.setRowCount(0);
         for (ChiTietDon ct : dsChiTiet) {
@@ -223,45 +258,47 @@ public class TaoDonController {
                 ct.getMaSanPham(), ct.getTenSanPham(), ct.getGia(), ct.getSoluong(), ct.getThanhtien()
             });
         }
-        tinhTongTien(); 
+
+        tinhTongTien();
+
         view.getBtnLuu().setText("Cập nhật");
     }
-    
+
     private void xuLyCapNhat() {
         try {
             java.util.Date uDate = view.getNgayGD().getDate();
             java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-            
+
             Object val = view.getLblTongTien().getClientProperty("value");
             double tongTien = (val != null) ? (double) val : 0;
 
             DonHang dh = new DonHang(
-                view.getTxtMaDon().getText(),
-                view.getCboKH().getSelectedItem().toString(),
-                view.getCboNV().getSelectedItem().toString(),
-                view.getCboMaKM().getSelectedItem().toString(),
-                sDate,
-                view.getCboBanHang().getSelectedItem().toString(),
-                view.getCboThanhToan().getSelectedItem().toString(),
-                tongTien
+                    view.getTxtMaDon().getText(),
+                    view.getCboKH().getSelectedItem().toString(),
+                    view.getCboNV().getSelectedItem().toString(),
+                    view.getCboMaKM().getSelectedItem().toString(),
+                    sDate,
+                    view.getCboBanHang().getSelectedItem().toString(),
+                    view.getCboThanhToan().getSelectedItem().toString(),
+                    tongTien
             );
 
             ArrayList<ChiTietDon> dsMoi = new ArrayList<>();
             DefaultTableModel modelPhai = view.getModelTablePhai();
             for (int i = 0; i < modelPhai.getRowCount(); i++) {
                 dsMoi.add(new ChiTietDon(
-                    dh.getMaDonHang(),
-                    modelPhai.getValueAt(i, 0).toString(),
-                    modelPhai.getValueAt(i, 1).toString(),
-                    Integer.parseInt(modelPhai.getValueAt(i, 3).toString()),
-                    Double.parseDouble(modelPhai.getValueAt(i, 2).toString()),
-                    Double.parseDouble(modelPhai.getValueAt(i, 4).toString())
+                        dh.getMaDonHang(),
+                        modelPhai.getValueAt(i, 0).toString(),
+                        modelPhai.getValueAt(i, 1).toString(),
+                        Integer.parseInt(modelPhai.getValueAt(i, 3).toString()),
+                        Double.parseDouble(modelPhai.getValueAt(i, 2).toString()),
+                        Double.parseDouble(modelPhai.getValueAt(i, 4).toString())
                 ));
             }
 
             if (dao.update(dh, dsMoi)) {
                 JOptionPane.showMessageDialog(view, "Cập nhật đơn hàng thành công!");
-                SwingUtilities.getWindowAncestor(view).dispose(); 
+                SwingUtilities.getWindowAncestor(view).dispose();
             } else {
                 JOptionPane.showMessageDialog(view, "Cập nhật thất bại!");
             }

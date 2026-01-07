@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -112,6 +113,11 @@ public class nhanvienController {
                 JOptionPane.showMessageDialog(views, "Tên nhân viên không được để trống");
                 return;
             }
+            if (nvDAO.checkTrungMaNhanVien(textMaNhanVienString)) {
+                JOptionPane.showMessageDialog(views, "Mã nhân viên đã tồn tại");
+                return;
+            }
+
             nhanvien nv = new nhanvien(textMaNhanVienString, textTenNhanVienString, ngaySinhDate, gioiTinhString, soDienThoaiString, textemailString, textdiachiString, tachchuoiString);
 
             try {
@@ -172,9 +178,13 @@ public class nhanvienController {
         public void actionPerformed(ActionEvent e) {
             int result = JOptionPane.showConfirmDialog(views, "bạn có chắc chắn ");
             if (result == JOptionPane.YES_OPTION) {
-                String maNhanVienString = views.manhanvienField.getText().toString();
+                String maNhanVienString = views.manhanvienField.getText();
 
                 try {
+                    if (nvDAO.checkXoaNhanVien(maNhanVienString)) {
+                        JOptionPane.showMessageDialog(views, "Mã nhân viên đã được tạo đơn không thể xóa");
+                        return;
+                    }
                     if (nvDAO.xoaNhanVien(maNhanVienString)) {
                         JOptionPane.showMessageDialog(views, "xóa thành công");
                         load_table();
@@ -195,7 +205,9 @@ public class nhanvienController {
 
             views.manhanvienField.setText("");
             views.tennhanvienField.setText("");
-            views.ngaysinhChooser.setDate(new java.util.Date());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.YEAR, -18);
+            views.ngaysinhChooser.setDate(calendar.getTime());
             views.gioitinhComboBox.setSelectedIndex(0);
             views.sodienthoaiField.setText("");
             views.emailField.setText("");
@@ -246,7 +258,15 @@ public class nhanvienController {
             views.sodienthoaiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 4).toString());
             views.emailField.setText(views.nhanvienJTable.getValueAt(selectedRow, 5).toString());
             views.diachiField.setText(views.nhanvienDefaultTableModel.getValueAt(selectedRow, 6).toString());
-            views.chucvuBox.setSelectedItem(views.nhanvienJTable.getValueAt(selectedRow, 7).toString());
+            String machucvuString = views.nhanvienJTable.getValueAt(selectedRow, 7).toString();
+
+            for (int i = 0; i < views.chucvuBox.getItemCount(); i++) {
+                String item = views.chucvuBox.getItemAt(i);
+                if (item.startsWith(machucvuString + "-")) {
+                    views.chucvuBox.setSelectedIndex(i);
+                    break;
+                }
+            }
             views.manhanvienField.setEnabled(false);
         }
 

@@ -38,7 +38,7 @@ public class nhanvienDAO {
             pr.setString(6, nhanvien.getEmailString());
             pr.setString(7, nhanvien.getDiachiString());
             pr.setString(8, nhanvien.getMachucvuString());
-            
+
             if (pr.executeUpdate() > 0) {
                 return true;
             } else {
@@ -56,7 +56,7 @@ public class nhanvienDAO {
         }
         String sqlString = "update nhanvien set tennhanvien=?,ngaysinh=?,gioitinh=?,sodienthoai=?,email=?,diachi=?,machucvu=? where manhanvien=?";
         try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString);) {
-            
+
             pr.setString(1, nhanvien.getTennhanvienString());
             pr.setDate(2, Date.valueOf(nhanvien.getNgaysinhDate()));
             pr.setString(3, nhanvien.getGioitinhString());
@@ -145,5 +145,40 @@ public class nhanvienDAO {
             throw e;
         }
         return list;
+    }
+
+    public boolean checkTrungMaNhanVien(String manhanvienString) {
+        String sqlString = "select manhanvien from nhanvien where manhanvien=?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString)) {
+            pr.setString(1, manhanvienString);
+            try (ResultSet resultSet = pr.executeQuery();) {
+                if (resultSet.next()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        } catch (Exception e) {
+            return true;
+        }
+
+    }
+
+    public boolean checkXoaNhanVien(String manhanvienString) {
+        String sqlString = "select manhanvien from donhang where manhanvien=?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pr = con.prepareStatement(sqlString)) {
+            pr.setString(1, manhanvienString);
+            try (ResultSet resultSet = pr.executeQuery();) {
+                if (resultSet.next()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        } catch (Exception e) {
+            return true;
+        }
     }
 }

@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.time.ZoneId;
+import java.util.Calendar;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -89,6 +91,11 @@ public class nhanvienViews extends JPanel {
         ngaysinhChooser.setDateFormatString("dd/MM/yyyy");
         ngaysinhChooser.setBounds(300, 150, 300, 40);
         ngaysinhChooser.setFont(new Font("Arial",Font.ITALIC,23));
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -18);
+        ngaysinhChooser.setMaxSelectableDate(calendar.getTime());
+        ngaysinhChooser.setDate(calendar.getTime());
+        ((JTextField)(ngaysinhChooser.getDateEditor().getUiComponent())).setEditable(false);
         add(ngaysinhChooser);
 
         //gioitinh
@@ -204,7 +211,7 @@ public class nhanvienViews extends JPanel {
         tieudeHeaders.setForeground(Color.black);
         
         JScrollPane nhanvienJScrollPane = new JScrollPane(nhanvienJTable);
-        nhanvienJScrollPane.setBounds(30, 550, 1000, 600);
+        nhanvienJScrollPane.setBounds(30, 550, 1400, 250);
         add(nhanvienJScrollPane);
     }
 
