@@ -9,7 +9,6 @@ import java.util.Vector;
 public class HangThanhVienDAO {
     
 
-    //TƯƠNG TÁC VỚI BẢNG "HANGTHANHVIEN" (QUẢN LÝ DANH SÁCH XẾP HẠNG)
 
 
     // 1. Lấy danh sách hiển thị ra bảng chính (3 cột: Mã, Tên, Hạng)
@@ -61,7 +60,6 @@ public class HangThanhVienDAO {
     }
 
     
-    //TÍNH TOÁN TỪ BẢNG "DONHANG" (LOGIC CŨ ĐỂ CHECK TIỀN)
   
 
     // 4. Lấy danh sách khách hàng và tổng tiền (Dùng cho chức năng Tra cứu/Kiểm tra nhanh)
@@ -82,7 +80,6 @@ public class HangThanhVienDAO {
                 Vector<Object> row = new Vector<>();
                 row.add(rs.getString(1)); // Mã
                 row.add(rs.getString(2)); // Tên
-                // Cột 3 là Tổng tiền (để hiển thị lên ComboBox tra cứu)
                 row.add(rs.getDouble(3)); 
                 data.add(row);
             }
@@ -90,7 +87,7 @@ public class HangThanhVienDAO {
         return data;
     }
 
-    // 5. LỌC KHÁCH HÀNG ĐỦ ĐIỀU KIỆN 
+    //Lọc khách hàng theo điều kiện
     // Logic: Tính tổng tiền từ 'donhang', NHƯNG chỉ lấy những người CHƯA CÓ trong 'hangthanhvien'
     public Vector<String> getKhachHangTheoDieuKien(double minTien, double maxTien) {
         Vector<String> listKH = new Vector<>();
@@ -114,7 +111,7 @@ public class HangThanhVienDAO {
                 String ma = rs.getString(1);
                 String ten = rs.getString(2);
                 double tien = rs.getDouble(3);
-                // Format chuỗi hiển thị: "MA - TEN (TIỀN)" 
+          
                 listKH.add(ma + " - " + ten + " (" + String.format("%.0f", tien) + ")");
             }
         } catch (Exception e) { e.printStackTrace(); }

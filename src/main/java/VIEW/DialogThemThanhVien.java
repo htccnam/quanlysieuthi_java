@@ -24,7 +24,7 @@ public class DialogThemThanhVien extends JDialog {
         this.dao = new HangThanhVienDAO();
         initComponents();
         
-        // Load danh sách cho hạng mặc định (Bạc)
+        // Load danh sách cho hạng mặc định là bạc
         loadKhachHangByHang("Bạc");
     }
 
@@ -58,28 +58,25 @@ public class DialogThemThanhVien extends JDialog {
         pnlBot.add(btnCapNhat);
         add(pnlBot, BorderLayout.SOUTH);
 
-        // --- SỰ KIỆN ---
-        
-        // Khi đổi hạng -> Load lại danh sách khách
+
         cboHang.addActionListener(e -> {
             String hang = cboHang.getSelectedItem().toString();
             loadKhachHangByHang(hang);
         });
         
-        // Khi ấn nút Cập nhật
+
         btnCapNhat.addActionListener(e -> {
             if (cboKhachHang.getItemCount() == 0 || cboKhachHang.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(this, "Không có khách hàng nào được chọn!");
                 return;
             }
             
-            // Xử lý chuỗi lấy ra Mã và Tên
-            // Format: "MA - TEN (TIEN)"
+
             String selectedText = cboKhachHang.getSelectedItem().toString();
             String[] parts = selectedText.split(" - ");
             if (parts.length >= 2) {
                 selectedMaKH = parts[0];
-                // Lấy tên (cắt bỏ phần tiền phía sau)
+
                 selectedTenKH = parts[1].substring(0, parts[1].lastIndexOf("(")).trim();
                 selectedHang = cboHang.getSelectedItem().toString();
                 isConfirmed = true;
@@ -92,15 +89,14 @@ public class DialogThemThanhVien extends JDialog {
         cboKhachHang.removeAllItems();
         Vector<String> listKH = new Vector<>();
         
-        // Logic điều kiện tiền (Giống quy định cũ)
         if (hang.equals("Bạc")) {
-            // Từ 0đ -> 500.000đ
-            listKH = dao.getKhachHangTheoDieuKien(500000, 1000000);
+
+            listKH = dao.getKhachHangTheoDieuKien(0, 500000);
         } else if (hang.equals("Vàng")) {
-            // Từ 500k đến dưới 1tr
+
             listKH = dao.getKhachHangTheoDieuKien(1000000, 3000000);
         } else if (hang.equals("Kim Cương")) {
-            // Trên 3tr (đến số rất lớn)
+
             listKH = dao.getKhachHangTheoDieuKien(3000000, 99999999.9);
         }
         
