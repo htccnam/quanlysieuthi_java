@@ -8,9 +8,9 @@ import java.util.Vector;
 
 public class HangThanhVienDAO {
     
-    // ==========================================================================
-    // PHẦN 1: TƯƠNG TÁC VỚI BẢNG "HANGTHANHVIEN" (QUẢN LÝ DANH SÁCH XẾP HẠNG)
-    // ==========================================================================
+
+    //TƯƠNG TÁC VỚI BẢNG "HANGTHANHVIEN" (QUẢN LÝ DANH SÁCH XẾP HẠNG)
+
 
     // 1. Lấy danh sách hiển thị ra bảng chính (3 cột: Mã, Tên, Hạng)
     // Dữ liệu lấy từ bảng 'hangthanhvien'
@@ -60,12 +60,12 @@ public class HangThanhVienDAO {
         } catch (Exception e) { e.printStackTrace(); return false; }
     }
 
-    // ==========================================================================
-    // PHẦN 2: TÍNH TOÁN TỪ BẢNG "DONHANG" (LOGIC CŨ ĐỂ CHECK TIỀN)
-    // ==========================================================================
+    
+    //TÍNH TOÁN TỪ BẢNG "DONHANG" (LOGIC CŨ ĐỂ CHECK TIỀN)
+  
 
     // 4. Lấy danh sách khách hàng và tổng tiền (Dùng cho chức năng Tra cứu/Kiểm tra nhanh)
-    // Hàm này giữ nguyên logic cũ của bạn: LEFT JOIN donhang để tính SUM(tongtien)
+
     public Vector<Vector<Object>> getKhachHangVaTongTien() {
         Vector<Vector<Object>> data = new Vector<>();
         
@@ -90,7 +90,7 @@ public class HangThanhVienDAO {
         return data;
     }
 
-    // 5. LỌC KHÁCH HÀNG ĐỦ ĐIỀU KIỆN (Dùng cho Dialog Thêm mới)
+    // 5. LỌC KHÁCH HÀNG ĐỦ ĐIỀU KIỆN 
     // Logic: Tính tổng tiền từ 'donhang', NHƯNG chỉ lấy những người CHƯA CÓ trong 'hangthanhvien'
     public Vector<String> getKhachHangTheoDieuKien(double minTien, double maxTien) {
         Vector<String> listKH = new Vector<>();
@@ -106,7 +106,7 @@ public class HangThanhVienDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setDouble(1, minTien);
-            // Nếu maxTien là số cực lớn (cho hạng Kim Cương), ta set giá trị cao
+            
             ps.setDouble(2, maxTien);
             
             ResultSet rs = ps.executeQuery();
@@ -114,7 +114,7 @@ public class HangThanhVienDAO {
                 String ma = rs.getString(1);
                 String ten = rs.getString(2);
                 double tien = rs.getDouble(3);
-                // Format chuỗi hiển thị: "MA - TEN (TIỀN)" để hiện trong ComboBox Dialog
+                // Format chuỗi hiển thị: "MA - TEN (TIỀN)" 
                 listKH.add(ma + " - " + ten + " (" + String.format("%.0f", tien) + ")");
             }
         } catch (Exception e) { e.printStackTrace(); }

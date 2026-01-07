@@ -41,7 +41,7 @@ public class KhachHangController {
         }
     }
 
-    // --- CÁC CLASS LẮNG NGHE SỰ KIỆN (INNER CLASSES) ---
+    // --- CÁC CLASS LẮNG NGHE SỰ KIỆN  ---
 
     // 1. Thêm
     class AddListener implements ActionListener {

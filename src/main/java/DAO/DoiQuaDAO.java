@@ -20,12 +20,12 @@ public class DoiQuaDAO {
         return diem;
     }
 
-    // 2. Thực hiện Đổi quà (Trừ điểm + Ghi lịch sử) - Dùng Transaction để an toàn
+    // 2. Thực hiện Đổi quà (Trừ điểm + Ghi lịch sử) 
     public boolean doiQua(String maKH, String tenQua, int diemTru) {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
-            con.setAutoCommit(false); // Bắt đầu Transaction
+            con.setAutoCommit(false); 
 
             // Bước 1: Trừ điểm khách hàng
             String sqlUpdate = "UPDATE khachhang SET diemtichluy = diemtichluy - ? WHERE makhachhang = ?";
