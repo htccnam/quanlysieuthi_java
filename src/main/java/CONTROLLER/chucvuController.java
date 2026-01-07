@@ -134,6 +134,7 @@ public class chucvuController {
             view.machucvuField.setText("");
             view.tenchucvuField.setText("");
             view.timkiemField.setText("");
+            loadTable();
         }
 
     }
