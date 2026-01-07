@@ -45,8 +45,6 @@ public class TaoDonController {
             }
         });
 
-        view.getBtnLuu().addActionListener(e -> luuDonHang());
-
         //sự kiện cập nhật của view ChiTiet
         view.getBtnLuu().addActionListener(e -> {
             if (view.getBtnLuu().getText().equals("Cập nhật")) {
