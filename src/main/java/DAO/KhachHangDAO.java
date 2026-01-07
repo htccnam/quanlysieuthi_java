@@ -66,13 +66,10 @@ public class KhachHangDAO {
         }
     }
 
-    // 4. Tìm kiếm & Lấy danh sách (SỬA ĐỔI QUAN TRỌNG)
-    // Logic Mới: Lấy trực tiếp cột 'diemtichluy' trong bảng, KHÔNG tính toán lại từ đơn hàng nữa.
-    // Điều này giúp hiển thị đúng số điểm còn lại sau khi đã trừ đổi quà.
+    // 4. Tìm kiếm & Lấy danh sách 
     public List<KhachHang> searchKhachHang(String keyword) throws Exception {
         List<KhachHang> list = new ArrayList<>();
         
-        // Query đơn giản hơn, bỏ JOIN, bỏ SUM
         String sql = "SELECT * FROM khachhang WHERE makhachhang LIKE ? OR tenkhachhang LIKE ?";
         
         try (Connection con = DBConnection.getConnection();
@@ -110,8 +107,8 @@ public class KhachHangDAO {
         return searchKhachHang(""); 
     }
     
-    // --- 5. HÀM MỚI: CỘNG ĐIỂM KHI MUA HÀNG ---
-    // Bạn cần gọi hàm này ở chức năng "Thanh Toán / Tạo Đơn Hàng"
+    // 5. Cộng điểm khi mua hàng :
+    // gọi hàm này ở chức năng 
     // Logic: 10.000 VND = 1 điểm 
     public boolean congDiemTichLuy(String maKH, double tongTienDonHang) {
         // Quy đổi: 10.000đ = 10 điểm => Chia 1000
