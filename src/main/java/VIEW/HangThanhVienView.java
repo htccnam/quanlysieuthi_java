@@ -10,20 +10,18 @@ import java.awt.*;
 
 public class HangThanhVienView extends JPanel {
 
-    // --- COMPONENT PUBLIC (Để Controller gọi) ---
-    // 1. Phần Tra cứu & Quy định
+
     public JComboBox<String> cboKhachHang; 
     public JLabel lblTongChiTieuValue;
     public JButton btnCheck;
 
-    // 2. Phần Danh sách xếp hạng chính thức
+ 
     public DefaultTableModel modelXepHang;
     public JTable tblXepHang;
     
-    // 3. Nút chức năng CRUD
+ 
     public JButton btnThem, btnXoa;
 
-    // --- STYLE ---
     private final Font fontLabel = new Font("Segoe UI", Font.BOLD, 14);
     private final Font fontText = new Font("Segoe UI", Font.PLAIN, 14);
     private final Color colorPrimary = new Color(0, 102, 204); 
@@ -40,18 +38,15 @@ public class HangThanhVienView extends JPanel {
         this.setBackground(bgPanel);
         this.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        // ====================================================================
-        // PHẦN 1: TOP PANEL (QUY ĐỊNH & TRA CỨU) - Giữ nguyên chức năng cũ
-        // ====================================================================
+
         JPanel pnlTop = new JPanel(new GridLayout(1, 2, 20, 0));
         pnlTop.setOpaque(false);
         pnlTop.setPreferredSize(new Dimension(0, 160));
 
-        // --- Cột Trái: Bảng Quy Định ---
         JPanel pnlRules = createStyledPanel("Quy Định Hạng");
         String[] columnsRules = {"Tên Hạng", "Mức Chi Tiêu", "Quyền Lợi"};
         Object[][] dataRules = {
-            {"Bạc (Silver)", "  500.000đ -> 1 Triệu ", "Giảm 2%"},
+            {"Bạc (Silver)", "  0đ -> 500.000đ ", "Giảm 2%"},
             {"Vàng (Gold)", " 1 Triệu -> 3 Triệu ", "Giảm 5%"},
             {"Kim Cương (VIP)", "> 3 Triệu", "Giảm 10%"}
         };
@@ -60,7 +55,7 @@ public class HangThanhVienView extends JPanel {
         tblRules.setEnabled(false);
         pnlRules.add(new JScrollPane(tblRules));
 
-        // --- Cột Phải: Tra Cứu Chi Tiêu (Check tổng tiền) ---
+
         JPanel pnlLookup = createStyledPanel("Tra Cứu Chi Tiêu Nhanh");
         JPanel pnlLookupContent = new JPanel(new GridBagLayout());
         pnlLookupContent.setBackground(Color.WHITE);
@@ -69,7 +64,6 @@ public class HangThanhVienView extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        // Dòng 1
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
         JLabel lblChon = new JLabel("Khách Hàng:");
         lblChon.setFont(fontLabel);
@@ -81,7 +75,7 @@ public class HangThanhVienView extends JPanel {
         cboKhachHang.setBackground(Color.WHITE);
         pnlLookupContent.add(cboKhachHang, gbc);
         
-        // Dòng 2
+
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
         btnCheck = createButton("Kiểm tra", colorPrimary);
         btnCheck.setPreferredSize(new Dimension(100, 30));
@@ -100,13 +94,11 @@ public class HangThanhVienView extends JPanel {
         
         this.add(pnlTop, BorderLayout.NORTH);
 
-        // ====================================================================
-        // PHẦN 2: CENTER PANEL (DANH SÁCH XẾP HẠNG CHÍNH THỨC)
-        // ====================================================================
+
+
         JPanel pnlCenter = new JPanel(new BorderLayout(0, 10));
         pnlCenter.setOpaque(false);
         
-        // Tiêu đề
         JLabel lblTitle = new JLabel("DANH SÁCH THÀNH VIÊN ĐÃ XẾP HẠNG", JLabel.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(colorPrimary);
@@ -122,9 +114,7 @@ public class HangThanhVienView extends JPanel {
         
         this.add(pnlCenter, BorderLayout.CENTER);
 
-        // ====================================================================
-        // PHẦN 3: BOTTOM PANEL (NÚT CHỨC NĂNG CRUD)
-        // ====================================================================
+
         JPanel pnlBot = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         pnlBot.setOpaque(false);
         pnlBot.setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -138,7 +128,6 @@ public class HangThanhVienView extends JPanel {
         this.add(pnlBot, BorderLayout.SOUTH);
     }
 
-    // --- HELPER METHODS ---
     private JPanel createStyledPanel(String title) {
         JPanel pnl = new JPanel(new BorderLayout());
         pnl.setBackground(Color.WHITE);

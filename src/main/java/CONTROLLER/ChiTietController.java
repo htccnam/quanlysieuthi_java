@@ -51,7 +51,6 @@ public class ChiTietController {
             });
         }
     }
-
     private void ThongKe(ArrayList<DonHang> list) {
         double tongDoanhThu = 0;
         int tongDon = list.size();
@@ -66,6 +65,7 @@ public class ChiTietController {
         view.getLblTongDon().setText(String.valueOf(tongDon));
         view.getLblDoanhThuTB().setText(String.format("%,.0f đ/đơn", trungBinh));
     }
+
 
     private void initEvents() {
         view.getTxtSearch().addKeyListener(new KeyAdapter() {

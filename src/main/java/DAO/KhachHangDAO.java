@@ -32,7 +32,7 @@ public class KhachHangDAO {
         }
     }
 
-    // 2. Sửa Khách Hàng (Giữ nguyên: Không sửa điểm ở đây)
+
     public boolean updateKhachHang(KhachHang kh) throws Exception {
         String sql = "UPDATE khachhang SET tenkhachhang=?, sodienthoai=?, gioitinh=?, email=?, ngaysinh=? WHERE makhachhang=?";
         
@@ -56,7 +56,7 @@ public class KhachHangDAO {
         }
     }
 
-    // 3. Xóa Khách Hàng 
+
     public boolean deleteKhachHang(String maKH) throws Exception {
         String sql = "DELETE FROM khachhang WHERE makhachhang=?";
         try (Connection con = DBConnection.getConnection();
@@ -66,7 +66,7 @@ public class KhachHangDAO {
         }
     }
 
-    // 4. Tìm kiếm & Lấy danh sách 
+
     public List<KhachHang> searchKhachHang(String keyword) throws Exception {
         List<KhachHang> list = new ArrayList<>();
         
@@ -94,7 +94,7 @@ public class KhachHangDAO {
                     kh.setNgaySinh(sqlDate.toLocalDate());
                 }
                 
-                // Lấy trực tiếp điểm hiện tại trong kho 
+
                 kh.setDiemtichluy(rs.getInt("diemtichluy"));
                 
                 list.add(kh);
@@ -107,9 +107,7 @@ public class KhachHangDAO {
         return searchKhachHang(""); 
     }
     
-    // 5. Cộng điểm khi mua hàng :
-    // gọi hàm này ở chức năng 
-    // Logic: 10.000 VND = 1 điểm 
+
     public boolean congDiemTichLuy(String maKH, double tongTienDonHang) {
         // Quy đổi: 10.000đ = 10 điểm => Chia 1000
         int diemCong = (int) (tongTienDonHang / 1000); 

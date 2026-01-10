@@ -13,7 +13,7 @@ public class DialogThemThanhVien extends JDialog {
     private JButton btnCapNhat;
     private HangThanhVienDAO dao;
     
-    // Biến lưu kết quả để Controller lấy
+
     private boolean isConfirmed = false;
     private String selectedMaKH = null;
     private String selectedTenKH = null;
@@ -24,7 +24,7 @@ public class DialogThemThanhVien extends JDialog {
         this.dao = new HangThanhVienDAO();
         initComponents();
         
-        // Load danh sách cho hạng mặc định là bạc
+
         loadKhachHangByHang("Bạc");
     }
 
@@ -36,19 +36,18 @@ public class DialogThemThanhVien extends JDialog {
         JPanel pnlCenter = new JPanel(new GridLayout(4, 1, 10, 10));
         pnlCenter.setBorder(new EmptyBorder(20, 20, 20, 20));
         
-        // 1. Mục Hạng Thành Viên
+
         pnlCenter.add(new JLabel("1. Chọn Hạng Thành Viên:"));
         cboHang = new JComboBox<>(new String[]{"Bạc", "Vàng", "Kim Cương"});
         pnlCenter.add(cboHang);
         
-        // 2. Mục Khách Hàng
+
         pnlCenter.add(new JLabel("2. Lựa Chọn Khách Hàng (Đủ điều kiện):"));
         cboKhachHang = new JComboBox<>();
         pnlCenter.add(cboKhachHang);
         
         add(pnlCenter, BorderLayout.CENTER);
-        
-        // Nút Cập Nhật
+
         btnCapNhat = new JButton("Cập Nhật");
         btnCapNhat.setBackground(new Color(0, 102, 204));
         btnCapNhat.setForeground(Color.WHITE);

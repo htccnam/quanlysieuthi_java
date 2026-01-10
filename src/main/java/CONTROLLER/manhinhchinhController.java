@@ -68,7 +68,7 @@ public class manhinhchinhController {
     private class clickDoiQuaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Chức năng này mở ra cửa sổ riêng (JFrame), không nhúng vào panel chính
+
             new CONTROLLER.DoiQuaController();
         }
     }
@@ -90,7 +90,7 @@ public class manhinhchinhController {
 
             HangThanhVienView htvView = new HangThanhVienView();
 
-            //Kích hoạt Controller : (Siêu quan trọng )
+   
             new HangThanhVienController(htvView);
             menu.showpanel(htvView);
         }
@@ -153,12 +153,12 @@ public class manhinhchinhController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                // Tạo View - Model - Controller cho Nhà Cung Cấp
+
                 NhaCungCapView nccView = new NhaCungCapView();
                 NhaCungCapModel nccModel = new NhaCungCapModel();
                 new NhaCungCapController(nccView);
 
-                // Hiển thị
+
                 menu.showpanel(nccView);
             } catch (Exception ex) {
                 ex.printStackTrace();

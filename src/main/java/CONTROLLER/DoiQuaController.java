@@ -8,22 +8,22 @@ import javax.swing.JOptionPane;
 public class DoiQuaController {
     private DoiQuaView view;
     private DoiQuaDAO dao;
-    private String currentMaKH = null; // Mã khách đang chọn
+    private String currentMaKH = null; 
 
     public DoiQuaController() {
         this.view = new DoiQuaView();
         this.dao = new DoiQuaDAO();
         
-        // 1. Load danh sách khách hàng vào ComboBox
+      
         loadKhachHang();
         
-        // 2. Sự kiện khi chọn khách hàng
+      
         view.cboKhachHang.addActionListener(e -> onCustomerSelected());
         
-        // 3. Sự kiện khi bấm nút Đổi Quà (Callback từ View)
+     
         view.setOnRedeemAction((tenQua, diemCan) -> xuLyDoiQua(tenQua, diemCan));
         
-        // Mở giao diện
+     
         view.setVisible(true);
     }
 
@@ -45,21 +45,21 @@ public class DoiQuaController {
             return;
         }
         
-        // Cắt chuỗi lấy Mã KH. Format: "MA - TEN"
+        
         currentMaKH = selected.split(" - ")[0];
         
-        // Load điểm và cập nhật giao diện
+   
         refreshData();
     }
     
     private void refreshData() {
         if (currentMaKH == null) return;
         
-        // 1. Lấy điểm mới nhất
+    
         int diem = dao.getDiemHienTai(currentMaKH);
         view.lblPoints.setText("Điểm khả dụng: " + diem);
         
-        // 2. Load lịch sử đổi quà
+     
         Vector<Vector<Object>> history = dao.getLichSuDoi(currentMaKH);
         view.modelHistory.setRowCount(0);
         for(Vector<Object> row : history) {
@@ -89,7 +89,7 @@ public class DoiQuaController {
             // Gọi DAO thực hiện trừ điểm và lưu lịch sử
             if (dao.doiQua(currentMaKH, tenQua, diemCan)) {
                 JOptionPane.showMessageDialog(view, "Đổi quà thành công!");
-                refreshData(); // Cập nhật lại số điểm và bảng lịch sử
+                refreshData(); //Cập nhật lại số điểm và bảng lịch sử
             } else {
                 JOptionPane.showMessageDialog(view, "Lỗi hệ thống khi đổi quà!");
             }

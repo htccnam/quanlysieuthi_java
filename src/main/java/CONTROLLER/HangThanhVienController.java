@@ -22,19 +22,19 @@ public class HangThanhVienController {
         
         System.out.println("DEBUG: HangThanhVienController đã khởi động!"); 
         
-        // Load dữ liệu cho cả 2 phần (Tra cứu & Bảng chính)
+     
         loadDataToMainTable();
         loadDataToLookupCombo();
         
-        // Sự kiện tra cứu
+ 
         view.btnCheck.addActionListener(e -> checkTongTien());
         
-        // Sự kiện CRUD Xếp hạng
+
         view.btnThem.addActionListener(e -> xuLyThem());
         view.btnXoa.addActionListener(e -> xuLyXoa());
     }
 
-    // 1. Load dữ liệu vào Bảng chính (Từ bảng HangThanhVien)
+
     private void loadDataToMainTable() {
         System.out.println("DEBUG: Đang lấy danh sách xếp hạng từ DB...");
         List<HangThanhVien> list = dao.getDanhSachXepHang();
@@ -51,7 +51,7 @@ public class HangThanhVienController {
         }
     }
 
-    // 2. Load dữ liệu vào ComboBox Tra Cứu (Từ bảng DonHang - để check tiền)
+
     private void loadDataToLookupCombo() {
         System.out.println("DEBUG: Đang lấy danh sách chi tiêu để nạp Combo...");
         Vector<Vector<Object>> listData = dao.getKhachHangVaTongTien();
@@ -70,8 +70,7 @@ public class HangThanhVienController {
         }
     }
 
-    // Xử lý sự kiện
-    // Nút Kiểm Tra (Check tiền nhanh)
+
     private void checkTongTien() {
         try {
             String selected = (String) view.cboKhachHang.getSelectedItem();
@@ -87,7 +86,7 @@ public class HangThanhVienController {
         }
     }
 
-    // Nút Thêm (Mở Dialog)
+
     private void xuLyThem() {
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(view);
         DialogThemThanhVien dialog = new DialogThemThanhVien(parent);
@@ -110,7 +109,7 @@ public class HangThanhVienController {
         }
     }
 
-    // Nút Xóa
+
     private void xuLyXoa() {
         int row = view.tblXepHang.getSelectedRow();
         if (row == -1) {

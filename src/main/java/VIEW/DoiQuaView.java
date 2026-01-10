@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
 
 public class DoiQuaView extends JFrame {
 
-    // Các thành phần Public để Controller truy cập
+
     public JComboBox<String> cboKhachHang;
     public JLabel lblPoints;
     
@@ -18,7 +18,7 @@ public class DoiQuaView extends JFrame {
     public DefaultTableModel modelHistory;
     public JTable tblHistory;
     
-    // Callback để xử lý sự kiện đổi quà
+
     private BiConsumer<String, Integer> onRedeemAction; 
 
     public DoiQuaView() {
@@ -28,7 +28,7 @@ public class DoiQuaView extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // --- 1. TOP: CHỌN KHÁCH HÀNG ---
+  
         JPanel pnlTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
         pnlTop.setBackground(new Color(240, 248, 255));
         pnlTop.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
@@ -48,24 +48,23 @@ public class DoiQuaView extends JFrame {
         pnlTop.add(Box.createHorizontalStrut(50));
         pnlTop.add(lblPoints);
 
-        // --- 2. CENTER: KHO QUÀ (2 MÓN) ---
+
         JPanel pnlCenter = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 30));
         pnlCenter.setBorder(new TitledBorder("Danh Sách Quà Tặng"));
         
-        // Khởi tạo nút
+
         btnDoiGau = new JButton("ĐỔI NGAY");
         btnDoiCoc = new JButton("ĐỔI NGAY");
-        
-        // Thêm quà vào panel (Không hiển thị tồn kho)
+
         pnlCenter.add(createGiftCard("Gấu Bông Siêu Thị", 50, btnDoiGau));
         pnlCenter.add(createGiftCard("Bộ Cốc Thủy Tinh", 150, btnDoiCoc));
 
-        // --- 3. RIGHT: LỊCH SỬ ---
+
         JPanel pnlRight = new JPanel(new BorderLayout());
         pnlRight.setPreferredSize(new Dimension(400, 0));
         pnlRight.setBorder(new TitledBorder("Lịch Sử Đổi Điểm"));
 
-        // --- SỬA ĐỔI Ở ĐÂY: Xóa cột "Số Lượng" ---
+
         String[] cols = {"Tên Quà", "Điểm Trừ", "Ngày Đổi"};
         modelHistory = new DefaultTableModel(cols, 0);
         tblHistory = new JTable(modelHistory);
@@ -93,13 +92,13 @@ public class DoiQuaView extends JFrame {
         lblPoint.setFont(new Font("Arial", Font.BOLD, 20));
         lblPoint.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Style nút
+
         btnAction.setBackground(new Color(0, 153, 76));
         btnAction.setForeground(Color.WHITE);
         btnAction.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnAction.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        // Gắn sự kiện gọi Callback
+
         btnAction.addActionListener(e -> {
             if (onRedeemAction != null) {
                 onRedeemAction.accept(ten, diem);
@@ -116,7 +115,7 @@ public class DoiQuaView extends JFrame {
         return card;
     }
     
-    // Phương thức để Controller đăng ký sự kiện
+
     public void setOnRedeemAction(BiConsumer<String, Integer> action) {
         this.onRedeemAction = action;
     }

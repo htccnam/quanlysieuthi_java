@@ -29,10 +29,10 @@ public class KhachHangView extends JPanel {
     private final Font fontButton = new Font("Segoe UI", Font.BOLD, 13);
     
 
-    private final Color colorPrimary = new Color(0, 102, 204); // Xanh dương đậm
-    private final Color colorSuccess = new Color(40, 167, 69); // Xanh lá
-    private final Color colorDanger = new Color(220, 53, 69);  // Đỏ
-    private final Color colorWarning = new Color(255, 193, 7); // Vàng cam
+    private final Color colorPrimary = new Color(0, 102, 204); 
+    private final Color colorSuccess = new Color(40, 167, 69); 
+    private final Color colorDanger = new Color(220, 53, 69);  
+    private final Color colorWarning = new Color(255, 193, 7); 
 
     public KhachHangView() {
         initComponents(); 
@@ -40,7 +40,7 @@ public class KhachHangView extends JPanel {
     
     private void initComponents() {
         this.setLayout(new BorderLayout(20, 20));
-        this.setBackground(new Color(245, 248, 250)); // Màu nền xám nhạt dịu mắt
+        this.setBackground(new Color(245, 248, 250)); 
         this.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         JPanel pnlTop = new JPanel(new BorderLayout(15, 15));
@@ -59,23 +59,23 @@ public class KhachHangView extends JPanel {
         pnlInput.setBorder(BorderFactory.createCompoundBorder(borderTitle, new EmptyBorder(15, 20, 15, 20)));
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 10, 8, 10); // Khoảng cách giữa các ô
+        gbc.insets = new Insets(8, 10, 8, 10); 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        // -- Cột 1 --
+  
         addInputRow(pnlInput, gbc, 0, "Mã Khách Hàng:", txtMaKH = createTextField());
         addInputRow(pnlInput, gbc, 1, "Họ và Tên:", txtHoTen = createTextField());
         addInputRow(pnlInput, gbc, 2, "Số Điện Thoại:", txtSDT = createTextField());
         addInputRow(pnlInput, gbc, 3, "Giới Tính:", cbGioiTinh = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"}));
         styleComboBox(cbGioiTinh);
 
-        // -- Cột 2 -- (Dùng gbc để đẩy sang bên phải)
+
         addInputRow2(pnlInput, gbc, 0, "Email:", txtEmail = createTextField());
         addInputRow2(pnlInput, gbc, 1, "Ngày Sinh (yyyy-MM-dd):", txtNgaySinh = createTextField());
         addInputRow2(pnlInput, gbc, 2, "Điểm Tích Lũy:", txtDiemTichLuy = createTextField());
         txtDiemTichLuy.setText("0");
 
-        // --- 2. PANEL CHỨC NĂNG (CENTER của Top) ---
+ 
         JPanel pnlFunc = new JPanel(new BorderLayout(10, 10));
         pnlFunc.setOpaque(false);
         
@@ -117,26 +117,25 @@ public class KhachHangView extends JPanel {
         
         this.add(pnlTop, BorderLayout.NORTH);
 
-        // --- 3. BẢNG DỮ LIỆU (CENTER) ---
         String[] columnNames = {"Mã KH", "Họ Tên", "SĐT", "Giới Tính", "Email", "Ngày Sinh", "Điểm"};
         tableModel = new DefaultTableModel(columnNames, 0);
         tblKhachHang = new JTable(tableModel);
         
-        // Style cho bảng
-        tblKhachHang.setRowHeight(30); // Chiều cao hàng
+
+        tblKhachHang.setRowHeight(30); 
         tblKhachHang.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         tblKhachHang.setSelectionBackground(new Color(232, 242, 255));
         tblKhachHang.setSelectionForeground(Color.BLACK);
         tblKhachHang.setGridColor(new Color(230, 230, 230));
         
-        // Style cho Header (Tiêu đề bảng)
+
         JTableHeader header = tblKhachHang.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
         header.setBackground(colorPrimary);
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(header.getWidth(), 40));
         
-        // Căn giữa nội dung bảng
+
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < columnNames.length; i++) {
