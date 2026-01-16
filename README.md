@@ -137,7 +137,7 @@ Chuyển mode bằng **nút MODE**
 ### 1️⃣ Clone project
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY_NAME.git
+git clone https://github.com/htccnam/embedded_programming.git
 ```
 
 Hoặc tải **Download ZIP** từ GitHub.
